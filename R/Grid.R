@@ -1,6 +1,33 @@
+#' @title GridCoordinate
+#' @description Specification of cell in a grid
+#' @param sheetId Integer - sheet ID
+#' @param rowIndex,columnIndex position of the cell in a grid
+#' @export
+GridCoordinate <- function(
+    sheetId,
+    rowIndex,
+    columnIndex
+) {
+
+  out <- list(sheetId = sheetId,
+              rowIndex = rowIndex,
+              columnIndex = columnIndex)
+
+  class(out) <- "GridCoordinate"
+
+  return(out)
+
+}
+
+#' @rdname GridCoordinate
+#' @param x any R object
+#' @export
+is.GridCoordinate <- function(x)
+  inherits(x, "GridCoordinate")
+
 #' @title GridRange
 #' @description Specification of grid range in spreadsheet
-#' @param sheetId Integer. Starts from 0. Spreadsheet Id
+#' @param sheetId Integer - sheet ID
 #' @param startRowIndex Integer. Starts from 0, inclusive
 #' @param endRowIndex Integer. Starts from 0, exclusive
 #' @param startColumnIndex Integer. Starts from 0, inclusive
@@ -32,7 +59,7 @@ GridRange <- function(
     endColumnIndex = endColumnIndex
   )
 
-  class(out) <- "CellRange"
+  class(out) <- "GridRange"
 
   return(out)
 

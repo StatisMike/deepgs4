@@ -20,7 +20,7 @@ MergeCells <- function(
     )
   )
 
-  class(out) <- c("gsheetRequest")
+  class(out) <- c("deepgsheetsRequest")
 
   return(out)
 
