@@ -70,3 +70,14 @@ GridRange <- function(
 #' @export
 is.GridRange <- function(x)
   inherits(x, "GridRange")
+
+#' @title Generate GridRange
+#' @description Function used internally by [SpreadSheetsData] object
+#' @noRd
+gen_GridRange <- function(sheetProperties,
+                          obj)
+  do.call(GridRange,
+          args = c(
+            list(sheetId = sheetProperties$sheetId),
+            obj
+          ))

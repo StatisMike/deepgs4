@@ -28,3 +28,6 @@ vignettes/*.pdf
 .Renviron
 .Rproj.user
 deepgsheets4.Rproj
+# WIP
+inst/WIP.R
+

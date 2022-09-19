@@ -125,7 +125,7 @@ SpreadSheetData <- R6::R6Class(
 
       fields_to_acquire <- vapply(
         fields, \(field) {
-          is.null(private$data[[field]]) || isTRUE(refresh)
+          is.null(self[[field]]) || isTRUE(refresh)
         },
         logical(1))
 
@@ -134,8 +134,7 @@ SpreadSheetData <- R6::R6Class(
 
         fields_loc <- private$queryFields[fields_to_acquire]
 
-        ss_data <- getSpreadsheetData(
-          spreadsheetId = private$.spreadSheetId,
+        ss_data <- private$getSpreadsheetData(
           fields = paste(fields_loc, collapse = ",")
         )
 
@@ -143,22 +142,45 @@ SpreadSheetData <- R6::R6Class(
           lapply(
             seq_along(fields_to_acquire),
             \(i) {
+
+              fieldNm <- fields_to_acquire[i]
+
               if (grepl(x = fields_loc[i], pattern = "sheets\\.")) {
-                private$data[[names(fields_loc)[i]]] <-
-                  lapply(ss_data$sheets,
-                         \(x) x[[gsub(x = fields_loc[i],
-                                      pattern = "sheets\\.",
-                                      replacement = "")]])
+
+                self[[fieldNm]] <- lapply(
+                  seq_along(ss_data$sheets),
+                  \(i_sh) {
+
+                    fieldData <-
+                      ss_data$sheets[[i_sh]][[gsub(x = fields_loc[i],
+                                                   pattern = "sheets\\.",
+                                                   replacement = "")]]
+
+                    private$process_sheet_field(
+                      fieldData = fieldData,
+                      fieldNm = fieldNm,
+                      sheetProperties = self$sheetProperties[[i_sh]]
+                    )
+                  }
+                )
+
+                names(self[[fieldNm]]) <-
+                  vapply(self$sheetProperties,
+                         \(x) as.character(x$sheetId),
+                         character(1))
               } else {
-                private$data[[names(fields_loc)[i]]] <-
-                  ss_data[[fields_loc[i]]]
+                self[[names(fields_loc)[i]]] <-
+                  private$process_field(
+                    fieldData = ss_data[[fields_loc[i]]],
+                    fieldNm = fieldNm)
               }
             }
           )
         )
       }
 
-      out <- private$data[fields]
+      out <- vapply(fields, \(x) list(self[[x]]), vector("list", 1))
+
       out <- out[!vapply(out, is.null, logical(1))]
 
       return(out)
@@ -186,21 +208,50 @@ SpreadSheetData <- R6::R6Class(
     .spreadSheetId = NULL,
     .sheetsVec = NULL,
 
-    data = list(
-      spreadsheetProperties = NULL,
-      sheetProperties = NULL,
-      namedRanges = NULL,
-      merges = NULL,
-      filterViews = NULL,
-      protectedRanges = NULL,
-      basicFilter = NULL,
-      charts = NULL,
-      bandedRanges = NULL,
-      developerMetadata = NULL,
-      rowGroups = NULL,
-      columnGroups = NULL,
-      slicers = NULL
-    )
+    getSpreadsheetData = function(fields) {
+
+      req <- googlesheets4::request_generate(
+        endpoint = "sheets.spreadsheets.get",
+        params = list(
+          spreadsheetId = private$.spreadSheetId,
+          fields = fields
+        )
+      )
+
+      resp <- googlesheets4::request_make(
+        req
+      )
+
+      gargle::response_process(resp)
+
+    },
+
+    process_field = function(fieldData,
+                             fieldNm) {
+
+
+      return(fieldData)
+
+
+    },
+
+    process_sheet_field = function(fieldData,
+                                   fieldNm,
+                                   sheetProperties) {
+
+      lapply(fieldData, \(obj) {
+
+        switch(
+          fieldNm,
+
+          merges = gen_GridRange(sheetProperties = sheetProperties,
+                                 obj = obj),
+
+          obj)
+
+      })
+
+    }
   ),
 
   active = list(
@@ -225,14 +276,11 @@ SpreadSheetData <- R6::R6Class(
       if (!missing(value))
         stop("This field is read-only.")
 
-      if (is.null(private$data$sheetProperties))
-
-      sheetProperties <-
-        self$get_data(fields = "sheetProperties")$sheetProperties
+      self$get_data(fields = "sheetProperties")
 
       sheets_vec <- setNames(
-        nm = vapply(sheetProperties, \(x) x$title, character(1)),
-        object = vapply(sheetProperties, \(x) as.integer(x$sheetId), double(1))
+        nm = vapply(self$sheetProperties, \(x) x$title, character(1)),
+        object = vapply(self$sheetProperties, \(x) as.integer(x$sheetId), double(1))
       )
 
       return(sheets_vec)
