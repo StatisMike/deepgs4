@@ -1,32 +1,37 @@
 is.deepgsheetsRequest <- function(x)
-  inherits("deepgsheetsRequest")
+  inherits(x, "deepgsheetsRequest")
 
 
 send_batchUpdate_req <- function(
     spreadsheetId,
-    requests
+    ...,
+    .dots = list()
 ) {
 
+  if (length(.dots) > 0)
+    requests <- .dots
+  else
+    requests <- list(...)
+
   if (!all(vapply(requests, is.deepgsheetsRequest, logical(1))))
-    stop("All objects provided to `requests` argument need to be of `deepgsheetsRequest` class")
+    stop("All objects provided to `...` or `.dots` argument need to be of `deepgsheetsRequest` class")
 
   requests <- remove_class_recursive(requests)
+  names(requests) <- NULL
 
   req <- googlesheets4::request_generate(
     endpoint = "sheets.spreadsheets.batchUpdate",
     params = list(
       spreadsheetId = spreadsheetId,
-      requests = list(
-        requests
-      )
+      requests = requests
     )
   )
 
   resp <- googlesheets4::request_make(
-    gen_request
+    req
   )
 
-  return(resp)
+  gargle::response_process(resp)
 
 }
 

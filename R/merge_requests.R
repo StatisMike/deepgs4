@@ -3,8 +3,8 @@
 #' @param GridRange `GridRange` object
 #' @param mergeType one of MERGE_COLUMNS, MERGE_ROWS or MERGE_ALL
 #' @export
-#' @return gsheetRequest object
-MergeCells <- function(
+#' @return deepgsheetsRequest object
+MergeCellsRequest <- function(
     gridRange,
     mergeType = c("MERGE_COLUMNS", "MERGE_ROWS", "MERGE_ALL")) {
 
