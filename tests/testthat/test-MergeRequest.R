@@ -59,7 +59,7 @@ test_that("Merge request can be constructed and sent", {
     )
   )
 
-  invisible(lapply(requests, expect_s3_class, class = "deepgsheetsRequest"))
+  invisible(lapply(requests, expect_s3_class, class = "deepgsheets4Req"))
 
   expect_failure(
     expect_error(

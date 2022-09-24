@@ -1,3 +1,38 @@
+#' @title GridProperties
+#' @description Properties of a chart grid
+#' @param rowCount,columnCount number of rows and columns in the grid
+#' @param frozenRowCount,frozenColumnCount number of frozen rows and columns in the grid
+#' @param hideGridlines boolean indicating if gridlines should be shown
+#' @param rowGroupControlAfter,columnGroupControlAfter boolean indicating if
+#' row/column toggle is shown after the group
+#' @export
+GridProperties <- function(
+    rowCount,
+    columnCount,
+    frozenRowCount = NULL,
+    frozenColumnCount = NULL,
+    hideGridLines = NULL,
+    rowGroupControlAfter = NULL,
+    columnGroupControlAfter = NULL) {
+
+  out <- list(rowCount = rowCount,
+              columnCount = columnCount) |>
+    append_cond(frozenRowCount, type = "integer") |>
+    append_cond(frozenColumnCount, type = "integer") |>
+    append_cond(hideGridLines, type = "logical") |>
+    append_cond(rowGroupControlAfter, type = "logical") |>
+    append_cond(columnGroupControlAfter, type = "logical") |>
+    deepgs_class("GridProperties")
+
+  return(out)
+
+}
+
+#' @title Generate GridProperties
+#' @noRd
+gen_GridProperties <- function(obj, sheetProperties = NULL)
+  do.call(GridProperties, args = obj)
+
 #' @title GridCoordinate
 #' @description Specification of cell in a grid
 #' @param sheetId Integer - sheet ID
@@ -9,11 +44,11 @@ GridCoordinate <- function(
     columnIndex
 ) {
 
-  out <- list(sheetId = sheetId,
-              rowIndex = rowIndex,
-              columnIndex = columnIndex)
-
-  class(out) <- "GridCoordinate"
+  out <- list() |>
+    append_cond(sheetId, type = "integer") |>
+    append_cond(rowIndex, type = "integer") |>
+    append_cond(columnIndex, type = "integer") |>
+    deepgs_class("GridCoordinate")
 
   return(out)
 
@@ -27,6 +62,9 @@ is.GridCoordinate <- function(x)
 
 #' @title GridRange
 #' @description Specification of grid range in spreadsheet
+#' @details Object representing `GridRange` received from GoogleSheets API v4
+#' don't include `sheetId`. It is filled during response processing with `Id`
+#' of the sheet which the higher-level object was located in.
 #' @param sheetId Integer - sheet ID
 #' @param startRowIndex Integer. Starts from 0, inclusive
 #' @param endRowIndex Integer. Starts from 0, exclusive
@@ -40,26 +78,21 @@ GridRange <- function(
     startColumnIndex,
     endColumnIndex) {
 
-  if (any(sapply(list(sheetId, startRowIndex, endRowIndex,
-                      startColumnIndex, endColumnIndex),
-                 \(x) !is.numeric(x) || x %% 1 != 0)))
-    stop("sheetId and cell indices need to be integers")
-
   if (endRowIndex <= startRowIndex)
-    stop("endRowIndex needs to be greater than startRowIndex")
+    deepgs_error("{.arg endRowIndex} needs to be greater than {.arg startRowIndex}",
+                 class = "WrongIndexError")
 
   if (endColumnIndex <= startColumnIndex)
-    stop("endColumnIndex needs to be greater than startRowIndex")
+    deepgs_error("{.arg endColumnIndex} needs to be greater than {.arg startColumnIndex}",
+                 class = "WrongIndexError")
 
-  out <- list(
-    sheetId = sheetId,
-    startRowIndex = startRowIndex,
-    endRowIndex = endRowIndex,
-    startColumnIndex = startColumnIndex,
-    endColumnIndex = endColumnIndex
-  )
-
-  class(out) <- "GridRange"
+  out <- list() |>
+    append_cond(sheetId, type = "integer") |>
+    append_cond(startRowIndex, type = "integer") |>
+    append_cond(endRowIndex, type = "integer") |>
+    append_cond(startColumnIndex, type = "integer") |>
+    append_cond(endColumnIndex, type = "integer") |>
+    deepgs_class("GridRange")
 
   return(out)
 

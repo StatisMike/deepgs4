@@ -1,31 +1,3 @@
-objects_with_sheetId <- c("GridRange")
-
-construct_sheet_object_from_resp <- function(resp, sheetProperties) {
-
-  data <- lapply(seq_along(resp), \(i) {
-
-    browser()
-
-    obj <- resp[[i]]
-    obj_name <- names(resp)[i]
-
-    if (is.list(obj) && exists(obj_name, where = "package:deepgsheets4", mode = "function")) {
-
-      if (obj_name %in% objects_with_sheetId)
-        obj <- c(obj, sheetProperties$sheetId)
-
-      return(do.call(obj_name, args = args))
-
-    }
-
-    return(obj)
-
-  })
-
-  return(data)
-}
-
-
 #' @title Get data about the spreadsheet
 #' @param spreadsheetId ID of the spreadsheet
 #' @param fields fields to get
@@ -45,7 +17,7 @@ getSpreadsheetData <- function(spreadsheetId, fields = NULL) {
     req
   )
 
-  rjson::fromJSON(rawToChar(resp$content))
+  gargle::response_process(resp)
 
 }
 
@@ -229,8 +201,11 @@ SpreadSheetData <- R6::R6Class(
     process_field = function(fieldData,
                              fieldNm) {
 
+      switch(fieldNm,
 
-      return(fieldData)
+             spreadsheetProperties = gen_SpreadsheetProperties(fieldData),
+
+             fieldData)
 
 
     },
@@ -239,17 +214,28 @@ SpreadSheetData <- R6::R6Class(
                                    fieldNm,
                                    sheetProperties) {
 
-      lapply(fieldData, \(obj) {
+      switch(fieldNm,
+             sheetProperties = gen_SheetProperties(obj = fieldData),
+             merges = lapply(fieldData,
+                             gen_GridRange,
+                             sheetProperties = sheetProperties),
+             fieldData)
 
-        switch(
-          fieldNm,
-
-          merges = gen_GridRange(sheetProperties = sheetProperties,
-                                 obj = obj),
-
-          obj)
-
-      })
+      # lapply(fieldData, \(obj) {
+      #
+      #   browser()
+      #
+      #   switch(
+      #     fieldNm,
+      #
+      #     sheetProperties = gen_SheetProperties(obj = obj),
+      #
+      #     merges = gen_GridRange(sheetProperties = sheetProperties,
+      #                            obj = obj),
+      #
+      #     obj)
+      #
+      # })
 
     }
   ),

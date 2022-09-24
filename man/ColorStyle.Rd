@@ -6,25 +6,25 @@
 \title{ColorStyle}
 \usage{
 ColorStyle(
-  themeColorType = c("TEXT", "BACKGROUND", "ACCENT1", "ACCENT2", "ACCENT3", "ACCENT4",
-    "ACCENT5", "ACCENT6", "LINK"),
   red,
   green,
   blue,
-  alpha = NULL
+  alpha = NULL,
+  themeColorType = c("TEXT", "BACKGROUND", "ACCENT1", "ACCENT2", "ACCENT3", "ACCENT4",
+    "ACCENT5", "ACCENT6", "LINK")
 )
 
 is.ColorStyle(x)
 }
 \arguments{
-\item{themeColorType}{One of the colors set in the theme of the spreadsheet.
-See \strong{details} for more info.}
-
 \item{red, green, blue}{Floats between \code{0} and \code{1}, describing amount of given
 tone in the color. If all are given, they will take precedence before \code{themeColorType}}
 
 \item{alpha}{Float between \code{0} and \code{1}. Not universally valid through the
 Sheets API}
+
+\item{themeColorType}{One of the colors set in the theme of the spreadsheet.
+See \strong{details} for more info.}
 
 \item{x}{Any R object}
 }

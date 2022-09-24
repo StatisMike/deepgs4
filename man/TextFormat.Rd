@@ -13,7 +13,8 @@ TextFormat(
   italic = NULL,
   strikethrough = NULL,
   underline = NULL,
-  link = NULL
+  link = NULL,
+  ...
 )
 
 is.TextFormat(x)
@@ -34,6 +35,8 @@ is.TextFormat(x)
 \item{underline}{boolean: should the text be underlined?}
 
 \item{link}{URL if text should link somewhere}
+
+\item{...}{additional deprecated fields returned from GoogleSheet API}
 
 \item{x}{any R file}
 }

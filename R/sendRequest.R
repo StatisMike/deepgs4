@@ -1,5 +1,5 @@
-is.deepgsheetsRequest <- function(x)
-  inherits(x, "deepgsheetsRequest")
+is.deepgsheets4Req <- function(x)
+  inherits(x, "deepgsheets4Req")
 
 
 send_batchUpdate_req <- function(
@@ -13,10 +13,11 @@ send_batchUpdate_req <- function(
   else
     requests <- list(...)
 
-  if (!all(vapply(requests, is.deepgsheetsRequest, logical(1))))
-    stop("All objects provided to `...` or `.dots` argument need to be of `deepgsheetsRequest` class")
+  if (!all(vapply(requests, is.deepgsheets4Req, logical(1))))
+    deepgs_error("All objects provided to {.arg ...} or {.arg .dots} argument need to be of {.cls deepgsheets4Req} class",
+                 class = "WrongReqClass")
 
-  requests <- remove_class_recursive(requests)
+  requests <- lapply(requests, deepgs_listinize)
   names(requests) <- NULL
 
   req <- googlesheets4::request_generate(

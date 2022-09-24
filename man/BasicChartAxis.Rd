@@ -5,14 +5,28 @@
 \alias{is.BasicChartAxis}
 \title{BasicChartAxis}
 \usage{
-BasicChartAxis(title, position = c("BOTTOM_AXIS", "LEFT_AXIS", "RIGHT_AXIS"))
+BasicChartAxis(
+  position = c("BOTTOM_AXIS", "LEFT_AXIS", "RIGHT_AXIS"),
+  title = NULL,
+  format = NULL,
+  viewWindowOptions = NULL,
+  horizontalAlignment = NULL
+)
 
 is.BasicChartAxis(x)
 }
 \arguments{
-\item{title}{Title for the axis}
-
 \item{position}{Position of the axis}
+
+\item{title}{Title for the axis. If set, overrides title infered from data.}
+
+\item{format}{object of class \link{TextFormat}. Specifies format of text.}
+
+\item{viewWindowOptions}{object of class \link{ChartAxisViewWindowOptions}.
+Specifies view on this axis}
+
+\item{horizontalAlignment}{Alignment of the title text on the axis. Valid positions
+are: \code{LEFT}, \code{CENTER} and \code{RIGHT}}
 
 \item{x}{any R object}
 }

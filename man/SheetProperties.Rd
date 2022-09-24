@@ -41,6 +41,8 @@ be inserted at the end of the sheets}
 is only accessible during reads from Sheets API.}
 
 \item{x}{any R object}
+
+\item{...}{additional deprecated fields returned from GoogleSheet API}
 }
 \value{
 SheetProperties object

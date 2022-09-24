@@ -5,13 +5,12 @@
 \alias{is.BasicChartDomain}
 \title{BasicChartDomain}
 \usage{
-BasicChartDomain(gridRange, reversed = FALSE)
+BasicChartDomain(chartData, reversed = NULL)
 
 is.BasicChartDomain(x)
 }
 \arguments{
-\item{gridRange}{specification for the cells. Only accepts one-row or
-one-column cell ranges}
+\item{chartData}{object of class \link{ChartData} specifying the data scope.}
 
 \item{reversed}{boolean indicating if values should be reversed}
 
@@ -19,5 +18,5 @@ one-column cell ranges}
 }
 \description{
 object of class BasicChartDomain. Specifies the context
-of scopes (eg. date for numbers)
+of series.
 }

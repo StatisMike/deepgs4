@@ -3,7 +3,7 @@
 #' @param GridRange `GridRange` object
 #' @param mergeType one of MERGE_COLUMNS, MERGE_ROWS or MERGE_ALL
 #' @export
-#' @return deepgsheetsRequest object
+#' @return `deepgsheets4Req` object
 MergeCellsRequest <- function(
     gridRange,
     mergeType = c("MERGE_COLUMNS", "MERGE_ROWS", "MERGE_ALL")) {
@@ -20,7 +20,7 @@ MergeCellsRequest <- function(
     )
   )
 
-  class(out) <- c("deepgsheetsRequest")
+  out <- deepgs_class(out, object_type = "Req")
 
   return(out)
 

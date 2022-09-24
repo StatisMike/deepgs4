@@ -31,3 +31,8 @@ is.GridRange(x)
 \description{
 Specification of grid range in spreadsheet
 }
+\details{
+Object representing \code{GridRange} received from GoogleSheets API v4
+don't include \code{sheetId}. It is filled during response processing with \code{Id}
+of the sheet which the higher-level object was located in.
+}

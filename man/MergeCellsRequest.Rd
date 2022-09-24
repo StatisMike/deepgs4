@@ -15,7 +15,7 @@ MergeCellsRequest(
 \item{GridRange}{\code{GridRange} object}
 }
 \value{
-deepgsheetsRequest object
+\code{deepgsheets4Req} object
 }
 \description{
 Single MergeCells request

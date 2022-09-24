@@ -6,23 +6,39 @@
 \title{BasicChartSeries}
 \usage{
 BasicChartSeries(
-  gridRange,
+  chartData,
   targetAxis = c("BOTTOM_AXIS", "LEFT_AXIS", "RIGHT_AXIS"),
-  type = c("LINE", "AREA", "COLUMN"),
-  lineStyle = NULL
+  dataLabel = NULL,
+  type = NULL,
+  lineStyle = NULL,
+  colorStyle = NULL,
+  pointStyle = NULL,
+  styleOverrides = NULL
 )
 
 is.BasicChartSeries(x)
 }
 \arguments{
-\item{gridRange}{specification for the cells. Only accepts one-row or
-one-column cell ranges}
+\item{chartData}{object of class \link{ChartData} specifying the data scope.}
 
 \item{targetAxis}{specifies on which axis the values will be visualised}
 
-\item{type}{specifies the type of the series (relevant only if chart type is COMBO)}
+\item{type}{specifies the type of the series (relevant only if chart type is COMBO).
+Possible values are \code{"LINE"}, \code{"AREA"} and \code{"COLUMN"}}
 
-\item{lineStyle}{specifies style of the line (for LINE type series)}
+\item{lineStyle}{object of class \link{LineStyle}, which specifies style of the line.
+Relevant only if chart type is one of: AREA, LINE, SCATTER or COMBO with correct
+series \code{type}}
+
+\item{colorStyle}{object of class \link{ColorStyle}, specifying color for
+elements associated with the series.}
+
+\item{pointStyle}{object of class \link{PointStyle}, specifying style of the data
+points associated with the series. Valid only if chart type is one of: AREA,
+LINE, SCATTER or COMBO with correct series \code{type}}
+
+\item{styleOverrides}{currently unimplemented. Present for correct data
+reading}
 
 \item{x}{any R object}
 }

@@ -6,36 +6,76 @@
 \title{BasicChartSpec}
 \usage{
 BasicChartSpec(
-  chartType = c("BAR", "LINE", "AREA", "COLUMN", "SCATTER", "COMBO", "STEPPED_AREA"),
-  legendPosition = c("BOTTOM_LEGEND", "LEFT_LEGEND", "RIGHT_LEGEND", "TOP_LEGEND",
-    "NO_LEGEND"),
   axis,
   domains,
   series,
-  headerCount = 0,
-  threeDimensional = FALSE
+  chartType = c("BAR", "LINE", "AREA", "COLUMN", "SCATTER", "COMBO", "STEPPED_AREA"),
+  legendPosition = c("BOTTOM_LEGEND", "LEFT_LEGEND", "RIGHT_LEGEND", "TOP_LEGEND",
+    "NO_LEGEND"),
+  headerCount = NULL,
+  threeDimensional = NULL,
+  interpolateNulls = NULL,
+  stackedType = NULL,
+  lineSmoothing = NULL,
+  compareMode = NULL,
+  totalDataLabel = NULL
 )
 
 is.BasicChartSpec(x)
 }
 \arguments{
+\item{axis}{object of class \link{BasicChartAxis} or list of such objects}
+
+\item{domains}{object of class \link{BasicChartDomain} or list containing one of such object}
+
+\item{series}{object of class \link{BasicChartSeries} or list of such series}
+
 \item{chartType}{type of the chart}
 
 \item{legendPosition}{position of the legend}
-
-\item{axis}{list of 'BasicChartAxis' objects}
-
-\item{domains}{list containing one 'BasicChartDomain' object}
-
-\item{series}{list of 'BasicChartSeries' objects}
 
 \item{headerCount}{The number of rows or columns in the data that are "headers".}
 
 \item{threeDimensional}{boolean indicating if chart need to be made 3D. Only
 for charts of types: \code{"BAR"} or \code{"COLUMN"}}
 
+\item{interpolateNulls}{boolean indicating if missing values in series should
+be interpolated}
+
+\item{stackedType}{stack type for charts supporting vertical stacking. Applies
+if \code{chartType} is one of \code{"AREA"}, \code{"BAR"}, \code{"COLUMN"}, \code{"COMBO"} or \code{"STEPPED_AREA"}.
+See \strong{details} for info about possible values.}
+
+\item{lineSmoothing}{boolean indicating if lines should be rendered smooth. Applies
+if \code{chartType = "LINE"}}
+
+\item{compareMode}{behavior of tooltips and data highlighting on hover. See
+\strong{details} for info about possible values}
+
+\item{totalDataLabel}{controls if additional data labels should be displayed
+on stacked charts with total sum. Only for stacked charts.}
+
 \item{x}{any R object}
 }
 \description{
 Specification for googlesheets Basic Chart object
 }
+\section{Meaning of values for arguments with finite options:}{
+\itemize{
+\item stackedType:
+\itemize{
+\item NOT_STACKED: Series are not stacked.
+\item STACKED: Series values are stacked, each value is rendered vertically
+beginning from the top of the value below it.
+\item PERCENT_STACKED: Vertical stacks are stretched to reach the top of the
+chart, with values laid out as percentages of each other.
+}
+\item compareMode:
+\itemize{
+\item DATUM: Only the focused data element is highlighted and shown in the tooltip.
+\item CATEGORY: All data elements with the same category (e.g., domain value)
+are highlighted and shown in the tooltip.
+}
+}
+}
+
