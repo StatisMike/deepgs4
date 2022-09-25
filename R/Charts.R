@@ -444,7 +444,7 @@ ChartSpec <- function(
     fontName = NULL,
     maximized = NULL) {
 
-  if (!is.BasicChartSpec(chart))
+  if (!is.TypeChartSpec(chart))
     stop("Object of class 'BasicChartSpec' needs to be provided to 'chart'
          argument.")
 
@@ -479,6 +479,14 @@ ChartSpec <- function(
 #' @export
 is.ChartSpec <- function(x)
   inherits(x, "ChartSpec")
+
+#' @rdname ChartSpec
+#' @param x any R object
+#' @export
+is.TypeChartSpec <- function(x) {
+  TypeChartSpecs <- c("BasicChartSpec")
+  inherits(x, TypeChartSpecs)
+}
 
 #' @title EmbeddedObjectPosition
 #' @description Specification of position for embedded objects (eg. charts)

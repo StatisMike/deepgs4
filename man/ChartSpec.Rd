@@ -3,6 +3,7 @@
 \name{ChartSpec}
 \alias{ChartSpec}
 \alias{is.ChartSpec}
+\alias{is.TypeChartSpec}
 \alias{is.EmbeddedObjectPosition}
 \title{ChartSpec}
 \usage{
@@ -17,6 +18,8 @@ ChartSpec(
 )
 
 is.ChartSpec(x)
+
+is.TypeChartSpec(x)
 
 is.EmbeddedObjectPosition(x)
 }
