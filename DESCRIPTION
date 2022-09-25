@@ -1,12 +1,14 @@
 Package: deepgsheets4
-Title: What the Package Does (One Line, Title Case)
-Version: 0.0.0.9000
+Title: Lower-level access to GoogleSheets REST API v4
+Version: 0.0.1
 Authors@R: 
-    person("First", "Last", , "first.last@example.com", role = c("aut", "cre"),
-           comment = c(ORCID = "YOUR-ORCID-ID"))
+    person(given = "Michal",
+           family = "Kosinski",
+           role = c("aut", "cre"),
+           email = "kosinski.mich@gmail.com",
+           comment = c(ORCID = "https://orcid.org/0000-0002-8426-3654"))
 Description: What the package does (one paragraph).
-License: `use_mit_license()`, `use_gpl3_license()` or friends to pick a
-    license
+License: MIT + file LICENSE
 Imports:
     gargle,
     glue,
