@@ -3,45 +3,67 @@
 \name{ChartSpec}
 \alias{ChartSpec}
 \alias{is.ChartSpec}
-\alias{is.TypeChartSpec}
 \alias{is.EmbeddedObjectPosition}
 \title{ChartSpec}
 \usage{
 ChartSpec(
   chart,
   title = NULL,
-  titlePosition = c("CENTER", "LEFT", "RIGHT"),
+  titlePosition = NULL,
+  titleTextFormat = NULL,
   subtitle = NULL,
-  subtitlePosition = c("CENTER", "LEFT", "RIGHT"),
+  subtitlePosition = NULL,
+  subtitleTextFormat = NULL,
   fontName = NULL,
-  maximized = NULL
+  altName = NULL,
+  maximized = NULL,
+  backgroundColorStyle = NULL,
+  dataSourceChartProperties = NULL,
+  filterSpecs = NULL,
+  sortSPecs = NULL,
+  hiddenDimensionStrategy = NULL
 )
 
 is.ChartSpec(x)
 
-is.TypeChartSpec(x)
-
 is.EmbeddedObjectPosition(x)
 }
 \arguments{
-\item{chart}{Specification of the chart to render. Currently supports only
-\code{BasicChartSpec} objects}
+\item{chart}{Specification of the chart to render. One of \link{TypeChartSpec}.}
 
-\item{title}{Title of the chart. Optional.}
+\item{title, subtitle}{Title and subtitle of the chart.}
 
-\item{titlePosition}{Horizntal aligmnent of the title. Defaults to \code{CENTER}}
+\item{titlePosition, subtitlePosition}{Horizntal aligmnent of the title and
+subtitle.}
 
-\item{subtitle}{Subtitle of the chart. Optional.}
+\item{titleTextFormat, subtitleTextFormat}{Objects of \code{\link[=TextFormat]{TextFormat()}} class.
+Strikethrough, underline and link aren't supported.}
 
-\item{subtitlePosition}{Horizonstal aligment of the subtitle. Defaults to
-\code{CENTER}}
-
-\item{fontName}{name of the font to use. Optional.}
+\item{fontName}{name of the font to use.}
 
 \item{maximized}{boolean. If \code{TRUE}, the chart will take maximum amount of
-available space with minimal padding. Optional.}
+available space with minimal padding.}
+
+\item{backgroundColorStyle}{object of \code{\link[=ColorStyle]{ColorStyle()}} class, describing the
+background color for entire chart.}
+
+\item{dataSourceChartProperties}{object of \link{DataSourceChartPoperties},
+contained only in \emph{data source} charts #NOT DONE YET#}
+
+\item{filterSpecs}{object or list of objects of \link{FilterSpec} class, describing
+filters applied to the source data. Only in \emph{data source} charts. #NOT DONE YET#}
+
+\item{hiddenDimensionStrategy}{describing how the charts will use hidden
+rows or columns.}
 
 \item{x}{any R object}
+
+\item{altText}{alternative text to describe a chart.}
+
+\item{sortSpecs}{object of \link{SortSpec} class, describing the order to sort
+the chart data. Only in \emph{data source} charts. #NOT DONE YET#}
+
+\item{...}{for support of deprecated GoogleSheets API fields during read}
 }
 \description{
 Specification for googlesheets chart

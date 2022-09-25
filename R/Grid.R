@@ -45,9 +45,9 @@ GridCoordinate <- function(
 ) {
 
   out <- list() |>
-    append_cond(sheetId, type = "integer") |>
-    append_cond(rowIndex, type = "integer") |>
-    append_cond(columnIndex, type = "integer") |>
+    append_cond(sheetId, type = "integer", skip_null = F) |>
+    append_cond(rowIndex, type = "integer", skip_null = F) |>
+    append_cond(columnIndex, type = "integer", skip_null = F) |>
     deepgs_class("GridCoordinate")
 
   return(out)
@@ -59,6 +59,21 @@ GridCoordinate <- function(
 #' @export
 is.GridCoordinate <- function(x)
   inherits(x, "GridCoordinate")
+
+#' @title Generate GridRange
+#' @description Function used internally by [SpreadSheetsData] object
+#' @noRd
+gen_GridCoordinate <- function(obj,
+                               sheetProperties = NULL) {
+
+  args <- obj
+
+  if (is.null(obj$sheetId))
+    args[["sheetId"]] <- sheetProperties$sheetId
+
+  do.call(GridCoordinate, args = args)
+}
+
 
 #' @title GridRange
 #' @description Specification of grid range in spreadsheet
@@ -87,11 +102,11 @@ GridRange <- function(
                  class = "WrongIndexError")
 
   out <- list() |>
-    append_cond(sheetId, type = "integer") |>
-    append_cond(startRowIndex, type = "integer") |>
-    append_cond(endRowIndex, type = "integer") |>
-    append_cond(startColumnIndex, type = "integer") |>
-    append_cond(endColumnIndex, type = "integer") |>
+    append_cond(sheetId, type = "integer", skip_null = F) |>
+    append_cond(startRowIndex, type = "integer", skip_null = F) |>
+    append_cond(endRowIndex, type = "integer", skip_null = F) |>
+    append_cond(startColumnIndex, type = "integer", skip_null = F) |>
+    append_cond(endColumnIndex, type = "integer", skip_null = F) |>
     deepgs_class("GridRange")
 
   return(out)
@@ -101,16 +116,21 @@ GridRange <- function(
 #' @rdname GridRange
 #' @param x any R object
 #' @export
-is.GridRange <- function(x)
+is.GridRange <- function(x) {
   inherits(x, "GridRange")
+}
 
 #' @title Generate GridRange
 #' @description Function used internally by [SpreadSheetsData] object
 #' @noRd
-gen_GridRange <- function(sheetProperties,
-                          obj)
-  do.call(GridRange,
-          args = c(
-            list(sheetId = sheetProperties$sheetId),
-            obj
-          ))
+gen_GridRange <- function(obj,
+                          sheetProperties = NULL) {
+
+  args <- obj
+
+  if (is.null(obj$sheetId))
+    args[["sheetId"]] <- sheetProperties$sheetId
+
+  do.call(GridRange, args = args)
+}
+

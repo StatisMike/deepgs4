@@ -149,8 +149,8 @@ gen_ColorStyle <- function(obj) {
     args <- obj$rgbColor
 
     null_i <- which(vapply(c("red", "green", "blue"),
-                    \(col) is.null(args[[col]]),
-                    logical(1)))
+                           \(col) is.null(args[[col]]),
+                           logical(1)))
 
     if (length(null_i) > 0)
       args[c("red", "green", "blue")[null_i]] <- 0

@@ -1,3 +1,25 @@
+#' @title Extract and convert TypeChartSpec classname to field name
+#' @param object TypeChartSpec object
+#' @noRd
+extract_chart_field <- function(object) {
+
+  chart_class <- class(object)
+  chart_class <- chart_class[grepl(chart_class, pattern = "ChartSpec$")]
+  chart_class <- unlist(gsub(chart_class, pattern = "Spec$", replacement = ""))
+  chart_class <- unlist(strsplit(chart_class, split = ""))
+  chart_class[1] <- tolower(chart_class[1])
+  chart_class <- paste(chart_class, collapse = "")
+
+  return(chart_class)
+
+}
+
+#' @title Valid Chart Specs
+#' @description List of valid types of charts that can be provided to `chart`
+#' argument of [ChartSpec()] and, consequently created by sending [AddChartRequest()]
+#' @export
+TypeChartSpecs <- c("BasicChartSpec")
+
 #' @title Options of view window in Chart Axis
 #' @description Object with specification on how the view on the chart should
 #' be placed
@@ -424,51 +446,74 @@ gen_BasicChartSpec <- function(obj,
 
 #' @title ChartSpec
 #' @description Specification for googlesheets chart
-#' @param chart Specification of the chart to render. Currently supports only
-#' `BasicChartSpec` objects
-#' @param title Title of the chart. Optional.
-#' @param titlePosition Horizntal aligmnent of the title. Defaults to `CENTER`
-#' @param subtitle Subtitle of the chart. Optional.
-#' @param subtitlePosition Horizonstal aligment of the subtitle. Defaults to
-#' `CENTER`
-#' @param fontName name of the font to use. Optional.
+#' @param chart Specification of the chart to render. One of [TypeChartSpec].
+#' @param title,subtitle Title and subtitle of the chart.
+#' @param titlePosition,subtitlePosition Horizntal aligmnent of the title and
+#' subtitle.
+#' @param titleTextFormat,subtitleTextFormat Objects of [TextFormat()] class.
+#' Strikethrough, underline and link aren't supported.
+#' @param fontName name of the font to use.
+#' @param altText alternative text to describe a chart.
 #' @param maximized boolean. If `TRUE`, the chart will take maximum amount of
-#' available space with minimal padding. Optional.
+#' available space with minimal padding.
+#' @param backgroundColorStyle object of [ColorStyle()] class, describing the
+#' background color for entire chart.
+#' @param dataSourceChartProperties object of [DataSourceChartPoperties],
+#' contained only in *data source* charts #NOT DONE YET#
+#' @param filterSpecs object or list of objects of [FilterSpec] class, describing
+#' filters applied to the source data. Only in *data source* charts. #NOT DONE YET#
+#' @param sortSpecs object of [SortSpec] class, describing the order to sort
+#' the chart data. Only in *data source* charts. #NOT DONE YET#
+#' @param hiddenDimensionStrategy describing how the charts will use hidden
+#' rows or columns.
+#' @param ... for support of deprecated GoogleSheets API fields during read
 #' @export
 ChartSpec <- function(
     chart,
     title = NULL,
-    titlePosition = c("CENTER", "LEFT", "RIGHT"),
+    titlePosition = NULL,
+    titleTextFormat = NULL,
     subtitle = NULL,
-    subtitlePosition = c("CENTER", "LEFT", "RIGHT"),
+    subtitlePosition = NULL,
+    subtitleTextFormat = NULL,
     fontName = NULL,
-    maximized = NULL) {
+    altName = NULL,
+    maximized = NULL,
+    backgroundColorStyle = NULL,
+    dataSourceChartProperties = NULL,
+    filterSpecs = NULL,
+    sortSPecs = NULL,
+    hiddenDimensionStrategy = NULL) {
 
-  if (!is.TypeChartSpec(chart))
-    stop("Object of class 'BasicChartSpec' needs to be provided to 'chart'
-         argument.")
+  chart <- check_if_class(chart, class = TypeChartSpecs)
 
-  out <- list(
-    basicChart = chart
-  )
+  titlePosition <- check_if_options(titlePosition, "CENTER", "LEFT", "RIGHT")
+  subtitlePosition <- check_if_options(subtitlePosition, "CENTER", "LEFT", "RIGHT")
+  hiddenDimensionStrategy <- check_if_options(hiddenDimensionStrategy,
+                                              "SKIP_HIDDEN_ROWS_AND_COLUMNS",
+                                              "SKIP_HIDDEN_ROWS",
+                                              "SKIP_HIDDEN_COLUMNS",
+                                              "SHOW_ALL")
 
-  if (!is.null(title)) {
-    out$title <- title
-    out$titleTextPosition$horizontalAlignment <- match.arg(titlePosition)
-  }
-
-  if (!is.null(subtitle)) {
-    out$subtitle <- subtitle
-    out$subtitleTextPosition$horizontalAlignment <- match.arg(subtitlePosition)
-  }
-
-  if (!is.null(fontName))
-    out$fontName <- fontName
-
-  if (!is.null(maximized))
-    out$maximized <- maximized
-
-  class(out) <- c("ChartSpec", "deepgseet4Obj")
+  out <- list() |>
+    append_cond(chart,
+                name = extract_chart_field(chart),
+                skip_null = FALSE) |>
+    append_cond(title, type = "character") |>
+    append_cond(titlePosition) |>
+    append_cond(titleTextFormat, class = "TextFormat") |>
+    append_cond(subtitle, type = "character") |>
+    append_cond(subtitlePosition) |>
+    append_cond(subtitleTextFormat, class = "TextFormat") |>
+    append_cond(fontName, type = "character") |>
+    append_cond(altName, type = "character") |>
+    append_cond(maximized, type = "logical") |>
+    append_cond(backgroundColorStyle, class = "ColorStyle") |>
+    append_cond(dataSourceChartProperties, class = "DataSourceChartProperties") |>
+    append_cond(filterSpecs, class = "FilterSpec") |>
+    append_cond(SortSpecs, class = "SortSpec") |>
+    append_cond(hiddenDimensionStrategy) |>
+    deepgs_class("ChartSpec")
 
   return(out)
 
@@ -479,14 +524,6 @@ ChartSpec <- function(
 #' @export
 is.ChartSpec <- function(x)
   inherits(x, "ChartSpec")
-
-#' @rdname ChartSpec
-#' @param x any R object
-#' @export
-is.TypeChartSpec <- function(x) {
-  TypeChartSpecs <- c("BasicChartSpec")
-  inherits(x, TypeChartSpecs)
-}
 
 #' @title EmbeddedObjectPosition
 #' @description Specification of position for embedded objects (eg. charts)

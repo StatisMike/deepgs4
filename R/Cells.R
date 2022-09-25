@@ -43,18 +43,18 @@
 #'
 #' @export
 CellFormat <- function(
-  numberFormat = NULL,
-  backgroundColorStyle = NULL,
-  borders = NULL,
-  padding = NULL,
-  horizontalAlignment = NULL,
-  verticalAlignment = NULL,
-  wrapStrategy = NULL,
-  textDirection = NULL,
-  textFormat = NULL,
-  hyperlinkDisplayType = NULL,
-  textRotation = NULL,
-  ...
+    numberFormat = NULL,
+    backgroundColorStyle = NULL,
+    borders = NULL,
+    padding = NULL,
+    horizontalAlignment = NULL,
+    verticalAlignment = NULL,
+    wrapStrategy = NULL,
+    textDirection = NULL,
+    textFormat = NULL,
+    hyperlinkDisplayType = NULL,
+    textRotation = NULL,
+    ...
 ) {
 
   horizontalAlignment <- check_if_options(horizontalAlignment, "LEFT", "CENTER", "RIGHT")
@@ -66,7 +66,7 @@ CellFormat <- function(
   textRotation <- check_if_options(
     textRotation, -90:90, "v",
     custom_message = "{.arg arg} needs to be either integer between {.val -90} and {.val 90} for rotation angle {.emph OR} {.val v} for vertical text."
-    )
+  )
 
 
   out <- list() |>
@@ -136,7 +136,7 @@ gen_CellFormat <- function(obj) {
 #'   - `SCIENTIFIC`: Scientific number formatting, eg. `1.01E+03`
 #' - **pattern**:
 #'   Detailed information is too verbose for inclusion here. For details
-#'   refer to \href{https://developers.google.com/sheets/api/guides/formats}(GoogleSheets Date and Number Formats guide)
+#'   refer to [GoogleSheets Date and Number Formats guide](https://developers.google.com/sheets/api/guides/formats)
 #' @export
 NumberFormat <- function(
     type = c("TEXT", "NUMBER", "PERCENT", "CURRENCY", "DATE", "TIME",

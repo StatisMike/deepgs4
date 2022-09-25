@@ -35,6 +35,6 @@ Specification for numeric values display
 }
 \item \strong{pattern}:
 Detailed information is too verbose for inclusion here. For details
-refer to \href{https://developers.google.com/sheets/api/guides/formats}(GoogleSheets Date and Number Formats guide)
+refer to \href{https://developers.google.com/sheets/api/guides/formats}{GoogleSheets Date and Number Formats guide}
 }
 }
