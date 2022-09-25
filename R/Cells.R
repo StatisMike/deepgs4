@@ -68,7 +68,6 @@ CellFormat <- function(
     custom_message = "{.arg arg} needs to be either integer between {.val -90} and {.val 90} for rotation angle {.emph OR} {.val v} for vertical text."
   )
 
-
   out <- list() |>
     append_cond(numberFormat, class = "NumberFormat") |>
     append_cond(backgroundColorStyle, class = "ColorStyle") |>
@@ -82,6 +81,10 @@ CellFormat <- function(
     append_cond(hyperlinkDisplayType) |>
     append_cond(textRotation) |>
     deepgs_class("CellFormat")
+
+  if (length(out) == 0)
+    deepgs_error("No arguments specified",
+                 class = "NoArgsError")
 
   return(out)
 
@@ -111,7 +114,7 @@ gen_CellFormat <- function(obj) {
     append_cond(obj$textRotation$angle, "textRotation")
 
   if (isTRUE(obj$textRotation$vertical))
-    args[["textRotation"]] <- TRUE
+    args[["textRotation"]] <- "v"
 
   do.call(CellFormat, args = args)
 
@@ -177,10 +180,10 @@ gen_NumberFormat <- function(obj) {
 #' - `DOUBLE`: The border is two solid lines.
 #' @export
 Borders <- function(
-    top_style = c("DOTTED", "DASHED", "SOLID", "SOLID_MEDIUM", "SOLID_THICK", "NONE", "DOUBLE"),
-    bottom_style = c("DOTTED", "DASHED", "SOLID", "SOLID_MEDIUM", "SOLID_THICK", "NONE", "DOUBLE"),
-    left_style = c("DOTTED", "DASHED", "SOLID", "SOLID_MEDIUM", "SOLID_THICK", "NONE", "DOUBLE"),
-    right_style = c("DOTTED", "DASHED", "SOLID", "SOLID_MEDIUM", "SOLID_THICK", "NONE", "DOUBLE"),
+    top_style = c("SOLID", "DOTTED", "DASHED", "SOLID_MEDIUM", "SOLID_THICK", "NONE", "DOUBLE"),
+    bottom_style = c("SOLID", "DOTTED", "DASHED", "SOLID_MEDIUM", "SOLID_THICK", "NONE", "DOUBLE"),
+    left_style = c("SOLID", "DOTTED", "DASHED", "SOLID_MEDIUM", "SOLID_THICK", "NONE", "DOUBLE"),
+    right_style = c("SOLID", "DOTTED", "DASHED", "SOLID_MEDIUM", "SOLID_THICK", "NONE", "DOUBLE"),
     top_colorStyle = NULL,
     bottom_colorStyle = NULL,
     left_colorStyle = NULL,

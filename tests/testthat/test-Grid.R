@@ -87,7 +87,7 @@ test_that("GridCoordinate can be created, listinized and generated from list", {
 
 })
 
-test_that("GridCoordinate can be created, listinized and generated from list", {
+test_that("GridRange can be created, listinized and generated from list", {
 
   expect_failure(
     expect_error(

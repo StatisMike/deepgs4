@@ -34,7 +34,7 @@ TextFormat <- function(
     deepgs_class("TextFormat")
 
   if (length(out) == 0)
-    deepsh_error("No arguments specified",
+    deepgs_error("No arguments specified",
                  class = "NoArgsError")
 
   return(out)
@@ -44,9 +44,10 @@ TextFormat <- function(
 #' @rdname TextFormat
 #' @param x any R file
 #' @export
-
-is.TextFormat <- function(x)
+is.TextFormat <- function(x) {
   inherits(x, "TextFormat")
+}
+
 
 #' @title Generate TextFormat
 #' @description Function used internally to construct objects on read
@@ -137,8 +138,10 @@ ColorStyle <- function(
 #' @rdname ColorStyle
 #' @param x Any R object
 #' @export
-is.ColorStyle <- function(x)
+is.ColorStyle <- function(x) {
   inherits(x, "ColorStyle")
+}
+
 
 #' @title Generate ColorStyle
 #' @description Function used internally to construct objects on read
@@ -161,4 +164,70 @@ gen_ColorStyle <- function(obj) {
   do.call(ColorStyle,
           args = args)
 
+}
+
+#' @title Chart line style specification
+#' @description Object allowing for specifying the chart line style.
+#' @param width width of the line in pixels
+#' @param type type of the line. For description of each type, check details section.
+#' @details
+#' Valid line types and their description:
+#' - *SOLID*: A solid line.
+#' - *DOTTED*: A dotted line.
+#' - *MEDIUM_DASHED*: A dashed line where the dashes have "medium" length.
+#' - *MEDIUM_DASHED_DOTTED*: A line that alternates between a "medium" dash and a dot.
+#' - *LONG_DASHED*: A dashed line where the dashes have "long" length.
+#' - *LONG_DASHED_DOTTED*: A line that alternates between a "long" dash and a dot.
+#' - *INVISIBLE*: No dash type, which is equivalent to a non-visible line.
+#' - *CUSTOM*: A custom dash for a line. Modifying the exact custom dash style is currently unsupported.
+#' @export
+
+LineStyle <- function(
+    width,
+    type = c("SOLID", "DOTTED", "MEDIUM_DASHED", "MEDIUM_DASHED_DOTTED", "LONG_DASHED", "LONG_DASHED_DOTTED", "INVISIBLE", "CUSTOM")) {
+
+  type <- rlang::arg_match(type)
+
+  out <- list() |>
+    append_cond(width, type = "integer", skip_null = FALSE) |>
+    deepgs_class("LineStyle")
+
+  return(out)
+
+}
+
+#' @title Generate LineStyle
+#' @description Function used internally to construct objects on read
+#' @noRd
+gen_LineStyle <- function(obj) {
+  do.call(LineStyle, args = obj)
+}
+
+#' @title Chart point style specification
+#' @description Object allowing for specifying the chart point style.
+#' @param size Point size. If empty, default size is used
+#' @param shape type of the point. If kept as `"POINT_SHAPE_UNSPECIFIED"`, the
+#' default shape is used.
+#' @export
+PointStyle <- function(
+    size = NULL,
+    shape = c("POINT_SHAPE_UNSPECIFIED", "CIRCLE", "DIAMOND", "HEXAGON", "PENTAGON",
+              "SQUARE", "STAR", "TRIANGLE", "X_MARK")) {
+
+  shape <- rlang::arg_match(shape)
+
+  obj <- list() |>
+    append_cond(size, type = "numeric") |>
+    append_cond(shape) |>
+    deepgs_class("PointStyle")
+
+  return(obj)
+
+}
+
+#' @title Generate PointStyle
+#' @description Function used internally to construct objects on read
+#' @noRd
+gen_PointStyle <- function(obj) {
+  do.call(PointStyle, args = obj)
 }

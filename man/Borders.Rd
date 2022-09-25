@@ -5,13 +5,13 @@
 \title{Cell border specification}
 \usage{
 Borders(
-  top_style = c("DOTTED", "DASHED", "SOLID", "SOLID_MEDIUM", "SOLID_THICK", "NONE",
+  top_style = c("SOLID", "DOTTED", "DASHED", "SOLID_MEDIUM", "SOLID_THICK", "NONE",
     "DOUBLE"),
-  bottom_style = c("DOTTED", "DASHED", "SOLID", "SOLID_MEDIUM", "SOLID_THICK", "NONE",
+  bottom_style = c("SOLID", "DOTTED", "DASHED", "SOLID_MEDIUM", "SOLID_THICK", "NONE",
     "DOUBLE"),
-  left_style = c("DOTTED", "DASHED", "SOLID", "SOLID_MEDIUM", "SOLID_THICK", "NONE",
+  left_style = c("SOLID", "DOTTED", "DASHED", "SOLID_MEDIUM", "SOLID_THICK", "NONE",
     "DOUBLE"),
-  right_style = c("DOTTED", "DASHED", "SOLID", "SOLID_MEDIUM", "SOLID_THICK", "NONE",
+  right_style = c("SOLID", "DOTTED", "DASHED", "SOLID_MEDIUM", "SOLID_THICK", "NONE",
     "DOUBLE"),
   top_colorStyle = NULL,
   bottom_colorStyle = NULL,

@@ -7,7 +7,7 @@
 ChartData(
   sourceRange = NULL,
   columnReference = NULL,
-  aggregateType = c("AVERAGE", "COUNT", "MAX", "MEDIAN", "MIN", "SUM"),
+  aggregateType = NULL,
   groupRule = NULL
 )
 }

@@ -32,10 +32,6 @@ is.deepgsheets4Obj <- function(x)
 #' All of these objects, beside their specific class inherits also from
 #' `deepgseets4Obj` S3 class.
 #' @export
-#' @aliases deepgs_listinize.default deepgs_listinize.GridRange deepgs_listinize.GridCoordinate
-#' deepgs_listinize.TextFormat deepgs_listinize.ColorStyle deepgs_listinize.ChartData
-#' deepgs_listinize.ChartAxisViewWindowOptions deepgs_listinize.BasicChartAxis deepgs_listinize.BasicChartDomain
-#' deepgs_listinize.Borders
 deepgs_listinize <- function(x, ...)
   UseMethod("deepgs_listinize", x)
 
@@ -92,8 +88,10 @@ deepgs_listinize.TextFormat <- function(x, ...) {
 deepgs_listinize.ColorStyle <- function(x, ...) {
 
   if (!any(vapply(list(x$red, x$blue, x$green), is.null, logical(1)))) {
-    out <- list(Color = list(red = x$red, green = x$green, blue = x$blue)) |>
-      append_cond(x$alpha, name = "alpha")
+    out <- list(rgbColor = list(red = x$red,
+                                green = x$green,
+                                blue = x$blue) |>
+                  append_cond(x$alpha, name = "alpha"))
     return(out)
   }
 
@@ -123,7 +121,16 @@ deepgs_listinize.ChartData <- function(x, ...) {
 
 #' @rdname deepgs_listinize
 #' @export
-deepgs_listinize.BasicChartAxis <- unclass_obj
+deepgs_listinize.BasicChartAxis <- function(x, ...) {
+
+  if (!is.null(x$titleTextPosition))
+    x$titleTextPosition <- list(horizontalAlignment = x$titleTextPosition)
+
+  x <- unclass_obj(x)
+
+  return(x)
+
+}
 
 #' @rdname deepgs_listinize
 #' @export
@@ -154,7 +161,19 @@ deepgs_listinize.Borders <- function(x, ...) {
 
 #' @rdname deepgs_listinize
 #' @export
-deepgs_listinize.CellFormat <- unclass_obj
+deepgs_listinize.CellFormat <- function(x, ...) {
+
+  if (is.null(x$textRotation))
+    return(unclass_obj(x))
+
+  if (x$textRotation == "v") {
+    x$textRotation <- list(vertical = TRUE)
+    return(x)
+  }
+
+  x$textRotation <- list(angle = x$textRotation)
+  return(x)
+}
 
 #' @rdname deepgs_listinize
 #' @export
@@ -164,3 +183,18 @@ deepgs_listinize.Padding <- unclass_obj
 #' @export
 deepgs_listinize.NumberFormat <- unclass_obj
 
+#' @rdname deepgs_listinize
+#' @export
+deepgs_listinize.DataLabel <- unclass_obj
+
+#' @rdname deepgs_listinize
+#' @export
+deepgs_listinize.LineStyle <- unclass_obj
+
+#' @rdname deepgs_listinize
+#' @export
+deepgs_listinize.PointStyle <- unclass_obj
+
+#' @rdname deepgs_listinize
+#' @export
+deepgs_listinize.BasicSeriesDataPointStyleOverride <- unclass_obj

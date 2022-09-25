@@ -341,7 +341,7 @@ deepgs_error <- function(message,
                          ...,
                          class = NULL,
                          .envir = parent.frame(),
-                         call = rlang::caller_arg()) {
+                         call = rlang::caller_call()) {
 
   cli::cli_abort(message = message,
                  ...,

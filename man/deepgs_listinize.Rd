@@ -3,21 +3,25 @@
 \name{deepgs_listinize}
 \alias{deepgs_listinize}
 \alias{deepgs_listinize.default}
-\alias{deepgs_listinize.GridRange}
-\alias{deepgs_listinize.GridCoordinate}
-\alias{deepgs_listinize.TextFormat}
-\alias{deepgs_listinize.ColorStyle}
-\alias{deepgs_listinize.ChartData}
-\alias{deepgs_listinize.ChartAxisViewWindowOptions}
-\alias{deepgs_listinize.BasicChartAxis}
-\alias{deepgs_listinize.BasicChartDomain}
-\alias{deepgs_listinize.Borders}
 \alias{deepgs_listinize.deepgsheets4Req}
 \alias{deepgs_listinize.deepgsheets4Obj}
+\alias{deepgs_listinize.GridCoordinate}
+\alias{deepgs_listinize.GridRange}
+\alias{deepgs_listinize.TextFormat}
+\alias{deepgs_listinize.ColorStyle}
+\alias{deepgs_listinize.ChartAxisViewWindowOptions}
+\alias{deepgs_listinize.ChartData}
+\alias{deepgs_listinize.BasicChartAxis}
+\alias{deepgs_listinize.BasicChartDomain}
 \alias{deepgs_listinize.BasicChartSeries}
+\alias{deepgs_listinize.Borders}
 \alias{deepgs_listinize.CellFormat}
 \alias{deepgs_listinize.Padding}
 \alias{deepgs_listinize.NumberFormat}
+\alias{deepgs_listinize.DataLabel}
+\alias{deepgs_listinize.LineStyle}
+\alias{deepgs_listinize.PointStyle}
+\alias{deepgs_listinize.BasicSeriesDataPointStyleOverride}
 \title{Transform \link{deepgseets4} object to list}
 \usage{
 deepgs_listinize(x, ...)
@@ -53,6 +57,14 @@ deepgs_listinize(x, ...)
 \method{deepgs_listinize}{Padding}(x, ...)
 
 \method{deepgs_listinize}{NumberFormat}(x, ...)
+
+\method{deepgs_listinize}{DataLabel}(x, ...)
+
+\method{deepgs_listinize}{LineStyle}(x, ...)
+
+\method{deepgs_listinize}{PointStyle}(x, ...)
+
+\method{deepgs_listinize}{BasicSeriesDataPointStyleOverride}(x, ...)
 }
 \arguments{
 \item{x}{object to coerce}
