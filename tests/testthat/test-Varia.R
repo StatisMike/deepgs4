@@ -1,6 +1,3 @@
-# mockup of sheetProperties
-sheetProperties <- list(sheetId = 0)
-
 test_that("ColorStyle can be created, listinized and generated from list", {
 
   expect_failure(

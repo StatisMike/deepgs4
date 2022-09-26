@@ -198,3 +198,35 @@ deepgs_listinize.PointStyle <- unclass_obj
 #' @rdname deepgs_listinize
 #' @export
 deepgs_listinize.BasicSeriesDataPointStyleOverride <- unclass_obj
+
+#' @rdname deepgs_listinize
+#' @export
+deepgs_listinize.BasicChartSpec <- unclass_obj
+
+#' @rdname deepgs_listinize
+#' @export
+deepgs_listinize.OverlayPosition <- unclass_obj
+
+#' @rdname deepgs_listinize
+#' @export
+deepgs_listinize.EmbeddedObjectPosition <- unclass_obj
+
+#' @rdname deepgs_listinize
+#' @export
+deepgs_listinize.EmbeddedChart <- function(obj, ...) {
+
+  args <- list(
+    spec = obj$spec,
+    position = obj$position
+  ) |>
+    append_cond(obj$chartId, "chartId")
+
+  if (!is.null(obj$borderColor))
+    args$border <- list(colorStyle = obj$borderColor)
+
+  do.call(EmbeddedChart,
+          args = args)
+
+}
+
+

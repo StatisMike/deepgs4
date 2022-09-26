@@ -2,6 +2,7 @@
 % Please edit documentation in R/Cells.R
 \name{CellFormat}
 \alias{CellFormat}
+\alias{gen_CellFormat}
 \title{Cell Format}
 \usage{
 CellFormat(
@@ -18,6 +19,8 @@ CellFormat(
   textRotation = NULL,
   ...
 )
+
+gen_CellFormat(obj)
 }
 \arguments{
 \item{numberFormat}{object of \link{NumberFormat} class. Describes how the
@@ -43,6 +46,8 @@ in cells}
 or integer between \code{-90} and \code{90} for angle of rotation}
 
 \item{...}{additional deprecated fields returned from GoogleSheet API}
+
+\item{obj}{list produced by \code{deepgs_listinize()}}
 
 \item{backgrundColorStyle}{object of \link{ColorStyle} class, describing the color
 of cell background}

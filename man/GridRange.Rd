@@ -3,6 +3,7 @@
 \name{GridRange}
 \alias{GridRange}
 \alias{is.GridRange}
+\alias{gen_GridRange}
 \title{GridRange}
 \usage{
 GridRange(
@@ -14,6 +15,8 @@ GridRange(
 )
 
 is.GridRange(x)
+
+gen_GridRange(obj, sheetProperties = NULL)
 }
 \arguments{
 \item{sheetId}{Integer - sheet ID}
@@ -27,12 +30,19 @@ is.GridRange(x)
 \item{endColumnIndex}{Integer. Starts from 0, exclusive}
 
 \item{x}{any R object}
+
+\item{obj}{list produced by \code{deepgs_listinize()}}
+
+\item{sheetProperties}{optional \code{SheetProperties} object to get additional
+data during read from API}
 }
 \description{
 Specification of grid range in spreadsheet
 }
-\details{
-Object representing \code{GridRange} received from GoogleSheets API v4
-don't include \code{sheetId}. It is filled during response processing with \code{Id}
-of the sheet which the higher-level object was located in.
+\section{Warning}{
+
+Objects representing \code{GridRange} received from GoogleSheets API v4
+don't include \code{sheetId}. It is filled during response processing with \code{sheetId}
+of the sheet in which the object was located in.
 }
+

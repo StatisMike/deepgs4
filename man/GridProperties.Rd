@@ -2,6 +2,7 @@
 % Please edit documentation in R/Grid.R
 \name{GridProperties}
 \alias{GridProperties}
+\alias{gen_GridProperties}
 \title{GridProperties}
 \usage{
 GridProperties(
@@ -13,6 +14,8 @@ GridProperties(
   rowGroupControlAfter = NULL,
   columnGroupControlAfter = NULL
 )
+
+gen_GridProperties(obj)
 }
 \arguments{
 \item{rowCount, columnCount}{number of rows and columns in the grid}
@@ -21,6 +24,8 @@ GridProperties(
 
 \item{rowGroupControlAfter, columnGroupControlAfter}{boolean indicating if
 row/column toggle is shown after the group}
+
+\item{obj}{list produced by \code{deepgs_listinize()}}
 
 \item{hideGridlines}{boolean indicating if gridlines should be shown}
 }

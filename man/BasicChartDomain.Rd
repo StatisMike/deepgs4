@@ -5,12 +5,12 @@
 \alias{is.BasicChartDomain}
 \title{BasicChartDomain}
 \usage{
-BasicChartDomain(chartData, reversed = NULL)
+BasicChartDomain(domains, reversed = NULL)
 
 is.BasicChartDomain(x)
 }
 \arguments{
-\item{chartData}{object of class \link{ChartData} specifying the data scope.}
+\item{domains}{object of class \link{ChartData} specifying the data scope.}
 
 \item{reversed}{boolean indicating if values should be reversed}
 

@@ -2,6 +2,7 @@
 % Please edit documentation in R/Cells.R
 \name{NumberFormat}
 \alias{NumberFormat}
+\alias{gen_NumberFormat}
 \title{Number Format}
 \usage{
 NumberFormat(
@@ -9,6 +10,8 @@ NumberFormat(
     "SCIENTIFIC"),
   pattern = NULL
 )
+
+gen_NumberFormat(obj)
 }
 \arguments{
 \item{type}{Type of number format. See details for meaning of every field.
@@ -16,6 +19,8 @@ Required during updates.}
 
 \item{pattern}{pattern used for formatting - if unset, default
 patter of user's locale will be used if valid for given type}
+
+\item{obj}{list produced by \code{deepgs_listinize()}}
 }
 \description{
 Specification for numeric values display

@@ -56,15 +56,15 @@ gen_BasicChartAxis <- function(obj,
 #' @title BasicChartDomain
 #' @description object of class BasicChartDomain. Specifies the context
 #' of series.
-#' @param chartData object of class [ChartData] specifying the data scope.
+#' @param domains object of class [ChartData] specifying the data scope.
 #' @param reversed boolean indicating if values should be reversed
 #' @export
 BasicChartDomain <- function(
-    chartData,
+    domains,
     reversed = NULL) {
 
   out <- list() |>
-    append_cond(chartData, class = "ChartData") |>
+    append_cond(domains, class = "ChartData") |>
     append_cond(reversed, type = "logical") |>
     deepgs_class("BasicChartDomain")
 
@@ -85,7 +85,7 @@ gen_BasicChartDomain <- function(obj,
                                  sheetProperties) {
 
   args <- list(
-    chartData = gen_ChartData(
+    domains = gen_ChartData(
       sheetProperties = sheetProperties,
       obj = obj$domain)
   ) |>
@@ -311,13 +311,13 @@ BasicChartSpec <- function(
     append_cond(headerCount, class = c("integer", "numeric")) |>
     append_cond(threeDimensional, class = "logical") |>
     append_cond(check_if_options(compareMode, "DATUM", "CATEGORY"), "compareMode") |>
-    deepgs_class(c("BasicChartSpec", "GSChart"))
+    deepgs_class("BasicChartSpec")
 
   if (chartType == "LINE")
     out <- append_cond(out, lineSmoothing, class = "logical")
 
   if (chartType %in% c("AREA", "BAR", "COLUMN", "COMBO", "STEPPED_AREA"))
-    out <- append_cond(out, check_if_options(stackedType, "NOT_STACKED", "STACKED", "PERCENT_STACKED"))
+    out <- append_cond(out, check_if_options(stackedType, "NOT_STACKED", "STACKED", "PERCENT_STACKED"), "stackedType")
 
   if (!is.null(totalDataLabel) && isTRUE(stackedType %in% c("STACKED", "PERCENT_STACKED"))) {
     totalDataLabel <- check_if_class(totalDataLabel, "DataLabel")
@@ -341,7 +341,9 @@ is.BasicChartSpec <- function(x)
 #' @description Function used internally by [SpreadSheetsData] object
 #' @noRd
 gen_BasicChartSpec <- function(obj,
-                               sheetProperties) {
+                               sheetProperties = NULL) {
+
+  totalDataLabel <- try_to_gen(obj$totalDataLabel, "DataLabel")
 
   args <- list(
     axis = lapply(obj$axis, gen_BasicChartAxis, sheetProperties = sheetProperties),
@@ -356,7 +358,7 @@ gen_BasicChartSpec <- function(obj,
     append_cond(obj$stackedType, "stackedType") |>
     append_cond(obj$lineSmoothing, "lineSmoothing") |>
     append_cond(obj$compareMode, "compareMode") |>
-    append_cond(obj$totalDataLabel, "totalDataLabel")
+    append_cond(totalDataLabel)
 
   do.call(BasicChartSpec,
           args = args)

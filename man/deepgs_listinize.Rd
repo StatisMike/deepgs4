@@ -22,6 +22,10 @@
 \alias{deepgs_listinize.LineStyle}
 \alias{deepgs_listinize.PointStyle}
 \alias{deepgs_listinize.BasicSeriesDataPointStyleOverride}
+\alias{deepgs_listinize.BasicChartSpec}
+\alias{deepgs_listinize.OverlayPosition}
+\alias{deepgs_listinize.EmbeddedObjectPosition}
+\alias{deepgs_listinize.EmbeddedChart}
 \title{Transform \link{deepgseets4} object to list}
 \usage{
 deepgs_listinize(x, ...)
@@ -65,6 +69,14 @@ deepgs_listinize(x, ...)
 \method{deepgs_listinize}{PointStyle}(x, ...)
 
 \method{deepgs_listinize}{BasicSeriesDataPointStyleOverride}(x, ...)
+
+\method{deepgs_listinize}{BasicChartSpec}(x, ...)
+
+\method{deepgs_listinize}{OverlayPosition}(x, ...)
+
+\method{deepgs_listinize}{EmbeddedObjectPosition}(x, ...)
+
+\method{deepgs_listinize}{EmbeddedChart}(obj, ...)
 }
 \arguments{
 \item{x}{object to coerce}

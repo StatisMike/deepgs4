@@ -3,11 +3,14 @@
 \name{GridCoordinate}
 \alias{GridCoordinate}
 \alias{is.GridCoordinate}
+\alias{gen_GridCoordinate}
 \title{GridCoordinate}
 \usage{
 GridCoordinate(sheetId, rowIndex, columnIndex)
 
 is.GridCoordinate(x)
+
+gen_GridCoordinate(obj, sheetProperties = NULL)
 }
 \arguments{
 \item{sheetId}{Integer - sheet ID}
@@ -15,7 +18,19 @@ is.GridCoordinate(x)
 \item{rowIndex, columnIndex}{position of the cell in a grid}
 
 \item{x}{any R object}
+
+\item{obj}{list produced by \code{deepgs_listinize()}}
+
+\item{sheetProperties}{optional \code{SheetProperties} object to get additional
+data during read from API}
 }
 \description{
 Specification of cell in a grid
 }
+\section{Warning}{
+
+Objects representing \code{GridCoordinate} received from GoogleSheets API v4
+don't include \code{sheetId}. It is filled during response processing with \code{sheetId}
+of the sheet in which the object was located in.
+}
+

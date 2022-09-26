@@ -6,7 +6,7 @@
 \title{BasicChartSeries}
 \usage{
 BasicChartSeries(
-  chartData,
+  series,
   targetAxis = c("BOTTOM_AXIS", "LEFT_AXIS", "RIGHT_AXIS"),
   dataLabel = NULL,
   type = NULL,
@@ -19,7 +19,7 @@ BasicChartSeries(
 is.BasicChartSeries(x)
 }
 \arguments{
-\item{chartData}{object of class \link{ChartData} specifying the data scope.}
+\item{series}{object of class \link{ChartData} specifying the data scope.}
 
 \item{targetAxis}{specifies on which axis the values will be visualised}
 

@@ -90,8 +90,9 @@ CellFormat <- function(
 
 }
 
-#' @title Generate CellFormat
-#' @noRd
+#' @rdname CellFormat
+#' @param obj list produced by `deepgs_listinize()`
+#' @export
 gen_CellFormat <- function(obj) {
 
   numberFormat <- try_to_gen(obj$numberFormat, "NumberFormat")
@@ -156,8 +157,9 @@ NumberFormat <- function(
 
 }
 
-#' @title Generate NumberFormat
-#' @noRd
+#' @rdname NumberFormat
+#' @param obj list produced by `deepgs_listinize()`
+#' @export
 gen_NumberFormat <- function(obj) {
   do.call(NumberFormat, args = obj)
 }
@@ -210,8 +212,9 @@ Borders <- function(
 
 }
 
-#' @title Generate Borders
-#' @noRd
+#' @rdname Borders
+#' @param obj list produced by `deepgs_listinize()`
+#' @export
 gen_Borders <- function(obj) {
 
   top_colorStyle <- try_to_gen(obj$top$colorStyle, "ColorStyle")
@@ -255,8 +258,9 @@ Padding <- function(
 
 }
 
-#' @title Generate Padding
-#' @noRd
+#' @rdname Padding
+#' @param obj list produced by `deepgs_listinize()`
+#' @export
 gen_Padding <- function(obj) {
   do.call(Padding, args = obj)
 }

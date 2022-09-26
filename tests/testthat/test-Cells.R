@@ -1,20 +1,20 @@
 # mockup of sheetProperties
 sheetProperties <- list(sheetId = 0)
 
-els <- list(numberFormat = NULL,
-            borders = NULL,
-            padding = NULL)
+els <- new.env()
 
 test_that("NumberFormat can be created, listinized and generated from list", {
 
   expect_failure(
     expect_error(
-      els$numberFormat <<- numberFormat_max <- NumberFormat(
+      els$numberFormat <- numberFormat_max <- NumberFormat(
         type = "NUMBER",
         pattern = "####.#"
       )
     )
   )
+
+  expect_s3_class(numberFormat_max, "NumberFormat")
 
   expect_failure(
     expect_error(
@@ -24,27 +24,10 @@ test_that("NumberFormat can be created, listinized and generated from list", {
     )
   )
 
-  for (constructed in list(numberFormat_min, numberFormat_max)) {
+  expect_s3_class(numberFormat_min, "NumberFormat")
 
-    expect_s3_class(constructed, "NumberFormat")
-
-    expect_failure(
-      expect_error(
-        listinized <- deepgs_listinize(constructed)
-      )
-    )
-
-    expect_failure(
-      expect_error(
-        genned <- deepgsheets4:::gen_NumberFormat(
-          obj = listinized
-        )
-      )
-    )
-
-    expect_true(identical(constructed, genned))
-
-  }
+  expect_genned_identical(numberFormat_min)
+  expect_genned_identical(numberFormat_max)
 
 })
 
@@ -52,7 +35,7 @@ test_that("Borders can be created, listinized and generated from list", {
 
   expect_failure(
     expect_error(
-      els$borders <<- borders_max <- Borders(
+      els$borders <- borders_max <- Borders(
         top_style = "SOLID_MEDIUM",
         top_colorStyle = ColorStyle(0.2, 0.5, 1),
         bottom_style = "DASHED",
@@ -65,33 +48,18 @@ test_that("Borders can be created, listinized and generated from list", {
     )
   )
 
+  expect_s3_class(borders_max, "Borders")
+
   expect_failure(
     expect_error(
       borders_min <- Borders()
     )
   )
 
-  for (constructed in list(borders_max, borders_min)) {
+  expect_s3_class(borders_min, "Borders")
 
-    expect_s3_class(constructed, "Borders")
-
-    expect_failure(
-      expect_error(
-        listinized <- deepgs_listinize(constructed)
-      )
-    )
-
-    expect_failure(
-      expect_error(
-        genned <- deepgsheets4:::gen_Borders(
-          obj = listinized
-        )
-      )
-    )
-
-    expect_true(identical(constructed, genned))
-
-  }
+  expect_genned_identical(borders_max)
+  expect_genned_identical(borders_min)
 
 })
 
@@ -99,28 +67,13 @@ test_that("Padding can be created, listinized and generated from list", {
 
   expect_failure(
     expect_error(
-      els$padding <<- constructed <- Padding(1, 2, 1, 4)
+      els$padding <- constructed <- Padding(1, 2, 1, 4)
     )
   )
 
   expect_s3_class(constructed, "Padding")
 
-  expect_failure(
-    expect_error(
-      listinized <- deepgs_listinize(constructed)
-    )
-  )
-
-  expect_failure(
-    expect_error(
-      genned <- deepgsheets4:::gen_Padding(
-        obj = listinized
-      )
-    )
-  )
-
-  expect_true(identical(constructed, genned))
-
+  expect_genned_identical(constructed)
 
 })
 
@@ -143,6 +96,7 @@ test_that("CellFormat can be created, listinized and generated from list", {
     )
   )
 
+  expect_s3_class(cellFormat_max, "CellFormat")
 
   expect_failure(
     expect_error(
@@ -152,32 +106,15 @@ test_that("CellFormat can be created, listinized and generated from list", {
     )
   )
 
+  expect_s3_class(cellFormat_min, "CellFormat")
+
   expect_error(
     CellFormat(),
     class = "NoArgsError"
   )
 
-  for (constructed in list(cellFormat_min, cellFormat_max)) {
-
-    expect_s3_class(constructed, "CellFormat")
-
-    expect_failure(
-      expect_error(
-        listinized <- deepgs_listinize(constructed)
-      )
-    )
-
-    expect_failure(
-      expect_error(
-        genned <- deepgsheets4:::gen_CellFormat(
-          obj = listinized
-        )
-      )
-    )
-
-    expect_true(identical(constructed, genned))
-
-  }
+  expect_genned_identical(cellFormat_max)
+  expect_genned_identical(cellFormat_min)
 
 })
 

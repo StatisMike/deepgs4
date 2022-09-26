@@ -232,74 +232,6 @@ is.ChartSpec <- function(x) {
   inherits(x, "ChartSpec")
 }
 
-
-#' @title EmbeddedObjectPosition
-#' @description Specification of position for embedded objects (eg. charts)
-#' @param type Should it be embedded in some position on existing sheet, or on
-#' new, separate sheet
-#' @param gridCoordinate integers declaring the anchor cell for the chart.
-#' Indices began with 0. Valid only if `type = "anchor"`
-#' @param offsetXPixels,ofsetYPixels integers declaring amount of pixels to
-#' offset the position from the anchor cell. Valid only if `type = "anchor"`
-#' @param widthPixels,heightPixels integers declaring chart size. Valid only
-#' if `type = "anchor"`
-#' @param sheetId ID of new sheet to embed the spreadsheet to. Valid only if
-#' `type = "new"`. Can be unspecified - then random ID is chosen.
-#' @export
-#' @return EmbeddedObjectPosition
-EmbeddedObjectPosition <- function(
-    type = c("anchor", "new"),
-    gridCoordinate,
-    offsetXPixels = 0,
-    offsetYPixels = 0,
-    widthPixels = 600,
-    heightPixels = 371,
-    sheetId = NULL) {
-
-  type <- match.arg(type)
-
-  if (type == "new") {
-
-    out <- list(
-      newSheet = T
-    )
-
-    if (!is.null(sheetId))
-      out$sheetId <- sheetId
-
-    class(out) <- c("EmbeddedObjectPosition", "deepgseet4Obj")
-
-    return(out)
-
-  }
-
-  if (!is.GridCoordinate(gridCoordinate))
-    stop("Object of class 'GridCoordinate' need to be provided to the 'gridCoordinate argument")
-
-  out <- list(
-    overlayPosition = list(
-      anchorCell = gridCoordinate,
-      offsetXPixels = offsetXPixels,
-      offsetYPixels = offsetYPixels,
-      widthPixels = widthPixels,
-      heightPixels = heightPixels
-    )
-  )
-
-  class(out) <- c("EmbeddedObjectPosition", "deepgseet4Obj")
-
-  return(out)
-
-}
-
-#' @rdname ChartSpec
-#' @param x any R object
-#' @export
-is.EmbeddedObjectPosition <- function(x) {
-  inherits(x, "EmbeddedObjectPosition")
-}
-
-
 #' @title Chart Data Labels
 #' @description Settings for chart data labels - annotations that appear on
 #' the chart next to a series
@@ -381,39 +313,56 @@ gen_DataLabel <- function(obj, sheetProperties) {
           args = args)
 }
 
-#' @title AddChartRequest
-#' @description Constructs request for creation of googlesheets chart
-#' @param chartSpec a [ChartSpec()] object containing specification for a chart
-#' @param embeddedObjectPosition an [EmbeddedObjectPosition()] object containing
-#' specification for chart position
-#' @param chartId integer. optional ID for the chart
+#' @title EmbeddedChart
+#' @description Specification of a chart embedded in a sheet
+#' @param spec object of [ChartSpec] class, declaring chart specification
+#' @param position object of [EmbeddedObjectPosition] class, declaring the
+#' position of chart
+#' @param borderColor object of [ColorStyle] class, declaring the color of
+#' borders of the chart
+#' @param chartId ID of the chart unique in a spreadsheet. If not set during
+#' write, the one is chosen for you.
 #' @export
-#' @return gsheetRequest
-AddChartRequest <- function(
-    chartSpec,
-    embeddedObjectPosition,
+EmbeddedChart <- function(
+    spec,
+    position,
+    borderColor = NULL,
     chartId = NULL) {
 
-  if (!is.ChartSpec(chartSpec))
-    stop("Object provided to 'chartSpec' argument needs to be of class 'ChartSpec'.")
-
-  if (!is.EmbeddedObjectPosition(embeddedObjectPosition))
-    stop("Object provided to 'embeddedObjectPosition' argument needs to be of class 'EmbeddedObjectPosition'.")
-
-  out <- list(
-    addChart = list(
-      chart = list(
-        spec = chartSpec,
-        position = embeddedObjectPosition
-      )
-    )
-  )
-
-  if (!is.null(chartId))
-    out$chart$chartId <- chartId
-
-  out <- deepgs_class(out, object_type = "Req")
+  out <- list() |>
+    append_cond(spec, class = "ChartSpec", skip_null = FALSE) |>
+    append_cond(position, class = "EmbeddedObjectPosition", skip_null = FALSE) |>
+    append_cond(borderColor, "border", class = "ColorStyle", nests = "colorStyle") |>
+    append_cond(chartId, type = "integer") |>
+    deepgs_class("EmbeddedChart")
 
   return(out)
+
+}
+
+#' @rdname EmbeddedChart
+#' @param x any R object
+#' @export
+is.EmbeddedChart <- function(x) {
+  inherits(x, "EmbeddedChart")
+}
+
+#' @title Generate EmbeddedChart
+#' @description Function used internally to construct objects on read
+#' @noRd
+gen_EmbeddedChart <- function(obj, sheetProperties = NULL) {
+
+  spec <- try_to_gen(obj$spec, "ChartSpec", sheetProperties)
+  position <- try_to_gen(obj$position, "EmbeddedObjectPosition", sheetProperties)
+  border <- try_to_gen(obj$border$colorStyle, "ColorStyle")
+
+  args <- list() |>
+    append_cond(spec) |>
+    append_cond(position) |>
+    append_cond(border) |>
+    append_cond(obj$sheetId, "sheetId")
+
+  do.call(EmbeddedChart,
+          args = obj)
 
 }

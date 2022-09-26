@@ -131,3 +131,41 @@ test_that("Created merges can be acquired from spreadsheet", {
     length(merges)
   )
 })
+
+test_that("Created merges can be unmerged with UnmergeCellRequest", {
+
+  row_indices <- vapply(gridRanges,
+                        \(x) c(x$startRowIndex,
+                               x$endRowIndex),
+                        numeric(2)) |> unlist()
+
+  col_indices <- vapply(gridRanges,
+                        \(x) c(x$startColumnIndex,
+                               x$endColumnIndex),
+                        numeric(2)) |> unlist()
+
+  req <- UnmergeCellsRequest(GridRange(sheetId = 0,
+                                       startRowIndex = min(row_indices),
+                                       endRowIndex = max(row_indices),
+                                       startColumnIndex = min(col_indices),
+                                       endColumnIndex = max(col_indices)))
+
+  expect_s3_class(req, "deepgsheets4Req")
+
+  expect_failure(
+    expect_error(
+      resp <- send_batchUpdate_req(
+        spreadsheetId = ss_id,
+        req
+      )
+    )
+  )
+
+  spreadSheetData <- SpreadSheetData$new(ss_id)
+
+  merges <- spreadSheetData$get_data("merges")$merges[['0']]
+
+  expect_true(length(merges) == 0)
+
+
+})

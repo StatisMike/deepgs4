@@ -28,15 +28,21 @@ GridProperties <- function(
 
 }
 
-#' @title Generate GridProperties
-#' @noRd
-gen_GridProperties <- function(obj, sheetProperties = NULL)
+#' @rdname GridProperties
+#' @param obj list produced by `deepgs_listinize()`
+#' @export
+gen_GridProperties <- function(obj) {
   do.call(GridProperties, args = obj)
+}
 
 #' @title GridCoordinate
 #' @description Specification of cell in a grid
 #' @param sheetId Integer - sheet ID
 #' @param rowIndex,columnIndex position of the cell in a grid
+#' @section Warning:
+#' Objects representing `GridCoordinate` received from GoogleSheets API v4
+#' don't include `sheetId`. It is filled during response processing with `sheetId`
+#' of the sheet in which the object was located in.
 #' @export
 GridCoordinate <- function(
     sheetId,
@@ -60,9 +66,11 @@ GridCoordinate <- function(
 is.GridCoordinate <- function(x)
   inherits(x, "GridCoordinate")
 
-#' @title Generate GridRange
-#' @description Function used internally by [SpreadSheetsData] object
-#' @noRd
+#' @rdname GridCoordinate
+#' @param obj list produced by `deepgs_listinize()`
+#' @param sheetProperties optional `SheetProperties` object to get additional
+#' data during read from API
+#' @export
 gen_GridCoordinate <- function(obj,
                                sheetProperties = NULL) {
 
@@ -77,9 +85,10 @@ gen_GridCoordinate <- function(obj,
 
 #' @title GridRange
 #' @description Specification of grid range in spreadsheet
-#' @details Object representing `GridRange` received from GoogleSheets API v4
-#' don't include `sheetId`. It is filled during response processing with `Id`
-#' of the sheet which the higher-level object was located in.
+#' @section Warning:
+#' Objects representing `GridRange` received from GoogleSheets API v4
+#' don't include `sheetId`. It is filled during response processing with `sheetId`
+#' of the sheet in which the object was located in.
 #' @param sheetId Integer - sheet ID
 #' @param startRowIndex Integer. Starts from 0, inclusive
 #' @param endRowIndex Integer. Starts from 0, exclusive
@@ -120,9 +129,11 @@ is.GridRange <- function(x) {
   inherits(x, "GridRange")
 }
 
-#' @title Generate GridRange
-#' @description Function used internally by [SpreadSheetsData] object
-#' @noRd
+#' @rdname GridRange
+#' @param obj list produced by `deepgs_listinize()`
+#' @param sheetProperties optional `SheetProperties` object to get additional
+#' data during read from API
+#' @export
 gen_GridRange <- function(obj,
                           sheetProperties = NULL) {
 

@@ -24,27 +24,9 @@ test_that("GridProperties can be created, listinized and generated from list", {
     )
   )
 
-  for (gridProperties in list(gridProperties_max, gridProperties_min)) {
+  expect_genned_identical(gridProperties_max)
 
-    expect_s3_class(gridProperties, "GridProperties")
-
-    expect_failure(
-      expect_error(
-        listinized <- deepgs_listinize(gridProperties)
-      )
-    )
-
-    expect_failure(
-      expect_error(
-        genned <- deepgsheets4:::gen_GridProperties(
-          obj = listinized
-        )
-      )
-    )
-
-    expect_true(identical(gridProperties, genned))
-
-  }
+  expect_genned_identical(gridProperties_min)
 
 })
 
@@ -58,32 +40,12 @@ test_that("GridCoordinate can be created, listinized and generated from list", {
 
   expect_s3_class(gridCoordinate, "GridCoordinate")
 
-  expect_failure(
-    expect_error(
-      listinized <- deepgs_listinize(gridCoordinate)
-    )
-  )
+  expect_genned_identical(gridCoordinate,
+                          sheetProperties)
 
-  expect_failure(
-    expect_error(
-      genned <- deepgsheets4:::gen_GridCoordinate(obj = listinized)
-    )
-  )
-
-  expect_identical(gridCoordinate, genned)
-
-  # mockup object returned from Sheets API (withoud sheetId)
-  listinized <- listinized[!grepl(names(listinized), pattern = "^sheetId$")]
-
-  expect_failure(
-    expect_error(
-      genned <- deepgsheets4:::gen_GridCoordinate(obj = listinized,
-                                                  sheetProperties = sheetProperties)
-    )
-  )
-
-  expect_identical(gridCoordinate, genned)
-
+  expect_genned_identical(gridCoordinate,
+                          sheetProperties,
+                          remove_sheetId = TRUE)
 
 })
 
@@ -97,31 +59,11 @@ test_that("GridRange can be created, listinized and generated from list", {
 
   expect_s3_class(gridRange, "GridRange")
 
-  expect_failure(
-    expect_error(
-      listinized <- deepgs_listinize(gridRange)
-    )
-  )
+  expect_genned_identical(gridRange,
+                          sheetProperties)
 
-  expect_failure(
-    expect_error(
-      genned <- deepgsheets4:::gen_GridRange(obj = listinized)
-    )
-  )
-
-  expect_identical(gridRange, genned)
-
-  # mockup object returned from Sheets API (withoud sheetId)
-  listinized <- listinized[!grepl(names(listinized), pattern = "^sheetId$")]
-
-  expect_failure(
-    expect_error(
-      genned <- deepgsheets4:::gen_GridRange(obj = listinized,
-                                             sheetProperties = sheetProperties)
-    )
-  )
-
-  expect_identical(gridRange, genned)
-
+  expect_genned_identical(gridRange,
+                          sheetProperties,
+                          remove_sheetId = TRUE)
 
 })
