@@ -16,7 +16,7 @@ BasicChartAxis <- function(
     viewWindowOptions = NULL,
     titleTextPosition = NULL) {
 
-  position <- match.arg(position)
+  position <- rlang::arg_match(position)
 
   out <- list(position = position) |>
     append_cond(title) |>
@@ -32,14 +32,15 @@ BasicChartAxis <- function(
 #' @rdname BasicChartAxis
 #' @param x any R object
 #' @export
-is.BasicChartAxis <- function(x)
+is.BasicChartAxis <- function(x) {
   inherits(x, "BasicChartAxis")
+}
 
-#' @title Generate BasicChartAxis
-#' @description Function used internally by [SpreadSheetsData] object
-#' @noRd
-gen_BasicChartAxis <- function(obj,
-                               sheetProperties = NULL) {
+
+#' @rdname BasicChartAxis
+#' @param obj list produced by `deepgs_listinize()`
+#' @export
+gen_BasicChartAxis <- function(obj) {
 
   args <- list(position = obj$position) |>
     append_cond(obj$title, "title") |>
@@ -75,14 +76,17 @@ BasicChartDomain <- function(
 #' @rdname BasicChartDomain
 #' @param x any R object
 #' @export
-is.BasicChartDomain <- function(x)
+is.BasicChartDomain <- function(x) {
   inherits(x, "BasicChartDomain")
+}
 
-#' @title Generate BasicChartDomain
-#' @description Function used internally by [SpreadSheetsData] object
-#' @noRd
+#' @rdname BasicChartDomain
+#' @param obj list produced by `deepgs_listinize()`
+#' @param sheetProperties optional `SheetProperties` object to get additional
+#' data during read from API
+#' @export
 gen_BasicChartDomain <- function(obj,
-                                 sheetProperties) {
+                                 sheetProperties = NULL) {
 
   args <- list(
     domains = gen_ChartData(
@@ -126,9 +130,9 @@ is.BasicSeriesDataPointStyleOverride <- function(x) {
   inherits(x, "BasicSeriesDataPointStyleOverride")
 }
 
-#' @title Generate BasicChartSeries
-#' @description Function used internally by [SpreadSheetsData] object
-#' @noRd
+#' @rdname BasicSeriesDataPointStyleOverride
+#' @param obj list produced by `deepgs_listinize()`
+#' @export
 gen_BasicSeriesDataPointStyleOverride <- function(obj){
 
   obj$colorStyle <- try_to_gen(obj$colorStyle, "ColorStyle")
@@ -203,9 +207,11 @@ is.BasicChartSeries <- function(x) {
   inherits(x, "BasicChartSeries")
 }
 
-#' @title Generate BasicChartSeries
-#' @description Function used internally by [SpreadSheetsData] object
-#' @noRd
+#' @rdname BasicChartSeries
+#' @param obj list produced by `deepgs_listinize()`
+#' @param sheetProperties optional `SheetProperties` object to get additional
+#' data during read from API
+#' @export
 gen_BasicChartSeries <- function(obj,
                                  sheetProperties = NULL) {
 
@@ -334,19 +340,22 @@ BasicChartSpec <- function(
 #' @rdname BasicChartSpec
 #' @param x any R object
 #' @export
-is.BasicChartSpec <- function(x)
+is.BasicChartSpec <- function(x) {
   inherits(x, "BasicChartSpec")
+}
 
-#' @title Generate BasicChartSeries
-#' @description Function used internally by [SpreadSheetsData] object
-#' @noRd
+#' @rdname BasicChartSpec
+#' @param obj list produced by `deepgs_listinize()`
+#' @param sheetProperties optional `SheetProperties` object to get additional
+#' data during read from API
+#' @export
 gen_BasicChartSpec <- function(obj,
                                sheetProperties = NULL) {
 
   totalDataLabel <- try_to_gen(obj$totalDataLabel, "DataLabel")
 
   args <- list(
-    axis = lapply(obj$axis, gen_BasicChartAxis, sheetProperties = sheetProperties),
+    axis = lapply(obj$axis, gen_BasicChartAxis),
     domains = lapply(obj$domains, gen_BasicChartDomain, sheetProperties = sheetProperties),
     series = lapply(obj$series, gen_BasicChartSeries, sheetProperties = sheetProperties)
   ) |>

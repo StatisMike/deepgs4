@@ -22,12 +22,12 @@ gen_GridProperties(obj)
 
 \item{frozenRowCount, frozenColumnCount}{number of frozen rows and columns in the grid}
 
+\item{hideGridLines}{boolean indicating if gridlines should be shown}
+
 \item{rowGroupControlAfter, columnGroupControlAfter}{boolean indicating if
 row/column toggle is shown after the group}
 
 \item{obj}{list produced by \code{deepgs_listinize()}}
-
-\item{hideGridlines}{boolean indicating if gridlines should be shown}
 }
 \description{
 Properties of a chart grid

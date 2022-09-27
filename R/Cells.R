@@ -2,7 +2,7 @@
 #' @description Specification for format of the cells
 #' @param numberFormat object of [NumberFormat] class. Describes how the
 #' numbers are to be formatted within the cells
-#' @param backgrundColorStyle object of [ColorStyle] class, describing the color
+#' @param backgroundColorStyle object of [ColorStyle] class, describing the color
 #' of cell background
 #' @param borders object of [Borders] class, describing the borders of the cell
 #' @param padding object of [Padding] class, describing the padding around the cell

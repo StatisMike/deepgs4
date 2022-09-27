@@ -15,33 +15,18 @@ test_that("BasicChartAxis can be created, listinized and generated from list", {
     )
   )
 
+  expect_s3_class(basicChartAxis_max, "BasicChartAxis")
+
   expect_failure(
     expect_error(
       basicChartAxis_min <- BasicChartAxis()
     )
   )
 
-  for (constructed in list(basicChartAxis_max, basicChartAxis_min)) {
+  expect_s3_class(basicChartAxis_min, "BasicChartAxis")
 
-    expect_s3_class(constructed, "BasicChartAxis")
-
-    expect_failure(
-      expect_error(
-        listinized <- deepgs_listinize(constructed)
-      )
-    )
-
-    expect_failure(
-      expect_error(
-        genned <- deepgsheets4:::gen_BasicChartAxis(
-          obj = listinized
-        )
-      )
-    )
-
-    expect_true(identical(constructed, genned))
-
-  }
+  expect_genned_identical(basicChartAxis_min)
+  expect_genned_identical(basicChartAxis_max)
 
 })
 
@@ -57,12 +42,16 @@ test_that("BasicChartSeries can be created, listinized and generated from list",
         colorStyle = ColorStyle(),
         pointStyle = PointStyle(),
         styleOverrides = list(
-          BasicSeriesDataPointStyleOverride(1, ColorStyle(themeColorType = "ACCENT3")),
+          BasicSeriesDataPointStyleOverride(1,
+                                            colorStyle = ColorStyle(themeColorType = "ACCENT3"),
+                                            pointStyle = PointStyle(2.5, "X_MARK")),
           BasicSeriesDataPointStyleOverride(4, ColorStyle(themeColorType = "ACCENT6"))
           )
       )
     )
   )
+
+  expect_s3_class(basicChartSeries_max, "BasicChartSeries")
 
   expect_failure(
     expect_error(
@@ -72,28 +61,10 @@ test_that("BasicChartSeries can be created, listinized and generated from list",
     )
   )
 
-  for (constructed in list(basicChartSeries_max, basicChartSeries_min)) {
+  expect_s3_class(basicChartSeries_min, "BasicChartSeries")
 
-    expect_s3_class(constructed, "BasicChartSeries")
-
-    expect_failure(
-      expect_error(
-        listinized <- deepgs_listinize(constructed)
-      )
-    )
-
-    expect_failure(
-      expect_error(
-        genned <- deepgsheets4:::gen_BasicChartSeries(
-          obj = listinized,
-          sheetProperties = sheetProperties
-        )
-      )
-    )
-
-    expect_true(identical(constructed, genned))
-
-  }
+  expect_genned_identical(basicChartSeries_min, sheetProperties = sheetProperties)
+  expect_genned_identical(basicChartSeries_max, sheetProperties = sheetProperties)
 
 })
 
@@ -107,6 +78,8 @@ test_that("BasicChartDomain can be created, listinized and generated from list",
     )
   )
 
+  expect_s3_class(basicChartDomain_max, "BasicChartDomain")
+
   expect_failure(
     expect_error(
       basicChartDomain_min <- BasicChartDomain(
@@ -115,28 +88,10 @@ test_that("BasicChartDomain can be created, listinized and generated from list",
     )
   )
 
-  for (constructed in list(basicChartDomain_max, basicChartDomain_min)) {
+  expect_s3_class(basicChartDomain_min, "BasicChartDomain")
 
-    expect_s3_class(constructed, "BasicChartDomain")
-
-    expect_failure(
-      expect_error(
-        listinized <- deepgs_listinize(constructed)
-      )
-    )
-
-    expect_failure(
-      expect_error(
-        genned <- deepgsheets4:::gen_BasicChartDomain(
-          obj = listinized,
-          sheetProperties = sheetProperties
-        )
-      )
-    )
-
-    expect_true(identical(constructed, genned))
-
-  }
+  expect_genned_identical(basicChartDomain_min, sheetProperties = sheetProperties)
+  expect_genned_identical(basicChartDomain_max, sheetProperties = sheetProperties)
 
 })
 
@@ -170,6 +125,8 @@ test_that("BasicChartSpec can be created, listinized and generated from list", {
     )
   )
 
+  expect_s3_class(basicChartSpec_max, "BasicChartSpec")
+
   expect_failure(
     expect_error(
       basicChartSpec_min <- BasicChartSpec(
@@ -180,28 +137,10 @@ test_that("BasicChartSpec can be created, listinized and generated from list", {
     )
   )
 
-  for (constructed in list(basicChartSpec_max, basicChartSpec_min)) {
+  expect_s3_class(basicChartSpec_min, "BasicChartSpec")
 
-    expect_s3_class(constructed, "BasicChartSpec")
-
-    expect_failure(
-      expect_error(
-        listinized <- deepgs_listinize(constructed)
-      )
-    )
-
-    expect_failure(
-      expect_error(
-        genned <- deepgsheets4:::gen_BasicChartSpec(
-          obj = listinized,
-          sheetProperties = sheetProperties
-        )
-      )
-    )
-
-    expect_true(identical(constructed, genned))
-
-  }
+  expect_genned_identical(basicChartSpec_min, sheetProperties = sheetProperties)
+  expect_genned_identical(basicChartSpec_max, sheetProperties = sheetProperties)
 
 })
 

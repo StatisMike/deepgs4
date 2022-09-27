@@ -84,7 +84,7 @@ is_valid_rgba <- function(x) {
 #' ColorStyle can be represented in two ways: manually, by providing
 #' `red`, `green`, `blue` (and, optionally `alpha`) values describing
 #' the color, or dynamically, by assigning one of `themeColorType`s, which are
-#' set in the [SpreadSheetProperties]. Valid styles:
+#' set in the [SpreadsheetProperties]. Valid styles:
 #' - *TEXT*: Represents the primary text color
 #' - *BACKGROUND*: Represents the primary background color
 #' - *ACCENT1* to *ACCENT6*: Represents accents color
@@ -103,7 +103,7 @@ ColorStyle <- function(
   if (!any(missing(red), missing(green), missing(blue))) {
 
     if (!all(is_valid_rgba(red), is_valid_rgba(green), is_valid_rgba(blue)))
-      deepsh_error("Values provided to {.arg red}, {.arg green} and {.arg blue} need to be {.emph numeric} between (inclusive) {.val 0} and {.val 1}",
+      deepgs_error("Values provided to {.arg red}, {.arg green} and {.arg blue} need to be {.emph numeric} between (inclusive) {.val 0} and {.val 1}",
                    class = "InvalidRGBAError")
 
     out <- list(
@@ -115,7 +115,7 @@ ColorStyle <- function(
 
     if (!is.null(alpha)) {
       if (!is_valid_rgba(alpha))
-        deepsh_error("Value provided to {.arg alpha} needs to be {.cls numeric} between (inclusive) {.val 0} and {.val 1}",
+        deepgs_error("Value provided to {.arg alpha} needs to be {.cls numeric} between (inclusive) {.val 0} and {.val 1}",
                      class = "InvalidRGBAError")
       out$alpha <- alpha
 
@@ -125,7 +125,7 @@ ColorStyle <- function(
 
   }
 
-  themeColorType <- match.arg(themeColorType)
+  themeColorType <- rlang::arg_match(themeColorType)
 
   out <- list(
     themeColor = themeColorType

@@ -221,22 +221,6 @@ SpreadSheetData <- R6::R6Class(
                              sheetProperties = sheetProperties),
              fieldData)
 
-      # lapply(fieldData, \(obj) {
-      #
-      #   browser()
-      #
-      #   switch(
-      #     fieldNm,
-      #
-      #     sheetProperties = gen_SheetProperties(obj = obj),
-      #
-      #     merges = gen_GridRange(sheetProperties = sheetProperties,
-      #                            obj = obj),
-      #
-      #     obj)
-      #
-      # })
-
     }
   ),
 

@@ -3,6 +3,7 @@
 \name{BasicChartAxis}
 \alias{BasicChartAxis}
 \alias{is.BasicChartAxis}
+\alias{gen_BasicChartAxis}
 \title{BasicChartAxis}
 \usage{
 BasicChartAxis(
@@ -14,6 +15,8 @@ BasicChartAxis(
 )
 
 is.BasicChartAxis(x)
+
+gen_BasicChartAxis(obj)
 }
 \arguments{
 \item{position}{Position of the axis}
@@ -29,6 +32,8 @@ Specifies view on this axis}
 are: \code{LEFT}, \code{CENTER} and \code{RIGHT}}
 
 \item{x}{any R object}
+
+\item{obj}{list produced by \code{deepgs_listinize()}}
 }
 \value{
 object of class BasicChartAxis

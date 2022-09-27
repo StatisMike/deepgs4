@@ -17,20 +17,20 @@ AddChartRequest <- function(
 
 }
 
-#' @title AddChartRequest
-#' @description Constructs request for creation of googlesheets chart
+#' @title Update Chart Specification
+#' @description Constructs request for updating chart specification
 #' @param chartId id of the chart to update
 #' @param spec object of class [ChartSpec], containing new chart specifications
 #' @export
 #' @return deepgsheets4Req
-UpdateChartRequest <- function(
+UpdateChartSpecRequest <- function(
     chartId,
     spec) {
 
-  spec <- check_if_class(chart, "ChartSpec")
+  spec <- check_if_class(spec, "ChartSpec")
 
   out <- list(
-    updateChartSpec = list(chart = chart) |>
+    updateChartSpec = list(spec = spec) |>
       append_cond(chartId, type = "integer")
   ) |>
     deepgs_class(object_type = "Req")

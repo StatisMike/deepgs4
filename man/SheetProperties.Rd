@@ -14,7 +14,8 @@ SheetProperties(
   hidden = NULL,
   tabColorStyle = NULL,
   rightToLeft = NULL,
-  dataSourceSheetProperties = NULL
+  dataSourceSheetProperties = NULL,
+  ...
 )
 
 is.SheetProperties(x)
@@ -40,9 +41,9 @@ be inserted at the end of the sheets}
 \item{dataSourceSheetProperties}{object of \link{DataSourceSheetProperties}. Field
 is only accessible during reads from Sheets API.}
 
-\item{x}{any R object}
-
 \item{...}{additional deprecated fields returned from GoogleSheet API}
+
+\item{x}{any R object}
 }
 \value{
 SheetProperties object

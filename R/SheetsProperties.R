@@ -18,7 +18,7 @@ SpreadsheetProperties <- function(
     autoRecalc = c("ON_CHANGE", "MINUTE", "HOUR"),
     timeZone = NULL,
     defaultFormat = NULL,
-    iterativeCalucationSettings = NULL,
+    iterativeCalculationSettings = NULL,
     spreadsheetTheme = NULL,
     ...) {
 
@@ -31,8 +31,8 @@ SpreadsheetProperties <- function(
   ) |>
     append_cond(timeZone, class = "character") |>
     append_cond(defaultFormat, class = "CellFormat") |>
-    append_cond(iterativeCalucationSettings,
-                class = "IterativeCalucationSettings") |>
+    append_cond(iterativeCalculationSettings,
+                class = "iterativeCalculationSettings") |>
     append_cond(spreadsheetTheme,
                 class = "SpreadsheetTheme") |>
     deepgs_class("SpreadsheetProperties")
@@ -116,7 +116,7 @@ SpreadsheetTheme <- function(
     deepgs_class("SpreadsheetTheme")
 
   if (length(out) == 0)
-    deepsh_error("No arguments specified",
+    deepgs_error("No arguments specified",
                  class = "NoArgsError")
 
   themes_present <- vapply(c("TEXT", "BACKGROUND", "LINK", paste0("ACCENT", 1:6)),
@@ -186,7 +186,8 @@ SheetProperties <- function(
     hidden = NULL,
     tabColorStyle = NULL,
     rightToLeft = NULL,
-    dataSourceSheetProperties = NULL) {
+    dataSourceSheetProperties = NULL,
+    ...) {
 
   sheetType = rlang::arg_match(sheetType)
 

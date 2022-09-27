@@ -26,6 +26,9 @@ gen_CellFormat(obj)
 \item{numberFormat}{object of \link{NumberFormat} class. Describes how the
 numbers are to be formatted within the cells}
 
+\item{backgroundColorStyle}{object of \link{ColorStyle} class, describing the color
+of cell background}
+
 \item{borders}{object of \link{Borders} class, describing the borders of the cell}
 
 \item{padding}{object of \link{Padding} class, describing the padding around the cell}
@@ -48,9 +51,6 @@ or integer between \code{-90} and \code{90} for angle of rotation}
 \item{...}{additional deprecated fields returned from GoogleSheet API}
 
 \item{obj}{list produced by \code{deepgs_listinize()}}
-
-\item{backgrundColorStyle}{object of \link{ColorStyle} class, describing the color
-of cell background}
 }
 \description{
 Specification for format of the cells

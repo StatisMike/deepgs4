@@ -10,7 +10,7 @@ SpreadsheetProperties(
   autoRecalc = c("ON_CHANGE", "MINUTE", "HOUR"),
   timeZone = NULL,
   defaultFormat = NULL,
-  iterativeCalucationSettings = NULL,
+  iterativeCalculationSettings = NULL,
   spreadsheetTheme = NULL,
   ...
 )
@@ -27,13 +27,13 @@ volatile functions}
 
 \item{defaultFormat}{object of \link{CellFormat} class: default format of all cells.}
 
+\item{iterativeCalculationSettings}{object of \link{IterativeCalculationSettings}
+declaring how circular references are resolved with iterative calculation}
+
 \item{spreadsheetTheme}{object of \link{SpreadsheetTheme} class: theme applied to
 spreadsheet}
 
 \item{...}{additional deprecated fields returned from GoogleSheet API}
-
-\item{iterativeCalculationSettings}{object of \link{IterativeCalculationSettings}
-declaring how circular references are resolved with iterative calculation}
 }
 \description{
 Properties of whole spreadsheet

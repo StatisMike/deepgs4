@@ -2,7 +2,7 @@
 #' @description Properties of a chart grid
 #' @param rowCount,columnCount number of rows and columns in the grid
 #' @param frozenRowCount,frozenColumnCount number of frozen rows and columns in the grid
-#' @param hideGridlines boolean indicating if gridlines should be shown
+#' @param hideGridLines boolean indicating if gridlines should be shown
 #' @param rowGroupControlAfter,columnGroupControlAfter boolean indicating if
 #' row/column toggle is shown after the group
 #' @export

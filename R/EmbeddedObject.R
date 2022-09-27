@@ -16,7 +16,7 @@ OverlayPosition <- function(
   out <- list() |>
     append_cond(anchorCell, class = "GridCoordinate", skip_null = FALSE) |>
     append_cond(offsetXPixels, type = "integer") |>
-    append_cond(offsetYpixels, type = "integer") |>
+    append_cond(offsetYPixels, type = "integer") |>
     append_cond(widthPixels, type = "integer") |>
     append_cond(heightPixels, type = "integer") |>
     deepgs_class("OverlayPosition")

@@ -1,6 +1,6 @@
 #' @title Merge cells request
 #' @description Single MergeCells request
-#' @param GridRange object of class [GridRange] declaring the range in which
+#' @param gridRange object of class [GridRange] declaring the range in which
 #' cells need to be merged
 #' @param mergeType one of MERGE_COLUMNS, MERGE_ROWS or MERGE_ALL
 #' @export

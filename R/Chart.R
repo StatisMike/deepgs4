@@ -183,13 +183,14 @@ ChartSpec <- function(
     subtitlePosition = NULL,
     subtitleTextFormat = NULL,
     fontName = NULL,
-    altName = NULL,
+    altText = NULL,
     maximized = NULL,
     backgroundColorStyle = NULL,
     dataSourceChartProperties = NULL,
     filterSpecs = NULL,
-    sortSPecs = NULL,
-    hiddenDimensionStrategy = NULL) {
+    sortSpecs = NULL,
+    hiddenDimensionStrategy = NULL,
+    ...) {
 
   chart <- check_if_class(chart, class = TypeChartSpecs)
 
@@ -212,12 +213,12 @@ ChartSpec <- function(
     append_cond(subtitlePosition) |>
     append_cond(subtitleTextFormat, class = "TextFormat") |>
     append_cond(fontName, type = "character") |>
-    append_cond(altName, type = "character") |>
+    append_cond(altText, type = "character") |>
     append_cond(maximized, type = "logical") |>
     append_cond(backgroundColorStyle, class = "ColorStyle") |>
     append_cond(dataSourceChartProperties, class = "DataSourceChartProperties") |>
     append_cond(filterSpecs, class = "FilterSpec") |>
-    append_cond(SortSpecs, class = "SortSpec") |>
+    append_cond(sortSpecs, class = "SortSpec") |>
     append_cond(hiddenDimensionStrategy) |>
     deepgs_class("ChartSpec")
 

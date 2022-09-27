@@ -15,7 +15,7 @@ is.deepgsheets4Obj <- function(x)
 
 #' @name deepgs_listinize
 #' @rdname deepgs_listinize
-#' @title Transform [deepgseets4] object to list
+#' @title Transform `deepgsheets4` object to list
 #' @param x object to coerce
 #' @param ... further arguments passed to or from other methods.
 #' @return `list`
@@ -29,8 +29,9 @@ is.deepgsheets4Obj <- function(x)
 #' sending request, allowing more user-friendly representation in `R` and
 #' readibility on GoogleSheets end.
 #'
-#' All of these objects, beside their specific class inherits also from
-#' `deepgseets4Obj` S3 class.
+#' Listinized objects can then be parsed back into its source object using
+#' correct `gen_ObjectClass()` constructor, which are used mainly for
+#' interpreting reads from GoogleSheets API, but are also exported.
 #' @export
 deepgs_listinize <- function(x, ...)
   UseMethod("deepgs_listinize", x)
@@ -213,16 +214,16 @@ deepgs_listinize.EmbeddedObjectPosition <- unclass_obj
 
 #' @rdname deepgs_listinize
 #' @export
-deepgs_listinize.EmbeddedChart <- function(obj, ...) {
+deepgs_listinize.EmbeddedChart <- function(x, ...) {
 
   args <- list(
-    spec = obj$spec,
-    position = obj$position
+    spec = x$spec,
+    position = x$position
   ) |>
-    append_cond(obj$chartId, "chartId")
+    append_cond(x$chartId, "chartId")
 
-  if (!is.null(obj$borderColor))
-    args$border <- list(colorStyle = obj$borderColor)
+  if (!is.null(x$borderColor))
+    args$border <- list(colorStyle = x$borderColor)
 
   do.call(EmbeddedChart,
           args = args)

@@ -26,7 +26,7 @@
 \alias{deepgs_listinize.OverlayPosition}
 \alias{deepgs_listinize.EmbeddedObjectPosition}
 \alias{deepgs_listinize.EmbeddedChart}
-\title{Transform \link{deepgseets4} object to list}
+\title{Transform \code{deepgsheets4} object to list}
 \usage{
 deepgs_listinize(x, ...)
 
@@ -76,7 +76,7 @@ deepgs_listinize(x, ...)
 
 \method{deepgs_listinize}{EmbeddedObjectPosition}(x, ...)
 
-\method{deepgs_listinize}{EmbeddedChart}(obj, ...)
+\method{deepgs_listinize}{EmbeddedChart}(x, ...)
 }
 \arguments{
 \item{x}{object to coerce}
@@ -98,6 +98,7 @@ Methods to \code{\link[=deepgs_listinize]{deepgs_listinize()}} provided within t
 sending request, allowing more user-friendly representation in \code{R} and
 readibility on GoogleSheets end.
 
-All of these objects, beside their specific class inherits also from
-\code{deepgseets4Obj} S3 class.
+Listinized objects can then be parsed back into its source object using
+correct \code{gen_ObjectClass()} constructor, which are used mainly for
+interpreting reads from GoogleSheets API, but are also exported.
 }

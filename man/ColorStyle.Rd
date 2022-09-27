@@ -38,7 +38,7 @@ ColorStyle
 ColorStyle can be represented in two ways: manually, by providing
 \code{red}, \code{green}, \code{blue} (and, optionally \code{alpha}) values describing
 the color, or dynamically, by assigning one of \code{themeColorType}s, which are
-set in the \link{SpreadSheetProperties}. Valid styles:
+set in the \link{SpreadsheetProperties}. Valid styles:
 \itemize{
 \item \emph{TEXT}: Represents the primary text color
 \item \emph{BACKGROUND}: Represents the primary background color

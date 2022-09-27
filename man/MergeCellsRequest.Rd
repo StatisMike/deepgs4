@@ -10,10 +10,10 @@ MergeCellsRequest(
 )
 }
 \arguments{
-\item{mergeType}{one of MERGE_COLUMNS, MERGE_ROWS or MERGE_ALL}
-
-\item{GridRange}{object of class \link{GridRange} declaring the range in which
+\item{gridRange}{object of class \link{GridRange} declaring the range in which
 cells need to be merged}
+
+\item{mergeType}{one of MERGE_COLUMNS, MERGE_ROWS or MERGE_ALL}
 }
 \value{
 deepgsheets4Req

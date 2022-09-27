@@ -14,13 +14,14 @@ ChartSpec(
   subtitlePosition = NULL,
   subtitleTextFormat = NULL,
   fontName = NULL,
-  altName = NULL,
+  altText = NULL,
   maximized = NULL,
   backgroundColorStyle = NULL,
   dataSourceChartProperties = NULL,
   filterSpecs = NULL,
-  sortSPecs = NULL,
-  hiddenDimensionStrategy = NULL
+  sortSpecs = NULL,
+  hiddenDimensionStrategy = NULL,
+  ...
 )
 
 is.ChartSpec(x)
@@ -38,6 +39,8 @@ Strikethrough, underline and link aren't supported.}
 
 \item{fontName}{name of the font to use.}
 
+\item{altText}{alternative text to describe a chart.}
+
 \item{maximized}{boolean. If \code{TRUE}, the chart will take maximum amount of
 available space with minimal padding.}
 
@@ -50,17 +53,15 @@ contained only in \emph{data source} charts #NOT DONE YET#}
 \item{filterSpecs}{object or list of objects of \link{FilterSpec} class, describing
 filters applied to the source data. Only in \emph{data source} charts. #NOT DONE YET#}
 
-\item{hiddenDimensionStrategy}{describing how the charts will use hidden
-rows or columns.}
-
-\item{x}{any R object}
-
-\item{altText}{alternative text to describe a chart.}
-
 \item{sortSpecs}{object of \link{SortSpec} class, describing the order to sort
 the chart data. Only in \emph{data source} charts. #NOT DONE YET#}
 
+\item{hiddenDimensionStrategy}{describing how the charts will use hidden
+rows or columns.}
+
 \item{...}{for support of deprecated GoogleSheets API fields during read}
+
+\item{x}{any R object}
 }
 \description{
 Specification for googlesheets chart
