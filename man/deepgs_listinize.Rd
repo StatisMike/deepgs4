@@ -26,6 +26,7 @@
 \alias{deepgs_listinize.OverlayPosition}
 \alias{deepgs_listinize.EmbeddedObjectPosition}
 \alias{deepgs_listinize.EmbeddedChart}
+\alias{deepgs_listinize.ChartSpec}
 \title{Transform \code{deepgsheets4} object to list}
 \usage{
 deepgs_listinize(x, ...)
@@ -77,6 +78,8 @@ deepgs_listinize(x, ...)
 \method{deepgs_listinize}{EmbeddedObjectPosition}(x, ...)
 
 \method{deepgs_listinize}{EmbeddedChart}(x, ...)
+
+\method{deepgs_listinize}{ChartSpec}(x, ...)
 }
 \arguments{
 \item{x}{object to coerce}

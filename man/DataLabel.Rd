@@ -3,6 +3,7 @@
 \name{DataLabel}
 \alias{DataLabel}
 \alias{is.DataLabel}
+\alias{gen_DataLabel}
 \title{Chart Data Labels}
 \usage{
 DataLabel(
@@ -14,6 +15,8 @@ DataLabel(
 )
 
 is.DataLabel(x)
+
+gen_DataLabel(obj, sheetProperties = NULL)
 }
 \arguments{
 \item{textFormat}{object of class \link{TextFormat} specifying formats of data
@@ -23,10 +26,15 @@ labels}
 
 \item{type}{Type of the data label}
 
-\item{customLabelData}{object of class \link{GridRange} specifying the data source
+\item{customLabelData}{object of class \link{CellRange} specifying the data source
 for data labels with \code{type = "CUSTOM"}}
 
 \item{x}{any R object}
+
+\item{obj}{list produced by \code{deepgs_listinize()}}
+
+\item{sheetProperties}{optional \code{SheetProperties} object to get additional
+data during read from API}
 }
 \description{
 Settings for chart data labels - annotations that appear on

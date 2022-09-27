@@ -3,6 +3,7 @@
 \name{ChartAxisViewWindowOptions}
 \alias{ChartAxisViewWindowOptions}
 \alias{is.ChartAxisViewWindowOptions}
+\alias{gen_ChartAxisViewWindowOptions}
 \title{Options of view window in Chart Axis}
 \usage{
 ChartAxisViewWindowOptions(
@@ -12,6 +13,8 @@ ChartAxisViewWindowOptions(
 )
 
 is.ChartAxisViewWindowOptions(x)
+
+gen_ChartAxisViewWindowOptions(obj)
 }
 \arguments{
 \item{viewWindowMode}{mode for view. \code{"PRETTY"} chooses min and max values
@@ -21,6 +24,8 @@ automatically}
 Used only when \code{viewWindowMode = "EXPLICIT"}}
 
 \item{x}{any R object}
+
+\item{obj}{list produced by \code{deepgs_listinize()}}
 }
 \description{
 Object with specification on how the view on the chart should

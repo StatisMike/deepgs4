@@ -230,4 +230,7 @@ deepgs_listinize.EmbeddedChart <- function(x, ...) {
 
 }
 
+#' @rdname deepgs_listinize
+#' @export
+deepgs_listinize.ChartSpec <- unclass_obj
 

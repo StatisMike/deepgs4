@@ -1,3 +1,16 @@
+#' @title First character to upper case
+#' @param x string
+#' @noRd
+first_to_upper <- function(x) {
+
+  x <- unlist(strsplit(x, split = ""))
+  x[1] <- toupper(x[1])
+  x <- paste(x, collapse = "")
+
+  return(x)
+
+}
+
 #' @title Add deepgsheets4 class
 #' @param x object to add the class
 #' @param class name of the child class

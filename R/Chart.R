@@ -1,6 +1,17 @@
 #' @title Extract and convert TypeChartSpec classname to field name
 #' @param object TypeChartSpec object
 #' @noRd
+extract_chart_name <- function(field_names) {
+
+  chart_name <- field_names[grepl(pattern = "Chart$", field_names)]
+
+  return(chart_name)
+
+}
+
+#' @title Extract and convert TypeChartSpec classname to field name
+#' @param object TypeChartSpec object
+#' @noRd
 extract_chart_field <- function(object) {
 
   chart_class <- class(object)
@@ -11,7 +22,6 @@ extract_chart_field <- function(object) {
   chart_class <- paste(chart_class, collapse = "")
 
   return(chart_class)
-
 }
 
 #' @title Valid Chart Specs
@@ -52,9 +62,9 @@ ChartAxisViewWindowOptions <- function(
 is.ChartAxisViewWindowOptions <- function(x)
   inherits(x, "ChartAxisViewWindowOptions")
 
-#' @title Generate ChartAxisViewWindowOptions
-#' @description Function used internally by [SpreadSheetsData] object
-#' @noRd
+#' @rdname ChartAxisViewWindowOptions
+#' @param obj list produced by `deepgs_listinize()`
+#' @export
 gen_ChartAxisViewWindowOptions <- function(obj) {
 
   args <- list() |>
@@ -124,11 +134,12 @@ ChartData <- function(
 
 }
 
-#' @title Generate ChartData
-#' @description Function used internally by [SpreadSheetsData] object
-#' @noRd
+#' @rdname ChartData
+#' @param obj list produced by `deepgs_listinize()`
+#' @param sheetProperties optional `SheetProperties` object to get additional
+#' data during read from API
 gen_ChartData <- function(obj,
-                          sheetProperties) {
+                          sheetProperties = NULL) {
 
   if (!is.null(obj$sourceRange)) {
 
@@ -233,6 +244,30 @@ is.ChartSpec <- function(x) {
   inherits(x, "ChartSpec")
 }
 
+#' @rdname ChartSpec
+#' @param obj list produced by `deepgs_listinize()`
+#' @param sheetProperties optional `SheetProperties` object to get additional
+#' data during read from API
+gen_ChartSpec <- function(obj, sheetProperties = NULL) {
+
+  chart_name <- extract_chart_name(names(obj))
+
+  obj[["chart"]] <- try_to_gen(obj[[chart_name]],
+                               class = paste0(first_to_upper(chart_name), "Spec"),
+                               sheetProperties = sheetProperties)
+  obj[[chart_name]] <- NULL
+
+  obj[["titleTextFormat"]] <- try_to_gen(obj[["titleTextFormat"]], "TextFormat")
+  obj[["subtitleTextFormat"]] <- try_to_gen(obj[["subtitleTextFormat"]], "TextFormat")
+  obj[["backgroundColorStyle"]] <- try_to_gen(obj[["backgroundColorStyle"]], "ColorStyle")
+  # obj[["dataSourceChartProperties"]] <- try_to_gen(obj[["dataSourceChartProperties"]], "DataSourceChartProperties")
+  obj[["filterSpecs"]] <- try_to_gen(obj[["filterSpecs"]], "FitlerSpecs")
+  obj[["sortSpecs"]] <- try_to_gen(obj[["sortSpecs"]], SortSpecs)
+
+  do.call(ChartSpec, args = obj)
+
+}
+
 #' @title Chart Data Labels
 #' @description Settings for chart data labels - annotations that appear on
 #' the chart next to a series
@@ -240,7 +275,7 @@ is.ChartSpec <- function(x) {
 #' labels
 #' @param placement placement of the data label relative to the series
 #' @param type Type of the data label
-#' @param customLabelData object of class [GridRange] specifying the data source
+#' @param customLabelData object of class [CellRange] specifying the data source
 #' for data labels with `type = "CUSTOM"`
 #' @details
 #' - **Type** options:
@@ -294,10 +329,11 @@ is.DataLabel <- function(x) {
   inherits(x, "DataLabel")
 }
 
-#' @title Generate DataLabel
-#' @description Function used internally by [SpreadSheetsData] object
-#' @noRd
-gen_DataLabel <- function(obj, sheetProperties) {
+#' @rdname DataLabel
+#' @param obj list produced by `deepgs_listinize()`
+#' @param sheetProperties optional `SheetProperties` object to get additional
+#' data during read from API
+gen_DataLabel <- function(obj, sheetProperties = NULL) {
 
   args <- list() |>
     append_cond(obj$type, "type") |>
@@ -348,9 +384,10 @@ is.EmbeddedChart <- function(x) {
   inherits(x, "EmbeddedChart")
 }
 
-#' @title Generate EmbeddedChart
-#' @description Function used internally to construct objects on read
-#' @noRd
+#' @rdname EmbeddedChart
+#' @param obj list produced by `deepgs_listinize()`
+#' @param sheetProperties optional `SheetProperties` object to get additional
+#' data during read from API
 gen_EmbeddedChart <- function(obj, sheetProperties = NULL) {
 
   spec <- try_to_gen(obj$spec, "ChartSpec", sheetProperties)
