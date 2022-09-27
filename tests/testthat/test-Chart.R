@@ -143,3 +143,47 @@ test_that("ChartSpec can be created, listinized and generated from list", {
 
 })
 
+test_that("EmbeddedChart can be created, listinized and generated from list", {
+
+  expect_failure(
+    expect_error(
+      embeddedChart_max <- EmbeddedChart(
+        spec = ChartSpec(
+          chart = BasicChartSpec(
+            axis = BasicChartAxis(),
+            series = BasicChartSeries(ChartData(GridRange(0, 1, 2, 1, 6))),
+            domains = BasicChartDomain(ChartData(GridRange(0, 0, 1, 1, 6)))
+          )
+        ),
+        position = EmbeddedObjectPosition(
+          OverlayPosition(GridCoordinate(0, 10, 0))
+        ),
+        borderColor = ColorStyle(0.1, 0.5, 1),
+        chartId = 2137
+      )
+    )
+  )
+
+  expect_failure(
+    expect_error(
+      embeddedChart_min <- EmbeddedChart(
+        spec = ChartSpec(
+          chart = BasicChartSpec(
+            axis = BasicChartAxis(),
+            series = BasicChartSeries(ChartData(GridRange(0, 1, 2, 1, 6))),
+            domains = BasicChartDomain(ChartData(GridRange(0, 0, 1, 1, 6)))
+          )
+        ),
+        position = EmbeddedObjectPosition(newSheet = T)
+      )
+    )
+  )
+
+  expect_s3_class(embeddedChart_max, "EmbeddedChart")
+  expect_s3_class(embeddedChart_min, "EmbeddedChart")
+
+  expect_genned_identical(embeddedChart_max, sheetProperties)
+  expect_genned_identical(embeddedChart_min, sheetProperties)
+
+})
+

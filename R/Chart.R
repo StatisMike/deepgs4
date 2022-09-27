@@ -138,6 +138,7 @@ ChartData <- function(
 #' @param obj list produced by `deepgs_listinize()`
 #' @param sheetProperties optional `SheetProperties` object to get additional
 #' data during read from API
+#' @export
 gen_ChartData <- function(obj,
                           sheetProperties = NULL) {
 
@@ -248,6 +249,7 @@ is.ChartSpec <- function(x) {
 #' @param obj list produced by `deepgs_listinize()`
 #' @param sheetProperties optional `SheetProperties` object to get additional
 #' data during read from API
+#' @export
 gen_ChartSpec <- function(obj, sheetProperties = NULL) {
 
   chart_name <- extract_chart_name(names(obj))
@@ -333,6 +335,7 @@ is.DataLabel <- function(x) {
 #' @param obj list produced by `deepgs_listinize()`
 #' @param sheetProperties optional `SheetProperties` object to get additional
 #' data during read from API
+#' @export
 gen_DataLabel <- function(obj, sheetProperties = NULL) {
 
   args <- list() |>
@@ -369,7 +372,7 @@ EmbeddedChart <- function(
   out <- list() |>
     append_cond(spec, class = "ChartSpec", skip_null = FALSE) |>
     append_cond(position, class = "EmbeddedObjectPosition", skip_null = FALSE) |>
-    append_cond(borderColor, "border", class = "ColorStyle", nests = "colorStyle") |>
+    append_cond(borderColor, class = "ColorStyle") |>
     append_cond(chartId, type = "integer") |>
     deepgs_class("EmbeddedChart")
 
@@ -388,19 +391,20 @@ is.EmbeddedChart <- function(x) {
 #' @param obj list produced by `deepgs_listinize()`
 #' @param sheetProperties optional `SheetProperties` object to get additional
 #' data during read from API
+#' @export
 gen_EmbeddedChart <- function(obj, sheetProperties = NULL) {
 
   spec <- try_to_gen(obj$spec, "ChartSpec", sheetProperties)
   position <- try_to_gen(obj$position, "EmbeddedObjectPosition", sheetProperties)
-  border <- try_to_gen(obj$border$colorStyle, "ColorStyle")
+  borderColor <- try_to_gen(obj$border$colorStyle, "ColorStyle")
 
   args <- list() |>
     append_cond(spec) |>
     append_cond(position) |>
-    append_cond(border) |>
-    append_cond(obj$sheetId, "sheetId")
+    append_cond(borderColor) |>
+    append_cond(obj$chartId, "chartId")
 
   do.call(EmbeddedChart,
-          args = obj)
+          args = args)
 
 }

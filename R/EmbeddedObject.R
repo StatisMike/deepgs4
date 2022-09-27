@@ -111,7 +111,7 @@ gen_EmbeddedObjectPosition <- function(obj, sheetProperties = NULL) {
     obj$overlayPosition <- gen_OverlayPosition(obj$overlayPosition,
                                                sheetProperties = sheetProperties)
 
-  do.call(OverlayPosition,
+  do.call(EmbeddedObjectPosition,
           args = obj)
 
 }

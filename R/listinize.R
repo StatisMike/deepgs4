@@ -216,17 +216,16 @@ deepgs_listinize.EmbeddedObjectPosition <- unclass_obj
 #' @export
 deepgs_listinize.EmbeddedChart <- function(x, ...) {
 
-  args <- list(
+  obj <- list(
     spec = x$spec,
     position = x$position
   ) |>
     append_cond(x$chartId, "chartId")
 
   if (!is.null(x$borderColor))
-    args$border <- list(colorStyle = x$borderColor)
+    obj$border <- list(colorStyle = x$borderColor)
 
-  do.call(EmbeddedChart,
-          args = args)
+  return(obj)
 
 }
 
