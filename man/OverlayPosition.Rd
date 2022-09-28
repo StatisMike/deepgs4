@@ -16,7 +16,7 @@ OverlayPosition(
 
 is.OverlayPosition(x)
 
-gen_OverlayPosition(obj, sheetProperties = NULL)
+gen_OverlayPosition(obj, sheetId = NULL)
 }
 \arguments{
 \item{anchorCell}{object of class \link{GridCoordinate} - cell that the object
@@ -31,8 +31,7 @@ from the anchor cell}
 
 \item{obj}{list produced by \code{deepgs_listinize()}}
 
-\item{sheetProperties}{optional \code{SheetProperties} object to get additional
-data during read from API}
+\item{sheetId}{optional sheetId}
 }
 \description{
 The location an object is overlaid on top of a grid.

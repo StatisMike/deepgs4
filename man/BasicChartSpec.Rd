@@ -24,7 +24,7 @@ BasicChartSpec(
 
 is.BasicChartSpec(x)
 
-gen_BasicChartSpec(obj, sheetProperties = NULL)
+gen_BasicChartSpec(obj, sheetId = NULL)
 }
 \arguments{
 \item{axis}{object of class \link{BasicChartAxis} or list of such objects}
@@ -62,8 +62,7 @@ on stacked charts with total sum. Only for stacked charts.}
 
 \item{obj}{list produced by \code{deepgs_listinize()}}
 
-\item{sheetProperties}{optional \code{SheetProperties} object to get additional
-data during read from API}
+\item{sheetId}{optional sheetId}
 }
 \description{
 Specification for googlesheets Basic Chart object

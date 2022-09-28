@@ -131,7 +131,7 @@ SpreadSheetData <- R6::R6Class(
                     private$process_sheet_field(
                       fieldData = fieldData,
                       fieldNm = fieldNm,
-                      sheetProperties = self$sheetProperties[[i_sh]]
+                      sheetId = self$sheetProperties[[i_sh]]$sheetId
                     )
                   }
                 )
@@ -212,13 +212,13 @@ SpreadSheetData <- R6::R6Class(
 
     process_sheet_field = function(fieldData,
                                    fieldNm,
-                                   sheetProperties) {
+                                   sheetId) {
 
       switch(fieldNm,
              sheetProperties = gen_SheetProperties(obj = fieldData),
              merges = lapply(fieldData,
                              gen_GridRange,
-                             sheetProperties = sheetProperties),
+                             sheetId = sheetId),
              fieldData)
 
     }

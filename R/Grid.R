@@ -68,16 +68,15 @@ is.GridCoordinate <- function(x)
 
 #' @rdname GridCoordinate
 #' @param obj list produced by `deepgs_listinize()`
-#' @param sheetProperties optional `SheetProperties` object to get additional
-#' data during read from API
+#' @param sheetId optional sheetId
 #' @export
 gen_GridCoordinate <- function(obj,
-                               sheetProperties = NULL) {
+                               sheetId = NULL) {
 
   args <- obj
 
   if (is.null(obj$sheetId))
-    args[["sheetId"]] <- sheetProperties$sheetId
+    args[["sheetId"]] <- sheetId
 
   do.call(GridCoordinate, args = args)
 }
@@ -131,16 +130,15 @@ is.GridRange <- function(x) {
 
 #' @rdname GridRange
 #' @param obj list produced by `deepgs_listinize()`
-#' @param sheetProperties optional `SheetProperties` object to get additional
-#' data during read from API
+#' @param sheetId optional sheetId
 #' @export
 gen_GridRange <- function(obj,
-                          sheetProperties = NULL) {
+                          sheetId = NULL) {
 
   args <- obj
 
   if (is.null(obj$sheetId))
-    args[["sheetId"]] <- sheetProperties$sheetId
+    args[["sheetId"]] <- sheetId
 
   do.call(GridRange, args = args)
 }

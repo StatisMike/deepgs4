@@ -34,13 +34,12 @@ is.OverlayPosition <- function(x) {
 
 #' @rdname OverlayPosition
 #' @param obj list produced by `deepgs_listinize()`
-#' @param sheetProperties optional `SheetProperties` object to get additional
-#' data during read from API
+#' @param sheetId optional sheetId
 #' @export
-gen_OverlayPosition <- function(obj, sheetProperties = NULL) {
+gen_OverlayPosition <- function(obj, sheetId = NULL) {
 
   obj$anchorCell <- gen_GridCoordinate(obj$anchorCell,
-                                       sheetProperties = sheetProperties)
+                                       sheetId = sheetId)
 
   do.call(OverlayPosition,
           args = obj)
@@ -102,14 +101,13 @@ is.EmbeddedObjectPosition <- function(x) {
 
 #' @rdname EmbeddedObjectPosition
 #' @param obj list produced by `deepgs_listinize()`
-#' @param sheetProperties optional `SheetProperties` object to get additional
-#' data during read from API
+#' @param sheetId optional sheetId
 #' @export
-gen_EmbeddedObjectPosition <- function(obj, sheetProperties = NULL) {
+gen_EmbeddedObjectPosition <- function(obj, sheetId = NULL) {
 
   if (!is.null(obj$overlayPosition))
     obj$overlayPosition <- gen_OverlayPosition(obj$overlayPosition,
-                                               sheetProperties = sheetProperties)
+                                               sheetId = sheetId)
 
   do.call(EmbeddedObjectPosition,
           args = obj)

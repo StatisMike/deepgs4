@@ -61,11 +61,11 @@ gen_BasicChartAxis <- function(obj) {
 #' @param reversed boolean indicating if values should be reversed
 #' @export
 BasicChartDomain <- function(
-    domains,
+    domain,
     reversed = NULL) {
 
   out <- list() |>
-    append_cond(domains, class = "ChartData") |>
+    append_cond(domain, class = "ChartData") |>
     append_cond(reversed, type = "logical") |>
     deepgs_class("BasicChartDomain")
 
@@ -82,15 +82,14 @@ is.BasicChartDomain <- function(x) {
 
 #' @rdname BasicChartDomain
 #' @param obj list produced by `deepgs_listinize()`
-#' @param sheetProperties optional `SheetProperties` object to get additional
-#' data during read from API
+#' @param sheetId optional sheetId
 #' @export
 gen_BasicChartDomain <- function(obj,
-                                 sheetProperties = NULL) {
+                                 sheetId = NULL) {
 
   args <- list(
-    domains = gen_ChartData(
-      sheetProperties = sheetProperties,
+    domain = gen_ChartData(
+      sheetId = sheetId,
       obj = obj$domain)
   ) |>
     append_cond(obj$reversed, "reversed")
@@ -209,11 +208,10 @@ is.BasicChartSeries <- function(x) {
 
 #' @rdname BasicChartSeries
 #' @param obj list produced by `deepgs_listinize()`
-#' @param sheetProperties optional `SheetProperties` object to get additional
-#' data during read from API
+#' @param sheetId optional sheetId
 #' @export
 gen_BasicChartSeries <- function(obj,
-                                 sheetProperties = NULL) {
+                                 sheetId = NULL) {
 
   styleOverrides <- NULL
 
@@ -228,7 +226,7 @@ gen_BasicChartSeries <- function(obj,
 
   args <- list(
     series = gen_ChartData(
-      sheetProperties = sheetProperties,
+      sheetId = sheetId,
       obj = obj$series),
     targetAxis = obj$targetAxis) |>
     append_cond(dataLabel) |>
@@ -346,18 +344,17 @@ is.BasicChartSpec <- function(x) {
 
 #' @rdname BasicChartSpec
 #' @param obj list produced by `deepgs_listinize()`
-#' @param sheetProperties optional `SheetProperties` object to get additional
-#' data during read from API
+#' @param sheetId optional sheetId
 #' @export
 gen_BasicChartSpec <- function(obj,
-                               sheetProperties = NULL) {
+                               sheetId = NULL) {
 
   totalDataLabel <- try_to_gen(obj$totalDataLabel, "DataLabel")
 
   args <- list(
     axis = lapply(obj$axis, gen_BasicChartAxis),
-    domains = lapply(obj$domains, gen_BasicChartDomain, sheetProperties = sheetProperties),
-    series = lapply(obj$series, gen_BasicChartSeries, sheetProperties = sheetProperties)
+    domains = lapply(obj$domains, gen_BasicChartDomain, sheetId = sheetId),
+    series = lapply(obj$series, gen_BasicChartSeries, sheetId = sheetId)
   ) |>
     append_cond(obj$legendPosition, "legendPosition") |>
     append_cond(obj$chartType, "chartType") |>

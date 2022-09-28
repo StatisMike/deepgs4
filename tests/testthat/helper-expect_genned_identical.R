@@ -1,7 +1,7 @@
 library(glue)
 
 expect_genned_identical <- function(object,
-                                    sheetProperties = NULL,
+                                    sheetId = NULL,
                                     remove_sheetId = FALSE) {
 
   act <- quasi_label(rlang::enquo(object), arg = "object")
@@ -16,8 +16,8 @@ expect_genned_identical <- function(object,
 
   genned <- tryCatch({
     args = list(obj = listinized)
-    if (!is.null(sheetProperties))
-      args$sheetProperties <- sheetProperties
+    if (!is.null(sheetId))
+      args$sheetId <- sheetId
     do.call(paste("gen", constructed_class, sep = "_"),
             args = args)
     }, error = function(e) FALSE

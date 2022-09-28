@@ -1,5 +1,5 @@
 # mockup of sheetProperties
-sheetProperties <- list(sheetId = 0)
+sheetId <- 0
 
 test_that("BasicChartAxis can be created, listinized and generated from list", {
 
@@ -63,8 +63,8 @@ test_that("BasicChartSeries can be created, listinized and generated from list",
 
   expect_s3_class(basicChartSeries_min, "BasicChartSeries")
 
-  expect_genned_identical(basicChartSeries_min, sheetProperties = sheetProperties)
-  expect_genned_identical(basicChartSeries_max, sheetProperties = sheetProperties)
+  expect_genned_identical(basicChartSeries_min, sheetId = sheetId)
+  expect_genned_identical(basicChartSeries_max, sheetId = sheetId)
 
 })
 
@@ -73,7 +73,7 @@ test_that("BasicChartDomain can be created, listinized and generated from list",
   expect_failure(
     expect_error(
       basicChartDomain_max <- BasicChartDomain(
-        domains = ChartData(GridRange(0, 3, 4, 1, 6)),
+        domain = ChartData(GridRange(0, 3, 4, 1, 6)),
         reversed = TRUE)
     )
   )
@@ -90,8 +90,8 @@ test_that("BasicChartDomain can be created, listinized and generated from list",
 
   expect_s3_class(basicChartDomain_min, "BasicChartDomain")
 
-  expect_genned_identical(basicChartDomain_min, sheetProperties = sheetProperties)
-  expect_genned_identical(basicChartDomain_max, sheetProperties = sheetProperties)
+  expect_genned_identical(basicChartDomain_min, sheetId = sheetId)
+  expect_genned_identical(basicChartDomain_max, sheetId = sheetId)
 
 })
 
@@ -139,8 +139,8 @@ test_that("BasicChartSpec can be created, listinized and generated from list", {
 
   expect_s3_class(basicChartSpec_min, "BasicChartSpec")
 
-  expect_genned_identical(basicChartSpec_min, sheetProperties = sheetProperties)
-  expect_genned_identical(basicChartSpec_max, sheetProperties = sheetProperties)
+  expect_genned_identical(basicChartSpec_min, sheetId = sheetId)
+  expect_genned_identical(basicChartSpec_max, sheetId = sheetId)
 
 })
 

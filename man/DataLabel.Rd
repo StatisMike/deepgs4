@@ -16,7 +16,7 @@ DataLabel(
 
 is.DataLabel(x)
 
-gen_DataLabel(obj, sheetProperties = NULL)
+gen_DataLabel(obj, sheetId = NULL)
 }
 \arguments{
 \item{textFormat}{object of class \link{TextFormat} specifying formats of data
@@ -33,8 +33,7 @@ for data labels with \code{type = "CUSTOM"}}
 
 \item{obj}{list produced by \code{deepgs_listinize()}}
 
-\item{sheetProperties}{optional \code{SheetProperties} object to get additional
-data during read from API}
+\item{sheetId}{optional sheetId}
 }
 \description{
 Settings for chart data labels - annotations that appear on

@@ -10,19 +10,16 @@ GridCoordinate(sheetId, rowIndex, columnIndex)
 
 is.GridCoordinate(x)
 
-gen_GridCoordinate(obj, sheetProperties = NULL)
+gen_GridCoordinate(obj, sheetId = NULL)
 }
 \arguments{
-\item{sheetId}{Integer - sheet ID}
+\item{sheetId}{optional sheetId}
 
 \item{rowIndex, columnIndex}{position of the cell in a grid}
 
 \item{x}{any R object}
 
 \item{obj}{list produced by \code{deepgs_listinize()}}
-
-\item{sheetProperties}{optional \code{SheetProperties} object to get additional
-data during read from API}
 }
 \description{
 Specification of cell in a grid

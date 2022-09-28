@@ -265,13 +265,13 @@ nest_cond <- function(
 #' @param x data source for object
 #' @param class character name of the class for which use constructor
 #' @noRd
-try_to_gen <- function(x, class, sheetProperties = NULL) {
+try_to_gen <- function(x, class, sheetId = NULL) {
 
   if (is.null(x) || length(x) == 0)
     return(NULL)
 
   args <- list(obj = x) |>
-    append_cond(sheetProperties)
+    append_cond(sheetId)
 
   do.call(paste("gen", class, sep = "_"),
           args = args)

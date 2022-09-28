@@ -136,18 +136,17 @@ ChartData <- function(
 
 #' @rdname ChartData
 #' @param obj list produced by `deepgs_listinize()`
-#' @param sheetProperties optional `SheetProperties` object to get additional
-#' data during read from API
+#' @param sheetId optional sheetId
 #' @export
 gen_ChartData <- function(obj,
-                          sheetProperties = NULL) {
+                          sheetId = NULL) {
 
   if (!is.null(obj$sourceRange)) {
 
     args <- list(
       sourceRange = lapply(obj$sourceRange$sources, try_to_gen,
                            class = "GridRange",
-                           sheetProperties = sheetProperties))
+                           sheetId = sheetId))
 
     return(do.call(ChartData, args = args))
 
@@ -247,16 +246,15 @@ is.ChartSpec <- function(x) {
 
 #' @rdname ChartSpec
 #' @param obj list produced by `deepgs_listinize()`
-#' @param sheetProperties optional `SheetProperties` object to get additional
-#' data during read from API
+#' @param sheetId optional sheetId
 #' @export
-gen_ChartSpec <- function(obj, sheetProperties = NULL) {
+gen_ChartSpec <- function(obj, sheetId = NULL) {
 
   chart_name <- extract_chart_name(names(obj))
 
   obj[["chart"]] <- try_to_gen(obj[[chart_name]],
                                class = paste0(first_to_upper(chart_name), "Spec"),
-                               sheetProperties = sheetProperties)
+                               sheetId = sheetId)
   obj[[chart_name]] <- NULL
 
   obj[["titleTextFormat"]] <- try_to_gen(obj[["titleTextFormat"]], "TextFormat")
@@ -264,7 +262,7 @@ gen_ChartSpec <- function(obj, sheetProperties = NULL) {
   obj[["backgroundColorStyle"]] <- try_to_gen(obj[["backgroundColorStyle"]], "ColorStyle")
   # obj[["dataSourceChartProperties"]] <- try_to_gen(obj[["dataSourceChartProperties"]], "DataSourceChartProperties")
   obj[["filterSpecs"]] <- try_to_gen(obj[["filterSpecs"]], "FitlerSpecs")
-  obj[["sortSpecs"]] <- try_to_gen(obj[["sortSpecs"]], SortSpecs)
+  obj[["sortSpecs"]] <- try_to_gen(obj[["sortSpecs"]], "SortSpecs")
 
   do.call(ChartSpec, args = obj)
 
@@ -333,10 +331,9 @@ is.DataLabel <- function(x) {
 
 #' @rdname DataLabel
 #' @param obj list produced by `deepgs_listinize()`
-#' @param sheetProperties optional `SheetProperties` object to get additional
-#' data during read from API
+#' @param sheetId optional sheetId
 #' @export
-gen_DataLabel <- function(obj, sheetProperties = NULL) {
+gen_DataLabel <- function(obj, sheetId = NULL) {
 
   args <- list() |>
     append_cond(obj$type, "type") |>
@@ -346,7 +343,7 @@ gen_DataLabel <- function(obj, sheetProperties = NULL) {
                 "textFormat") |>
     append_cond(try_to_gen(obj$customLabelData,
                            class = "ChartData",
-                           sheetProperties = sheetProperties),
+                           sheetId = sheetId),
                 "customLabelData")
 
   do.call(DataLabel,
@@ -389,13 +386,12 @@ is.EmbeddedChart <- function(x) {
 
 #' @rdname EmbeddedChart
 #' @param obj list produced by `deepgs_listinize()`
-#' @param sheetProperties optional `SheetProperties` object to get additional
-#' data during read from API
+#' @param sheetId optional sheetId
 #' @export
-gen_EmbeddedChart <- function(obj, sheetProperties = NULL) {
+gen_EmbeddedChart <- function(obj, sheetId = NULL) {
 
-  spec <- try_to_gen(obj$spec, "ChartSpec", sheetProperties)
-  position <- try_to_gen(obj$position, "EmbeddedObjectPosition", sheetProperties)
+  spec <- try_to_gen(obj$spec, "ChartSpec", sheetId)
+  position <- try_to_gen(obj$position, "EmbeddedObjectPosition", sheetId)
   borderColor <- try_to_gen(obj$border$colorStyle, "ColorStyle")
 
   args <- list() |>

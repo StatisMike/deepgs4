@@ -1,5 +1,4 @@
-# mockup of sheetProperties
-sheetProperties <- list(sheetId = 0)
+sheetId <- 0
 
 test_that("ChartAxisViewWindowOptions can be created, listinized and generated from list", {
 
@@ -52,9 +51,9 @@ test_that("ChartData based on GridRange can be created, listinized and generated
 
   expect_s3_class(chartData_min, "ChartData")
 
-  expect_genned_identical(chartData_max, sheetProperties)
+  expect_genned_identical(chartData_max, sheetId)
 
-  expect_genned_identical(chartData_min, sheetProperties)
+  expect_genned_identical(chartData_min, sheetId)
 
 })
 
@@ -80,8 +79,8 @@ test_that("DataLabel can be created, listinized and generated from list", {
   expect_s3_class(dataLabel_max, "DataLabel")
   expect_s3_class(dataLabel_min, "DataLabel")
 
-  expect_genned_identical(dataLabel_max, sheetProperties)
-  expect_genned_identical(dataLabel_min, sheetProperties)
+  expect_genned_identical(dataLabel_max, sheetId)
+  expect_genned_identical(dataLabel_min, sheetId)
 
 
 
@@ -135,11 +134,11 @@ test_that("ChartSpec can be created, listinized and generated from list", {
 
   expect_s3_class(chartSpec_min, "ChartSpec")
 
-  expect_genned_identical(chartSpec_max, sheetProperties)
-  expect_genned_identical(chartSpec_max, sheetProperties)
+  expect_genned_identical(chartSpec_max, sheetId)
+  expect_genned_identical(chartSpec_min, sheetId)
 
-  expect_genned_identical(chartSpec_min, sheetProperties)
-  expect_genned_identical(chartSpec_max, sheetProperties)
+  expect_genned_identical(chartSpec_min, sheetId)
+  expect_genned_identical(chartSpec_max, sheetId)
 
 })
 
@@ -182,8 +181,8 @@ test_that("EmbeddedChart can be created, listinized and generated from list", {
   expect_s3_class(embeddedChart_max, "EmbeddedChart")
   expect_s3_class(embeddedChart_min, "EmbeddedChart")
 
-  expect_genned_identical(embeddedChart_max, sheetProperties)
-  expect_genned_identical(embeddedChart_min, sheetProperties)
+  expect_genned_identical(embeddedChart_max, sheetId)
+  expect_genned_identical(embeddedChart_min, sheetId)
 
 })
 

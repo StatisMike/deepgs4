@@ -27,7 +27,7 @@ ChartSpec(
 
 is.ChartSpec(x)
 
-gen_ChartSpec(obj, sheetProperties = NULL)
+gen_ChartSpec(obj, sheetId = NULL)
 }
 \arguments{
 \item{chart}{Specification of the chart to render. One of \link{TypeChartSpec}.}
@@ -68,8 +68,7 @@ rows or columns.}
 
 \item{obj}{list produced by \code{deepgs_listinize()}}
 
-\item{sheetProperties}{optional \code{SheetProperties} object to get additional
-data during read from API}
+\item{sheetId}{optional sheetId}
 }
 \description{
 Specification for googlesheets chart

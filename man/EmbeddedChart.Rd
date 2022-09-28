@@ -10,7 +10,7 @@ EmbeddedChart(spec, position, borderColor = NULL, chartId = NULL)
 
 is.EmbeddedChart(x)
 
-gen_EmbeddedChart(obj, sheetProperties = NULL)
+gen_EmbeddedChart(obj, sheetId = NULL)
 }
 \arguments{
 \item{spec}{object of \link{ChartSpec} class, declaring chart specification}
@@ -28,8 +28,7 @@ write, the one is chosen for you.}
 
 \item{obj}{list produced by \code{deepgs_listinize()}}
 
-\item{sheetProperties}{optional \code{SheetProperties} object to get additional
-data during read from API}
+\item{sheetId}{optional sheetId}
 }
 \description{
 Specification of a chart embedded in a sheet

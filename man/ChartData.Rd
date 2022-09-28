@@ -12,7 +12,7 @@ ChartData(
   groupRule = NULL
 )
 
-gen_ChartData(obj, sheetProperties = NULL)
+gen_ChartData(obj, sheetId = NULL)
 }
 \arguments{
 \item{sourceRange}{object of class \link{GridRange} or list of such objects.
@@ -29,8 +29,7 @@ Only for data-source charts}
 
 \item{obj}{list produced by \code{deepgs_listinize()}}
 
-\item{sheetProperties}{optional \code{SheetProperties} object to get additional
-data during read from API}
+\item{sheetId}{optional sheetId}
 }
 \description{
 Specification for data to be used for creation of \emph{domain},

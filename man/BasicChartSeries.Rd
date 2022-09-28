@@ -19,7 +19,7 @@ BasicChartSeries(
 
 is.BasicChartSeries(x)
 
-gen_BasicChartSeries(obj, sheetProperties = NULL)
+gen_BasicChartSeries(obj, sheetId = NULL)
 }
 \arguments{
 \item{series}{object of class \link{ChartData} specifying the data scope.}
@@ -49,8 +49,7 @@ reading}
 
 \item{obj}{list produced by \code{deepgs_listinize()}}
 
-\item{sheetProperties}{optional \code{SheetProperties} object to get additional
-data during read from API}
+\item{sheetId}{optional sheetId}
 }
 \description{
 object of class BasicChartDomain. Specifies the data

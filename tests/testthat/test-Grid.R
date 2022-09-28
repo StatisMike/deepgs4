@@ -1,5 +1,5 @@
-# mockup of sheetProperties
-sheetProperties <- list(sheetId = 0)
+# mockup of sheetId
+sheetId <- 0
 
 test_that("GridProperties can be created, listinized and generated from list", {
 
@@ -25,7 +25,6 @@ test_that("GridProperties can be created, listinized and generated from list", {
   )
 
   expect_genned_identical(gridProperties_max)
-
   expect_genned_identical(gridProperties_min)
 
 })
@@ -41,10 +40,10 @@ test_that("GridCoordinate can be created, listinized and generated from list", {
   expect_s3_class(gridCoordinate, "GridCoordinate")
 
   expect_genned_identical(gridCoordinate,
-                          sheetProperties)
+                          sheetId)
 
   expect_genned_identical(gridCoordinate,
-                          sheetProperties,
+                          sheetId,
                           remove_sheetId = TRUE)
 
 })
@@ -60,10 +59,10 @@ test_that("GridRange can be created, listinized and generated from list", {
   expect_s3_class(gridRange, "GridRange")
 
   expect_genned_identical(gridRange,
-                          sheetProperties)
+                          sheetId)
 
   expect_genned_identical(gridRange,
-                          sheetProperties,
+                          sheetId,
                           remove_sheetId = TRUE)
 
 })

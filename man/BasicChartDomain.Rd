@@ -6,23 +6,22 @@
 \alias{gen_BasicChartDomain}
 \title{BasicChartDomain}
 \usage{
-BasicChartDomain(domains, reversed = NULL)
+BasicChartDomain(domain, reversed = NULL)
 
 is.BasicChartDomain(x)
 
-gen_BasicChartDomain(obj, sheetProperties = NULL)
+gen_BasicChartDomain(obj, sheetId = NULL)
 }
 \arguments{
-\item{domains}{object of class \link{ChartData} specifying the data scope.}
-
 \item{reversed}{boolean indicating if values should be reversed}
 
 \item{x}{any R object}
 
 \item{obj}{list produced by \code{deepgs_listinize()}}
 
-\item{sheetProperties}{optional \code{SheetProperties} object to get additional
-data during read from API}
+\item{sheetId}{optional sheetId}
+
+\item{domains}{object of class \link{ChartData} specifying the data scope.}
 }
 \description{
 object of class BasicChartDomain. Specifies the context
