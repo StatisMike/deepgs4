@@ -2,6 +2,7 @@
 #' @description Constructs request for creation of googlesheets chart
 #' @param chart an [EmbeddedChart] object containing specification for a chart
 #' @export
+#' @family deepgsheets4Req
 #' @return deepgsheets4Req
 AddChartRequest <- function(
     chart) {
@@ -22,6 +23,7 @@ AddChartRequest <- function(
 #' @param chartId id of the chart to update
 #' @param spec object of class [ChartSpec], containing new chart specifications
 #' @export
+#' @family deepgsheets4Req
 #' @return deepgsheets4Req
 UpdateChartSpecRequest <- function(
     chartId,

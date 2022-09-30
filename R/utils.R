@@ -1,3 +1,18 @@
+#' @title Find values in nested list by name
+#' @param l list
+#' @param name name of the nested object
+#' @noRd
+get_field_values <- function(l, name) {
+
+  rrapply::rrapply(l,
+          classes = "ANY",
+          condition = function(x, .xname) .xname == name,
+          f = function(x) x,
+          how = "flatten")
+
+}
+
+
 #' @title First character to upper case
 #' @param x string
 #' @noRd

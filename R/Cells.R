@@ -264,3 +264,214 @@ Padding <- function(
 gen_Padding <- function(obj) {
   do.call(Padding, args = obj)
 }
+
+#' @title Error Value
+#' @description Error value of [ExtendedValue] - signalizing error of the
+#' cell value.
+#' @param type Error type
+#' @param message A message with more information about the error (in the
+#' spreadsheet's locale).
+#' @details
+#' Error values and their meaning:
+#' - `ERROR_TYPE_UNSPECIFIED`: The default error type, do not use this.
+#' - `ERROR`: Corresponds to the #ERROR! error.
+#' - `NULL_VALUE`: Corresponds to the #NULL! error.
+#' - `DIVIDE_BY_ZERO`: Corresponds to the #DIV/0 error.
+#' - `VALUE`: Corresponds to the #VALUE! error.
+#' - `REF`: Corresponds to the #REF! error.
+#' - `NAME`: Corresponds to the #NAME? error.
+#' - `NUM`: Corresponds to the #NUM! error.
+#' - `N_A`: Corresponds to the #N/A error.
+#' - `LOADING`: Corresponds to the Loading... state.
+ErrorValue <- function(
+    type = c("ERROR", "NULL_VALUE", "DIVIDE_BY_ZERO", "VALUE", "REF",
+             "NAME", "NUM", "N_A", "LOADING"),
+    message) {
+
+  type <- rlang::arg_match(type)
+
+  out <- list() |>
+    append_cond(type) |>
+    append_cond(message, skip_null = FALSE, type = "character") |>
+    deepgs_class("ErrorValue")
+
+  return(out)
+
+}
+
+#' @rdname ErrorValue
+#' @param obj list produced by [deepgs_listinize()]
+gen_ErrorValue <- function(obj) {
+  do.call(ErrorValue, obj)
+}
+
+#' @title Value of the cell
+#' @description Object holding specification of cell value in [CellData]. Only
+#' one of the parameters can be specified.
+#' @param numberValue Represents a double value. Date, Times and DateTimes
+#' need to be coerced first to
+#' @param stringValue String value. Leading single quotes with numbers aren't
+#' included
+#' @param boolValue Logical value.
+#' @param formulaValue Represents a formula to be calculated
+#' @param errorValue object of class [ErrorValue] signaling error in the cell
+#' @export
+ExtendedValue <- function(
+    numberValue = NULL,
+    stringValue = NULL,
+    boolValue = NULL,
+    formulaValue = NULL,
+    errorValue = NULL) {
+
+  null_args <- vapply(
+    list(numberValue, stringValue, boolValue, formulaValue, errorValue),
+    is.null,
+    logical(1))
+
+  if (sum(null_args) != 4)
+    deepgs_error("Only one argument can be specified.")
+
+  if (is.deepgs_serial_number(numberValue))
+    numberValue <- as.numeric(numberValue)
+
+  out <- list() |>
+    append_cond(numberValue, type = "numeric") |>
+    append_cond(stringValue, type = "character") |>
+    append_cond(boolValue, type = "logical") |>
+    append_cond(formulaValue, type = "character") |>
+    append_cond(errorValue, class = "ErrorValue") |>
+    deepgs_class("ExtendedValue")
+
+  return(out)
+
+}
+
+#' @rdname ExtendedValue
+#' @param x any R object
+is.ExtendedValue <- function(x) {
+  inherits(x, "ExtendedValue")
+}
+
+#' @rdname ExtendedValue
+#' @param obj list produced by [deepgs_listinize()]
+#' @export
+gen_ExtendedValue <- function(obj) {
+
+  obj$ErrorValue <- try_to_gen(obj$ErrorValue, "ErrorValue")
+  do.call(ExtendedValue, args = obj)
+
+}
+
+#' @title Cell Data
+#' @description Specification of data contained in singular sheet cell
+#' @param userEnteredValue object of class [ExtendedValue]. Value that user
+#' entered in the cell.
+#' @param userEnteredFormat object of class [CellFormat]. Format that user
+#' provided for the cell. During write, new format will be merged with
+#' existing format.
+#' @param note Note entered on the cell.
+#' @param textFormatRuns List of objects of class [TextFormatRun]. Sequence
+#' of formats if parts of the value needs to have different formatting
+#' @param dataValidation object of class [DataValidationRule]. Specification
+#' for data validation for a cell. During write, new data validation rule will
+#' overwrite prior rule
+#' @param pivotTable object of class [PivotTable]. Pivot table anchored at this
+#' cell. Size of pivot table is computed dynamically, only the top-left cell
+#' contains definition of pivot table: all other cells will contain calculated
+#' values of the results in their `effectiveValue` fields
+#' @param effectiveValue **ReadOnly** Object of class [ExtendedValue].
+#' For cells with formulas: calculated value. For cells with literals,
+#' the same as `userEnteredValue`.
+#' @param formattedValue **ReadOnly** Formatted value of the cell: Value as
+#' it's shown to the user. **ReadOnly**
+#' @param effectiveFormat **ReadOnly** Object of class [CellFormat]. Effective
+#' format of the cell: results of conditional formatting, computed number
+#' format if cell contains formula. If it would be the same as `userEnteredFormat`,
+#' it won't be received
+#' @param hyperlink **ReadOnly** Hyperlink this cell points to, if any. For
+#' multiple hyperlinks: it would be empty. To set hyperlink, you can use
+#' `"=HYPERLINK"` formula for [ExtendedValue] provided to `userEnteredValue`
+#' or link with [textFormat] provided to `userEnteredFormat` (for one link)
+#' or in `textFormatRuns` for multiple links or link spanning part of the value
+#' @param ... Other
+#' @export
+CellData <- function(
+    userEnteredValue = NULL,
+    userEnteredFormat = NULL,
+    note = NULL,
+    textFormatRuns = NULL,
+    dataValidation = NULL,
+    pivotTable = NULL,
+    effectiveValue = NULL,
+    formattedValue = NULL,
+    effectiveFormat = NULL,
+    hyperlink = NULL,
+    ...) {
+
+  if (!is.null(textFormatRuns))
+    textFormatRuns <- check_if_all_class(textFormatRuns, "TextFormatRun")
+
+  out <- list() |>
+    append_cond(userEnteredValue, class = "ExtendedValue") |>
+    append_cond(userEnteredFormat, class = "TextFormat") |>
+    append_cond(note, type = "character") |>
+    append_cond(textFormatRuns) |>
+    append_cond(dataValidation, class = "DataValidationRule") |>
+    append_cond(pivotTable, class = "PivotTable") |>
+    append_cond(effectiveValue, class = "ExtendedValue") |>
+    append_cond(formattedValue, type = "character") |>
+    append_cond(effectiveFormat, class = "TextFormat") |>
+    append_cond(hyperlink, type = "class") |>
+    deepgs_class("CellData")
+
+  return(out)
+
+}
+
+#' @rdname CellData
+#' @param x any R object
+#' @export
+is.CellData <- function(x) {
+  inherits(x, "CellData")
+}
+
+#' @rdname CellData
+#' @param obj list produced by `deepgs_listinize()`
+#' @export
+gen_CellData <- function(obj) {
+
+}
+
+#' @title RowData
+#' @description Values of one spreadsheet row
+#' @param values object of class [CellData] or list of such objects. Each one
+#' provides information about one sheet cell
+#' @export
+RowData <- function(values) {
+
+  if (is.CellData(values))
+    values <- list(values)
+
+  values <- check_if_all_class(values, "CellData")
+
+  out <- list() |>
+    append_cond(values, skip_null = FALSE) |>
+    deepgs_class("RowData")
+
+  return(out)
+
+}
+
+#' @rdname RowData
+#' @param x any R object
+#' @export
+is.RowData <- function(x) {
+  inherits(x, "RowData")
+}
+
+#' @rdname RowData
+#' @param obj list produced by `deepgs_listinize()`
+#' @export
+gen_RowData <- function(obj) {
+  do.call(RowData, args = obj)
+}

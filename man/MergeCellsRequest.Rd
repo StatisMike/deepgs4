@@ -21,3 +21,11 @@ deepgsheets4Req
 \description{
 Single MergeCells request
 }
+\seealso{
+Other deepgsheets4Req: 
+\code{\link{AddChartRequest}()},
+\code{\link{UnmergeCellsRequest}()},
+\code{\link{UpdateChartSpecRequest}()},
+\code{\link{is.deepgsheets4Req}()}
+}
+\concept{deepgsheets4Req}

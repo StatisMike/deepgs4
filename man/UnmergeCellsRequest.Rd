@@ -15,3 +15,11 @@ deepgsheets4Req
 \description{
 Request unmerging all merged cells in given range
 }
+\seealso{
+Other deepgsheets4Req: 
+\code{\link{AddChartRequest}()},
+\code{\link{MergeCellsRequest}()},
+\code{\link{UpdateChartSpecRequest}()},
+\code{\link{is.deepgsheets4Req}()}
+}
+\concept{deepgsheets4Req}

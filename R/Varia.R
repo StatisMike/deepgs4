@@ -49,9 +49,9 @@ is.TextFormat <- function(x) {
 }
 
 
-#' @title Generate TextFormat
-#' @description Function used internally to construct objects on read
-#' @noRd
+#' @rdname TextFormat
+#' @param obj list produced by `deepgs_listinize()`
+#' @export
 gen_TextFormat <- function(obj) {
 
   obj[["foregroundColorStyle"]] <- try_to_gen(obj$foregroundColorStyle, "ColorStyle")
@@ -143,9 +143,9 @@ is.ColorStyle <- function(x) {
 }
 
 
-#' @title Generate ColorStyle
-#' @description Function used internally to construct objects on read
-#' @noRd
+#' @rdname ColorStyle
+#' @param obj list produced by `deepgs_listinize()`
+#' @export
 gen_ColorStyle <- function(obj) {
 
   if (!is.null(obj$rgbColor)) {
@@ -196,9 +196,9 @@ LineStyle <- function(
 
 }
 
-#' @title Generate LineStyle
-#' @description Function used internally to construct objects on read
-#' @noRd
+#' @rdname LineStyle
+#' @param obj list produced by `deepgs_listinize()`
+#' @export
 gen_LineStyle <- function(obj) {
   do.call(LineStyle, args = obj)
 }
@@ -225,9 +225,121 @@ PointStyle <- function(
 
 }
 
-#' @title Generate PointStyle
-#' @description Function used internally to construct objects on read
-#' @noRd
+#' @rdname PointStyle
+#' @param obj list produced by `deepgs_listinize()`
+#' @export
 gen_PointStyle <- function(obj) {
   do.call(PointStyle, args = obj)
 }
+
+#' @title Coerce Dates to googlesheets Serial Number
+#' @param date value to convert. It needs to be a value recognized by
+#' [lubridate::as_datetime()]
+#' @details
+#' "Serial number" format, as popularized by Lotus 1-2-3. The whole number
+#' portion of the value (left of the decimal) counts the days since December
+#' 30th 1899. The fractional portion (right of the decimal) counts the time
+#' as a fraction of the day. For example, January 1st 1900 at noon would be
+#' `2.5`, `2` because it's 2 days after December 30th 1899, and `.5` because
+#' noon is half a day. February 1st 1900 at 3pm would be `33.625`.
+#' @export
+deepgs_serial_number <- function(date) {
+
+  diff <- lubridate::as_datetime(date) - lubridate::as_datetime("1899-12-30")
+  diff_days <- as.numeric(diff, unit = "days")
+  class(diff_days) <- "deepgs_serial_number"
+
+  return(diff_days)
+
+}
+
+#' @rdname deepgs_serial_number
+#' @param x object of class `deepgs_serial_number` to coerce
+#' @inheritParams base::strptime
+#' @export
+as.character.deepgs_serial_number <- function(
+    x,
+    format = "",
+    ...) {
+
+  whole_days <- lubridate::as_datetime("1899-12-30") + lubridate::days(floor(x))
+  fraction_day <- as.numeric(x - floor(x)) * 86400
+  datetime <- whole_days + lubridate::seconds(fraction_day)
+
+  format(datetime, format = format)
+
+}
+
+#' @rdname deepgs_serial_number
+#' @export
+as.POSIXct.deepgs_serial_number <- function(
+    x,
+    tz = "",
+    ...) {
+
+  as.character(x) |>
+    as.POSIXct(tz = tz, ...)
+
+}
+
+#' @rdname deepgs_serial_number
+#' @export
+as.POSIXlt.deepgs_serial_number <- function(
+    x,
+    tz = "",
+    ...) {
+
+  as.character(x) |>
+    as.POSIXlt(tz = tz, ...)
+
+}
+
+#' @rdname deepgs_serial_number
+#' @export
+as.Date.deepgs_serial_number <- function(
+    x,
+    ...) {
+
+  as.character(x) |>
+    as.Date(...)
+
+}
+
+#' @rdname deepgs_serial_number
+#' @export
+is.deepgs_serial_number <- function(x) {
+  inherits(x, "deepgs_serial_number")
+}
+
+#' @title TextFormat for part of the cell value
+#' @description Object holding specification for usage with [CellData()] to
+#' keep information about only part of a cell. The format of this run continues
+#' until the start index of the next run.
+#' @param startIndex index (zero-based) of character on which this format run.
+#' Can be kept `NULL` for beginning of the value.
+#' @param textFormat object of class [TextFormat] with format specification to
+#' apply
+#' @export
+TextFormatRun <- function(
+    startIndex = NULL,
+    textFormat) {
+
+  if (is.null(startIndex))
+    startIndex <- 0
+
+  out <- list() |>
+    append_cond(startIndex, type = "integer") |>
+    append_cond(textFormat, class = "TextFormat", skip_null = FALSE) |>
+    deepgs_class("TextFormatRun")
+
+  return(out)
+
+}
+
+#' @rdname TextFormatRun
+#' @param obj list produced by `deepgs_listinize()`
+#' @export
+gen_TextFormatRun <- function(obj) {
+  do.call(TextFormatRun, args = obj)
+}
+

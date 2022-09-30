@@ -17,3 +17,11 @@ deepgsheets4Req
 \description{
 Constructs request for updating chart specification
 }
+\seealso{
+Other deepgsheets4Req: 
+\code{\link{AddChartRequest}()},
+\code{\link{MergeCellsRequest}()},
+\code{\link{UnmergeCellsRequest}()},
+\code{\link{is.deepgsheets4Req}()}
+}
+\concept{deepgsheets4Req}

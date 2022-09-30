@@ -4,6 +4,7 @@
 #' cells need to be merged
 #' @param mergeType one of MERGE_COLUMNS, MERGE_ROWS or MERGE_ALL
 #' @export
+#' @family deepgsheets4Req
 #' @return deepgsheets4Req
 MergeCellsRequest <- function(
     gridRange,
@@ -29,6 +30,7 @@ MergeCellsRequest <- function(
 #' @description Request unmerging all merged cells in given range
 #' @param gridRange object of class [GridRange] declaring the cells to be unmerged
 #' @export
+#' @family deepgsheets4Req
 #' @return deepgsheets4Req
 UnmergeCellsRequest <- function(
     gridRange) {

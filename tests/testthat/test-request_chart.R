@@ -25,10 +25,10 @@ chartReqs <- list()
 chartSpec <- ChartSpec(
   chart = BasicChartSpec(
     chartType = "COLUMN",
-    axis = list(BasicChartAxis(title = "Distance",
-                               position = "LEFT_AXIS"),
-                BasicChartAxis(title = "Speed",
-                               position = "BOTTOM_AXIS")),
+    axis = list(BasicChartAxis(title = "Speed",
+                               position = "BOTTOM_AXIS"),
+                BasicChartAxis(title = "Distance",
+                               position = "LEFT_AXIS")),
     domains = BasicChartDomain(domain = ChartData(
       GridRange(sheetId = ss_data$sheets[["cars"]],
                 startRowIndex = 1,
@@ -107,8 +107,72 @@ test_that("Add chart request can be constructed", {
       )
     )
   )
+})
 
+test_that("AddChart Request can be send, and its response data received", {
 
+  expect_failure(
+    expect_error(
+      resp <- send_batchUpdate_req(
+        ss_id,
+        .dots = chartReqs
+      )
+    )
+  )
+
+  embedded <- compare_objects(
+    obj1 = chartReqs$embedded$addChart,
+    obj2 = resp$replies[[1]]$addChart,
+    skip_compare = c("red", "green", "blue", "endRowIndex"),
+    na.rm = TRUE
+  )
+
+  expect_true(sum(embedded) == length(embedded))
+
+  specified_sheet <- compare_objects(
+    obj1 = chartReqs$specified_sheet$addChart,
+    obj2 = resp$replies[[2]]$addChart,
+    skip_compare = c("red", "green", "blue", "endRowIndex"),
+    na.rm = TRUE
+  )
+
+  expect_true(sum(specified_sheet) == length(specified_sheet))
+
+  new_sheet <- compare_objects(
+    obj1 = chartReqs$new_sheet$addChart,
+    obj2 = resp$replies[[3]]$addChart,
+    skip_compare = c("red", "green", "blue", "newSheet", "endRowIndex"),
+    na.rm = TRUE
+  )
+
+  expect_true(sum(new_sheet) == length(new_sheet))
+
+})
+
+test_that("UpdateChartSpecRequest can be constructed, send and reply received", {
+
+  modified_chart_req <- chartReqs$new_sheet$addChart$chart$spec
+  modified_chart_req$basicChart$chartType <- "LINE"
+
+  expect_failure(
+    expect_error(
+      req <- UpdateChartSpecRequest(
+        chartId = chartReqs$new_sheet$addChart$chart$chartId,
+        spec = modified_chart_req
+      )
+    )
+  )
+
+  expect_failure(
+    expect_error(
+      resp <- send_batchUpdate_req(
+        spreadsheetId = ss_id,
+        req
+      )
+    )
+  )
 
 
 })
+
+
