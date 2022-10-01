@@ -149,7 +149,7 @@ NumberFormat <- function(
 
   type <- rlang::arg_match(type)
 
-  out <- list(type) |>
+  out <- list(type = type) |>
     append_cond(pattern, type = "character") |>
     deepgs_class("NumberFormat")
 

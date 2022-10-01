@@ -6,7 +6,7 @@ expect_genned_identical <- function(object,
 
   act <- quasi_label(rlang::enquo(object), arg = "object")
 
-  constructed_class <- class(act$val)[2]
+  constructed_class <- class(act$val)[1]
 
   listinized <- deepgs_listinize(act$val)
 
