@@ -37,7 +37,7 @@ deepgs_class <- function(x,
 
   object_type <- rlang::arg_match(object_type)
 
-  class(x) <- c(paste0("deepgsheets4", object_type), class)
+  class(x) <- c(class, paste0("deepgsheets4", object_type))
 
   return(x)
 
@@ -56,7 +56,11 @@ is_integerlike <- function(x)
 check_if_class <- function(x,
                            class,
                            call = rlang::caller_call(),
-                           arg = rlang::caller_arg(x)) {
+                           arg = rlang::caller_arg(x),
+                           skip_null = TRUE) {
+
+  if (skip_null && is.null(x) == 0)
+    return(x)
 
   if (!inherits(x, what = class))
     deepgs_error(
@@ -106,7 +110,14 @@ check_if_all_class <- function(
     l,
     class,
     call = rlang::caller_call(),
-    arg = rlang::caller_arg(l)) {
+    arg = rlang::caller_arg(l),
+    skip_null = TRUE) {
+
+  if (skip_null && is.null(l))
+    return(l)
+
+  if (skip_null && all(vapply(l, is.null, logical(1))))
+    return(l)
 
   if (!all(vapply(l, inherits, what = class, FUN.VALUE = logical(1))))
     deepgs_error(
@@ -228,7 +239,8 @@ append_cond <- function(
   force(name)
 
   if (!is.null(class))
-    x <- check_if_class(x, class, rlang::caller_call() ,rlang::caller_arg(x))
+    x <- check_if_class(x, class, rlang::caller_call() ,rlang::caller_arg(x),
+                        skip_null = FALSE)
 
   if (!is.null(type))
     x <- check_if_type(x, type, rlang::caller_call(), rlang::caller_arg(x))

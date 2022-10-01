@@ -43,7 +43,8 @@ deepgs_listinize.default <- function(x, ...) {
   if (!is.list(x))
     return(x)
   else
-    lapply(x, deepgs_listinize)
+    lapply(x, deepgs_listinize, ... = ...) |>
+    lapply(unclass_obj)
 
 }
 
@@ -51,7 +52,7 @@ deepgs_listinize.default <- function(x, ...) {
 #' @export
 deepgs_listinize.deepgsheets4Req <- function(x, ...) {
 
-  x <- lapply(x, deepgs_listinize)
+  x <- lapply(x, deepgs_listinize, ... = ...)
   return(x)
 
 }
@@ -60,22 +61,32 @@ deepgs_listinize.deepgsheets4Req <- function(x, ...) {
 #' @export
 deepgs_listinize.deepgsheets4Obj <- function(x, ...) {
 
-  x <- lapply(x, deepgs_listinize)
-  NextMethod()
+  x <- lapply(x, deepgs_listinize, ... = ...)
+  return(x)
 
 }
 
 #' @rdname deepgs_listinize
 #' @export
-deepgs_listinize.GridCoordinate <- unclass_obj
+deepgs_listinize.GridCoordinate <- function(x, ...) {
+
+  lapply(x, deepgs_listinize, ... = ...)
+
+}
 
 #' @rdname deepgs_listinize
 #' @export
-deepgs_listinize.GridRange <- unclass_obj
+deepgs_listinize.GridRange <- function(x, ...) {
+
+  lapply(x, deepgs_listinize, ... = ...)
+
+}
 
 #' @rdname deepgs_listinize
 #' @export
 deepgs_listinize.TextFormat <- function(x, ...) {
+
+  x <- lapply(x, deepgs_listinize, ... = ...)
 
   x <- nest_cond(x, "link", "uri") |>
     unclass_obj()
@@ -87,6 +98,8 @@ deepgs_listinize.TextFormat <- function(x, ...) {
 #' @rdname deepgs_listinize
 #' @export
 deepgs_listinize.ColorStyle <- function(x, ...) {
+
+  x <- lapply(x, deepgs_listinize, ... = ...)
 
   if (!any(vapply(list(x$red, x$blue, x$green), is.null, logical(1)))) {
     out <- list(rgbColor = list(red = x$red,
@@ -105,12 +118,18 @@ deepgs_listinize.ColorStyle <- function(x, ...) {
 #' @rdname deepgs_listinize
 #' @aliases deepgs_listinize
 #' @export
-deepgs_listinize.ChartAxisViewWindowOptions <- unclass_obj
+deepgs_listinize.ChartAxisViewWindowOptions <- function(x, ...) {
+
+  lapply(x, deepgs_listinize, ... = ...)
+
+}
 
 #' @rdname deepgs_listinize
 #' @aliases deepgs_listinize
 #' @export
 deepgs_listinize.ChartData <- function(x, ...) {
+
+  x <- lapply(x, deepgs_listinize, ... = ...)
 
   x <- x |>
     nest_cond(name = "sourceRange", nests = "sources") |>
@@ -124,6 +143,8 @@ deepgs_listinize.ChartData <- function(x, ...) {
 #' @export
 deepgs_listinize.BasicChartAxis <- function(x, ...) {
 
+  x <- lapply(x, deepgs_listinize, ... = ...)
+
   if (!is.null(x$titleTextPosition))
     x$titleTextPosition <- list(horizontalAlignment = x$titleTextPosition)
 
@@ -135,15 +156,25 @@ deepgs_listinize.BasicChartAxis <- function(x, ...) {
 
 #' @rdname deepgs_listinize
 #' @export
-deepgs_listinize.BasicChartDomain <- unclass_obj
+deepgs_listinize.BasicChartDomain <- function(x, ...) {
+
+  lapply(x, deepgs_listinize, ... = ...)
+
+}
 
 #' @rdname deepgs_listinize
 #' @export
-deepgs_listinize.BasicChartSeries <- unclass_obj
+deepgs_listinize.BasicChartSeries <- function(x, ...) {
+
+  lapply(x, deepgs_listinize, ... = ...)
+
+}
 
 #' @rdname deepgs_listinize
 #' @export
 deepgs_listinize.Borders <- function(x, ...) {
+
+  x <- lapply(x, deepgs_listinize, ... = ...)
 
   obj <- list(
     top = list(style = x$top_style) |>
@@ -164,6 +195,8 @@ deepgs_listinize.Borders <- function(x, ...) {
 #' @export
 deepgs_listinize.CellFormat <- function(x, ...) {
 
+  x <- lapply(x, deepgs_listinize, ... = ...)
+
   if (is.null(x$textRotation))
     return(unclass_obj(x))
 
@@ -178,43 +211,81 @@ deepgs_listinize.CellFormat <- function(x, ...) {
 
 #' @rdname deepgs_listinize
 #' @export
-deepgs_listinize.Padding <- unclass_obj
+deepgs_listinize.Padding <- function(x, ...) {
+
+  lapply(x, deepgs_listinize, ... = ...)
+
+}
 
 #' @rdname deepgs_listinize
 #' @export
-deepgs_listinize.NumberFormat <- unclass_obj
+deepgs_listinize.NumberFormat <- function(x, ...) {
+
+  lapply(x, deepgs_listinize, ... = ...)
+
+}
 
 #' @rdname deepgs_listinize
 #' @export
-deepgs_listinize.DataLabel <- unclass_obj
+deepgs_listinize.DataLabel <- function(x, ...) {
+
+  lapply(x, deepgs_listinize, ... = ...)
+
+}
 
 #' @rdname deepgs_listinize
 #' @export
-deepgs_listinize.LineStyle <- unclass_obj
+deepgs_listinize.LineStyle <- function(x, ...) {
+
+  lapply(x, deepgs_listinize, ... = ...)
+
+}
 
 #' @rdname deepgs_listinize
 #' @export
-deepgs_listinize.PointStyle <- unclass_obj
+deepgs_listinize.PointStyle <- function(x, ...) {
+
+  lapply(x, deepgs_listinize, ... = ...)
+
+}
 
 #' @rdname deepgs_listinize
 #' @export
-deepgs_listinize.BasicSeriesDataPointStyleOverride <- unclass_obj
+deepgs_listinize.BasicSeriesDataPointStyleOverride <- function(x, ...) {
+
+  lapply(x, deepgs_listinize, ... = ...)
+
+}
 
 #' @rdname deepgs_listinize
 #' @export
-deepgs_listinize.BasicChartSpec <- unclass_obj
+deepgs_listinize.BasicChartSpec <- function(x, ...) {
+
+  lapply(x, deepgs_listinize, ... = ...)
+
+}
 
 #' @rdname deepgs_listinize
 #' @export
-deepgs_listinize.OverlayPosition <- unclass_obj
+deepgs_listinize.OverlayPosition <- function(x, ...) {
+
+  lapply(x, deepgs_listinize, ... = ...)
+
+}
 
 #' @rdname deepgs_listinize
 #' @export
-deepgs_listinize.EmbeddedObjectPosition <- unclass_obj
+deepgs_listinize.EmbeddedObjectPosition <- function(x, ...) {
+
+  lapply(x, deepgs_listinize, ... = ...)
+
+}
 
 #' @rdname deepgs_listinize
 #' @export
 deepgs_listinize.EmbeddedChart <- function(x, ...) {
+
+  x <- lapply(x, deepgs_listinize, ... = ...)
 
   obj <- list(
     spec = x$spec,
@@ -231,5 +302,9 @@ deepgs_listinize.EmbeddedChart <- function(x, ...) {
 
 #' @rdname deepgs_listinize
 #' @export
-deepgs_listinize.ChartSpec <- unclass_obj
+deepgs_listinize.ChartSpec <- function(x, ...) {
+
+  x <- lapply(x, deepgs_listinize, ... = ...)
+
+}
 
