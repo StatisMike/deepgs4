@@ -68,22 +68,6 @@ deepgs_listinize.deepgsheets4Obj <- function(x, ...) {
 
 #' @rdname deepgs_listinize
 #' @export
-deepgs_listinize.GridCoordinate <- function(x, ...) {
-
-  lapply(x, deepgs_listinize, ... = ...)
-
-}
-
-#' @rdname deepgs_listinize
-#' @export
-deepgs_listinize.GridRange <- function(x, ...) {
-
-  lapply(x, deepgs_listinize, ... = ...)
-
-}
-
-#' @rdname deepgs_listinize
-#' @export
 deepgs_listinize.TextFormat <- function(x, ...) {
 
   x <- lapply(x, deepgs_listinize, ... = ...)
@@ -118,15 +102,6 @@ deepgs_listinize.ColorStyle <- function(x, ...) {
 #' @rdname deepgs_listinize
 #' @aliases deepgs_listinize
 #' @export
-deepgs_listinize.ChartAxisViewWindowOptions <- function(x, ...) {
-
-  lapply(x, deepgs_listinize, ... = ...)
-
-}
-
-#' @rdname deepgs_listinize
-#' @aliases deepgs_listinize
-#' @export
 deepgs_listinize.ChartData <- function(x, ...) {
 
   x <- lapply(x, deepgs_listinize, ... = ...)
@@ -151,22 +126,6 @@ deepgs_listinize.BasicChartAxis <- function(x, ...) {
   x <- unclass_obj(x)
 
   return(x)
-
-}
-
-#' @rdname deepgs_listinize
-#' @export
-deepgs_listinize.BasicChartDomain <- function(x, ...) {
-
-  lapply(x, deepgs_listinize, ... = ...)
-
-}
-
-#' @rdname deepgs_listinize
-#' @export
-deepgs_listinize.BasicChartSeries <- function(x, ...) {
-
-  lapply(x, deepgs_listinize, ... = ...)
 
 }
 
@@ -211,73 +170,20 @@ deepgs_listinize.CellFormat <- function(x, ...) {
 
 #' @rdname deepgs_listinize
 #' @export
-deepgs_listinize.Padding <- function(x, ...) {
+deepgs_listinize.ExtendedValue <- function(x, ...) {
 
-  lapply(x, deepgs_listinize, ... = ...)
+  value <- switch(
+    attr(x, "type"),
+    string = list(stringValue = as.character(x)),
+    number = list(numberValue = as.numeric(x)),
+    bool = list(boolValue = as.logical(x)),
+    formula = list(formulaValue = as.character(x)),
+    error = list(errorValue = list(type = x$type,
+                                   message = x$message))
+  )
 
-}
+  return(value)
 
-#' @rdname deepgs_listinize
-#' @export
-deepgs_listinize.NumberFormat <- function(x, ...) {
-
-  lapply(x, deepgs_listinize, ... = ...)
-
-}
-
-#' @rdname deepgs_listinize
-#' @export
-deepgs_listinize.DataLabel <- function(x, ...) {
-
-  lapply(x, deepgs_listinize, ... = ...)
-
-}
-
-#' @rdname deepgs_listinize
-#' @export
-deepgs_listinize.LineStyle <- function(x, ...) {
-
-  lapply(x, deepgs_listinize, ... = ...)
-
-}
-
-#' @rdname deepgs_listinize
-#' @export
-deepgs_listinize.PointStyle <- function(x, ...) {
-
-  lapply(x, deepgs_listinize, ... = ...)
-
-}
-
-#' @rdname deepgs_listinize
-#' @export
-deepgs_listinize.BasicSeriesDataPointStyleOverride <- function(x, ...) {
-
-  lapply(x, deepgs_listinize, ... = ...)
-
-}
-
-#' @rdname deepgs_listinize
-#' @export
-deepgs_listinize.BasicChartSpec <- function(x, ...) {
-
-  lapply(x, deepgs_listinize, ... = ...)
-
-}
-
-#' @rdname deepgs_listinize
-#' @export
-deepgs_listinize.OverlayPosition <- function(x, ...) {
-
-  lapply(x, deepgs_listinize, ... = ...)
-
-}
-
-#' @rdname deepgs_listinize
-#' @export
-deepgs_listinize.EmbeddedObjectPosition <- function(x, ...) {
-
-  lapply(x, deepgs_listinize, ... = ...)
 
 }
 
@@ -297,14 +203,6 @@ deepgs_listinize.EmbeddedChart <- function(x, ...) {
     obj$border <- list(colorStyle = x$borderColor)
 
   return(obj)
-
-}
-
-#' @rdname deepgs_listinize
-#' @export
-deepgs_listinize.ChartSpec <- function(x, ...) {
-
-  x <- lapply(x, deepgs_listinize, ... = ...)
 
 }
 

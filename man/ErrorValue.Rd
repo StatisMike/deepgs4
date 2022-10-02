@@ -2,7 +2,7 @@
 % Please edit documentation in R/Cells.R
 \name{ErrorValue}
 \alias{ErrorValue}
-\alias{gen_ErrorValue}
+\alias{is.ErrorValue}
 \title{Error Value}
 \usage{
 ErrorValue(
@@ -11,7 +11,7 @@ ErrorValue(
   message
 )
 
-gen_ErrorValue(obj)
+is.ErrorValue(x)
 }
 \arguments{
 \item{type}{Error type}
@@ -19,7 +19,7 @@ gen_ErrorValue(obj)
 \item{message}{A message with more information about the error (in the
 spreadsheet's locale).}
 
-\item{obj}{list produced by \code{\link[=deepgs_listinize]{deepgs_listinize()}}}
+\item{x}{any R object}
 }
 \description{
 Error value of \link{ExtendedValue} - signalizing error of the

@@ -110,33 +110,19 @@ test_that("LineStyle can be created, listinized and generated from list", {
     )
   )
 
+  expect_s3_class(lineStyle_max, "LineStyle")
+
+
   expect_failure(
     expect_error(
       lineStyle_min <- LineStyle(3)
     )
   )
 
-  for (constructed in list(lineStyle_max, lineStyle_min)) {
+  expect_s3_class(lineStyle_min, "LineStyle")
 
-    expect_s3_class(constructed, "LineStyle")
-
-    expect_failure(
-      expect_error(
-        listinized <- deepgs_listinize(constructed)
-      )
-    )
-
-    expect_failure(
-      expect_error(
-        genned <- deepgsheets4:::gen_LineStyle(
-          obj = listinized
-        )
-      )
-    )
-
-    expect_true(identical(constructed, genned))
-
-  }
+  expect_genned_identical(lineStyle_max)
+  expect_genned_identical(lineStyle_min)
 
 })
 
@@ -148,32 +134,17 @@ test_that("PointStyle can be created, listinized and generated from list", {
     )
   )
 
+  expect_s3_class(pointStyle_max, "PointStyle")
+
   expect_failure(
     expect_error(
       pointStyle_min <- PointStyle()
     )
   )
 
-  for (constructed in list(pointStyle_max, pointStyle_min)) {
+  expect_s3_class(pointStyle_min, "PointStyle")
 
-    expect_s3_class(constructed, "PointStyle")
-
-    expect_failure(
-      expect_error(
-        listinized <- deepgs_listinize(constructed)
-      )
-    )
-
-    expect_failure(
-      expect_error(
-        genned <- deepgsheets4:::gen_PointStyle(
-          obj = listinized
-        )
-      )
-    )
-
-    expect_true(identical(constructed, genned))
-
-  }
+  expect_genned_identical(pointStyle_max)
+  expect_genned_identical(pointStyle_min)
 
 })

@@ -3,7 +3,6 @@
 \name{BasicChartSpec}
 \alias{BasicChartSpec}
 \alias{is.BasicChartSpec}
-\alias{gen_BasicChartSpec}
 \title{BasicChartSpec}
 \usage{
 BasicChartSpec(
@@ -23,8 +22,6 @@ BasicChartSpec(
 )
 
 is.BasicChartSpec(x)
-
-gen_BasicChartSpec(obj, sheetId = NULL)
 }
 \arguments{
 \item{axis}{object of class \link{BasicChartAxis} or list of such objects}
@@ -59,10 +56,6 @@ if \code{chartType = "LINE"}}
 on stacked charts with total sum. Only for stacked charts.}
 
 \item{x}{any R object}
-
-\item{obj}{list produced by \code{deepgs_listinize()}}
-
-\item{sheetId}{optional sheetId}
 }
 \description{
 Specification for googlesheets Basic Chart object

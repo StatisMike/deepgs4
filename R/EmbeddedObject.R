@@ -32,20 +32,6 @@ is.OverlayPosition <- function(x) {
   inherits(x, "OverlayPosition")
 }
 
-#' @rdname OverlayPosition
-#' @param obj list produced by `deepgs_listinize()`
-#' @param sheetId optional sheetId
-#' @export
-gen_OverlayPosition <- function(obj, sheetId = NULL) {
-
-  obj$anchorCell <- gen_GridCoordinate(obj$anchorCell,
-                                       sheetId = sheetId)
-
-  do.call(OverlayPosition,
-          args = obj)
-
-}
-
 #' @title EmbeddedObjectPosition
 #' @description Specification of position for embedded objects (eg.
 #' charts and slicers). Out of three arguments, only one can be provided. They
@@ -97,19 +83,4 @@ EmbeddedObjectPosition <- function(
 #' @export
 is.EmbeddedObjectPosition <- function(x) {
   inherits(x, "EmbeddedObjectPosition")
-}
-
-#' @rdname EmbeddedObjectPosition
-#' @param obj list produced by `deepgs_listinize()`
-#' @param sheetId optional sheetId
-#' @export
-gen_EmbeddedObjectPosition <- function(obj, sheetId = NULL) {
-
-  if (!is.null(obj$overlayPosition))
-    obj$overlayPosition <- gen_OverlayPosition(obj$overlayPosition,
-                                               sheetId = sheetId)
-
-  do.call(EmbeddedObjectPosition,
-          args = obj)
-
 }

@@ -2,18 +2,18 @@
 % Please edit documentation in R/Cells.R
 \name{Padding}
 \alias{Padding}
-\alias{gen_Padding}
+\alias{is.Padding}
 \title{Cell padding}
 \usage{
 Padding(top, bottom, left, right)
 
-gen_Padding(obj)
+is.Padding(x)
 }
 \arguments{
 \item{top, bottom, left, right}{Padding in pixels for each side. During update,
 all fields need to be set}
 
-\item{obj}{list produced by \code{deepgs_listinize()}}
+\item{x}{any R object}
 }
 \description{
 Cell padding

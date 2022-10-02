@@ -2,7 +2,6 @@
 % Please edit documentation in R/Chart.R
 \name{ChartData}
 \alias{ChartData}
-\alias{gen_ChartData}
 \title{ChartData}
 \usage{
 ChartData(
@@ -11,8 +10,6 @@ ChartData(
   aggregateType = NULL,
   groupRule = NULL
 )
-
-gen_ChartData(obj, sheetId = NULL)
 }
 \arguments{
 \item{sourceRange}{object of class \link{GridRange} or list of such objects.
@@ -26,10 +23,6 @@ reads from. Need to be provided for data source charts.}
 Only for data-source charts}
 
 \item{groupRule}{object of class \code{ChartGroupRule}. Only for data source charts.}
-
-\item{obj}{list produced by \code{deepgs_listinize()}}
-
-\item{sheetId}{optional sheetId}
 }
 \description{
 Specification for data to be used for creation of \emph{domain},

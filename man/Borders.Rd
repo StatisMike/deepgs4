@@ -2,7 +2,7 @@
 % Please edit documentation in R/Cells.R
 \name{Borders}
 \alias{Borders}
-\alias{gen_Borders}
+\alias{is.Borders}
 \title{Cell border specification}
 \usage{
 Borders(
@@ -20,7 +20,7 @@ Borders(
   right_colorStyle = NULL
 )
 
-gen_Borders(obj)
+is.Borders(x)
 }
 \arguments{
 \item{top_style, bottom_style, left_style, right_style}{Type of the top, bottom,
@@ -30,7 +30,7 @@ left and right borders.}
 of class \code{\link[=ColorStyle]{ColorStyle()}} describing color for top, bottom, left and right
 border}
 
-\item{obj}{list produced by \code{deepgs_listinize()}}
+\item{x}{any R object}
 }
 \description{
 Cell border specification

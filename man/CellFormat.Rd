@@ -2,7 +2,7 @@
 % Please edit documentation in R/Cells.R
 \name{CellFormat}
 \alias{CellFormat}
-\alias{gen_CellFormat}
+\alias{is.CellFormat}
 \title{Cell Format}
 \usage{
 CellFormat(
@@ -20,7 +20,7 @@ CellFormat(
   ...
 )
 
-gen_CellFormat(obj)
+is.CellFormat(x)
 }
 \arguments{
 \item{numberFormat}{object of \link{NumberFormat} class. Describes how the
@@ -50,7 +50,7 @@ or integer between \code{-90} and \code{90} for angle of rotation}
 
 \item{...}{additional deprecated fields returned from GoogleSheet API}
 
-\item{obj}{list produced by \code{deepgs_listinize()}}
+\item{x}{any R object}
 }
 \description{
 Specification for format of the cells

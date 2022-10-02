@@ -46,7 +46,7 @@ test_that("BasicChartSeries can be created, listinized and generated from list",
                                             colorStyle = ColorStyle(themeColorType = "ACCENT3"),
                                             pointStyle = PointStyle(2.5, "X_MARK")),
           BasicSeriesDataPointStyleOverride(4, ColorStyle(themeColorType = "ACCENT6"))
-          )
+        )
       )
     )
   )

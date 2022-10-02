@@ -3,27 +3,24 @@
 \name{EmbeddedObjectPosition}
 \alias{EmbeddedObjectPosition}
 \alias{is.EmbeddedObjectPosition}
-\alias{gen_EmbeddedObjectPosition}
 \title{EmbeddedObjectPosition}
 \usage{
 EmbeddedObjectPosition(overlayPosition = NULL, sheetId = NULL, newSheet = TRUE)
 
 is.EmbeddedObjectPosition(x)
-
-gen_EmbeddedObjectPosition(obj, sheetId = NULL)
 }
 \arguments{
 \item{overlayPosition}{object of class \link{OverlayPosition} declaring position
 of EmbeddedObject in existing sheet}
 
-\item{sheetId}{optional sheetId}
+\item{sheetId}{the ID of sheet this object is in if EmbeddedObject is in
+its own sheet during read or update. When creating new object, it specifies
+ID of new sheet that will be created.}
 
 \item{newSheet}{TRUE if the object is to be put on a new sheet. Its ID is
 chosen for you. Used only when creating new object.}
 
 \item{x}{any R object}
-
-\item{obj}{list produced by \code{deepgs_listinize()}}
 }
 \value{
 EmbeddedObjectPosition

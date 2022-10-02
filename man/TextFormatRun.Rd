@@ -2,12 +2,9 @@
 % Please edit documentation in R/Varia.R
 \name{TextFormatRun}
 \alias{TextFormatRun}
-\alias{gen_TextFormatRun}
 \title{TextFormat for part of the cell value}
 \usage{
 TextFormatRun(startIndex = NULL, textFormat)
-
-gen_TextFormatRun(obj)
 }
 \arguments{
 \item{startIndex}{index (zero-based) of character on which this format run.
@@ -15,8 +12,6 @@ Can be kept \code{NULL} for beginning of the value.}
 
 \item{textFormat}{object of class \link{TextFormat} with format specification to
 apply}
-
-\item{obj}{list produced by \code{deepgs_listinize()}}
 }
 \description{
 Object holding specification for usage with \code{\link[=CellData]{CellData()}} to

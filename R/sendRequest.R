@@ -1,3 +1,28 @@
+#' @title Generate deepgsheets4 request
+#' @param endpoint request endpoint
+#' @param params list of params passed to the request
+#' @export
+generate_request <- function(
+    endpoint = c("sheets.spreadsheets.get", "sheets.spreadsheets.batchUpdate",
+                 "sheets.spreadsheets.create", "sheets.spreadsheets.getByDataFilter"),
+    params) {
+
+  req <- gargle::request_develop(
+    endpoint = .endpoints[[endpoint]],
+    params = params,
+    base_url = "https://sheets.googleapis.com"
+  )
+
+  gargle::request_build(
+    method = req$method,
+    path = req$path,
+    params = req$params,
+    body = req$body,
+    token = deepgs_token(),
+    base_url = req$base_url
+  )
+}
+
 #' @title Additional response processing
 #' @details Responses from googlesheets API detailing the positions in grid
 #' sheets are omitting `sheetId` field if referred objects are located
@@ -8,7 +33,7 @@
 #' @param reqs requests
 #' @noRd
 
-deepgs_resp_process <- function(
+deepgs_batchUpdate_process <- function(
     resp,
     reqs) {
 
@@ -24,47 +49,13 @@ deepgs_resp_process <- function(
     if (length(input_Id) > 1)
       stop("More IDS than 1!")
 
-    return(deepgsheets4Reply(resp$replies[[n]], sheetId = input_Id))
+    return(deepgsheets4Reply_batchUpdate(resp$replies[[n]], sheetId = input_Id))
 
 
   })
 
   return(resp)
 
-}
-
-#' @title Reply from googlesheets API
-#' @description Mostly internal post-processing function, applied after
-#' [deepgsheets4 Request sending] to construct complete [deepgsheets4Obj] objects
-#' @param reply list containing response from googlesheets4 API
-#' @param sheetId optional sheetId to input
-#' @export
-
-deepgsheets4Reply <- function(reply, sheetId = NULL) {
-
-  req_type <- names(reply)
-
-  created <- switch(
-    req_type,
-    addChart = list(
-      addChart = list(
-        chart = gen_EmbeddedChart(
-          reply$addChart$chart,
-          sheetId = sheetId))),
-    reply
-  )
-
-  class(created) <- "deepgsheets4Reply"
-
-  return(created)
-
-}
-
-#' @rdname deepgsheets4Reply
-#' @param x any R object
-#' @export
-is.deepgsheets4Reply <- function(x) {
-  inherits(x, "deepgsheets4Reply")
 }
 
 #' @title Requests that are to be sent to googlesheets API
@@ -104,7 +95,7 @@ send_batchUpdate_req <- function(
   requests <- lapply(requests, deepgs_listinize)
   names(requests) <- NULL
 
-  req <- googlesheets4::request_generate(
+  req <- generate_request(
     endpoint = "sheets.spreadsheets.batchUpdate",
     params = list(
       spreadsheetId = spreadsheetId,
@@ -112,12 +103,67 @@ send_batchUpdate_req <- function(
     )
   )
 
-  resp <- googlesheets4::request_make(
-    req
-  )
+  resp <- gargle::request_make(req)
 
   gargle::response_process(resp) |>
-    deepgs_resp_process(requests)
+    deepgs_batchUpdate_process(requests)
 
 }
 
+#' @title Send *create* request to googlesheets API
+#' @description This function sends *create* request to googlesheets API
+#' to create specified spreadsheet
+#' @param spreadsheet object of class [Spreadsheet]
+#' @return response containing created object of class [Spreadsheet]
+#' @export
+send_create_req <- function(
+    spreadsheet
+) {
+
+  spreadsheet <- check_if_class(spreadsheet, "Spreadsheet", skip_null = FALSE) |>
+    deepgs_listinize()
+
+  req <- generate_request(
+    endpoint = "sheets.spreadsheets.create",
+    params = spreadsheet
+  )
+
+  resp <- gargle::request_make(req)
+
+  gargle::response_process(resp) |>
+    gen_Spreadsheet()
+
+}
+
+#' @title Reply from googlesheets API
+#' @description Mostly internal post-processing function, applied after
+#' [deepgsheets4 Request sending] to construct complete [deepgsheets4Obj] objects
+#' @param reply list containing response from googlesheets4 API
+#' @param sheetId optional sheetId to input
+#' @export
+deepgsheets4Reply_batchUpdate <- function(reply, sheetId = NULL) {
+
+  req_type <- names(reply)
+
+  created <- switch(
+    req_type,
+    addChart = list(
+      addChart = list(
+        chart = gen_EmbeddedChart(
+          reply$addChart$chart,
+          sheetId = sheetId))),
+    reply
+  )
+
+  class(created) <- "deepgsheets4Reply"
+
+  return(created)
+
+}
+
+#' @rdname deepgsheets4Reply
+#' @param x any R object
+#' @export
+is.deepgsheets4Reply <- function(x) {
+  inherits(x, "deepgsheets4Reply")
+}

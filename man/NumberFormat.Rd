@@ -2,7 +2,7 @@
 % Please edit documentation in R/Cells.R
 \name{NumberFormat}
 \alias{NumberFormat}
-\alias{gen_NumberFormat}
+\alias{is.NumberFormat}
 \title{Number Format}
 \usage{
 NumberFormat(
@@ -11,7 +11,7 @@ NumberFormat(
   pattern = NULL
 )
 
-gen_NumberFormat(obj)
+is.NumberFormat(x)
 }
 \arguments{
 \item{type}{Type of number format. See details for meaning of every field.
@@ -20,7 +20,7 @@ Required during updates.}
 \item{pattern}{pattern used for formatting - if unset, default
 patter of user's locale will be used if valid for given type}
 
-\item{obj}{list produced by \code{deepgs_listinize()}}
+\item{x}{any R object}
 }
 \description{
 Specification for numeric values display

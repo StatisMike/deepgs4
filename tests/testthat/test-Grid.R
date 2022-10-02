@@ -10,7 +10,7 @@ test_that("GridProperties can be created, listinized and generated from list", {
         columnCount = 10,
         frozenRowCount = 2,
         frozenColumnCount = 1,
-        hideGridLines = TRUE,
+        hideGridlines = TRUE,
         rowGroupControlAfter = TRUE,
         columnGroupControlAfter = TRUE)
     )

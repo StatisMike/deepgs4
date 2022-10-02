@@ -3,14 +3,11 @@
 \name{EmbeddedChart}
 \alias{EmbeddedChart}
 \alias{is.EmbeddedChart}
-\alias{gen_EmbeddedChart}
 \title{EmbeddedChart}
 \usage{
 EmbeddedChart(spec, position, borderColor = NULL, chartId = NULL)
 
 is.EmbeddedChart(x)
-
-gen_EmbeddedChart(obj, sheetId = NULL)
 }
 \arguments{
 \item{spec}{object of \link{ChartSpec} class, declaring chart specification}
@@ -25,10 +22,6 @@ borders of the chart}
 write, the one is chosen for you.}
 
 \item{x}{any R object}
-
-\item{obj}{list produced by \code{deepgs_listinize()}}
-
-\item{sheetId}{optional sheetId}
 }
 \description{
 Specification of a chart embedded in a sheet

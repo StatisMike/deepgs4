@@ -28,7 +28,9 @@ extract_chart_field <- function(object) {
 #' @description List of valid types of charts that can be provided to `chart`
 #' argument of [ChartSpec()] and, consequently created by sending [AddChartRequest()]
 #' @export
-TypeChartSpecs <- c("BasicChartSpec")
+TypeChartSpecs <- function() {
+  pkg_env$valid_chart_specs
+}
 
 #' @title Options of view window in Chart Axis
 #' @description Object with specification on how the view on the chart should
@@ -61,22 +63,6 @@ ChartAxisViewWindowOptions <- function(
 #' @export
 is.ChartAxisViewWindowOptions <- function(x)
   inherits(x, "ChartAxisViewWindowOptions")
-
-#' @rdname ChartAxisViewWindowOptions
-#' @param obj list produced by `deepgs_listinize()`
-#' @export
-gen_ChartAxisViewWindowOptions <- function(obj) {
-
-  args <- list() |>
-    append_cond(obj$viewWindowMin, "viewWindowMin") |>
-    append_cond(obj$viewWindowMax, "viewWindowMax")
-
-  if (obj$viewWindowMode != "VIEW_WINDOW_MODE_UNSUPPORTED")
-    args$viewWindowMode <- obj$viewWindowMode
-
-  do.call(ChartAxisViewWindowOptions,
-          args = args)
-}
 
 #' @title ChartData
 #' @description Specification for data to be used for creation of *domain*,
@@ -134,33 +120,6 @@ ChartData <- function(
 
 }
 
-#' @rdname ChartData
-#' @param obj list produced by `deepgs_listinize()`
-#' @param sheetId optional sheetId
-#' @export
-gen_ChartData <- function(obj,
-                          sheetId = NULL) {
-
-  if (!is.null(obj$sourceRange)) {
-
-    args <- list(
-      sourceRange = lapply(obj$sourceRange$sources, try_to_gen,
-                           class = "GridRange",
-                           sheetId = sheetId))
-
-    return(do.call(ChartData, args = args))
-
-  }
-
-  args <- list() |>
-    append_cond(obj$columnReference, "columnReference") |>
-    append_cond(obj$aggregateType, "aggregateType") |>
-    append_cond(obj$groupRule, "groupRule")
-
-  do.call(ChartData,
-          args = args)
-}
-
 #' @title ChartSpec
 #' @description Specification for googlesheets chart
 #' @param chart Specification of the chart to render. One of [TypeChartSpec].
@@ -203,7 +162,7 @@ ChartSpec <- function(
     hiddenDimensionStrategy = NULL,
     ...) {
 
-  chart <- check_if_class(chart, class = TypeChartSpecs)
+  chart <- check_if_class(chart, class = pkg_env$valid_chart_specs)
 
   titlePosition <- check_if_options(titlePosition, "CENTER", "LEFT", "RIGHT")
   subtitlePosition <- check_if_options(subtitlePosition, "CENTER", "LEFT", "RIGHT")
@@ -242,30 +201,6 @@ ChartSpec <- function(
 #' @export
 is.ChartSpec <- function(x) {
   inherits(x, "ChartSpec")
-}
-
-#' @rdname ChartSpec
-#' @param obj list produced by `deepgs_listinize()`
-#' @param sheetId optional sheetId
-#' @export
-gen_ChartSpec <- function(obj, sheetId = NULL) {
-
-  chart_name <- extract_chart_name(names(obj))
-
-  obj[["chart"]] <- try_to_gen(obj[[chart_name]],
-                               class = paste0(first_to_upper(chart_name), "Spec"),
-                               sheetId = sheetId)
-  obj[[chart_name]] <- NULL
-
-  obj[["titleTextFormat"]] <- try_to_gen(obj[["titleTextFormat"]], "TextFormat")
-  obj[["subtitleTextFormat"]] <- try_to_gen(obj[["subtitleTextFormat"]], "TextFormat")
-  obj[["backgroundColorStyle"]] <- try_to_gen(obj[["backgroundColorStyle"]], "ColorStyle")
-  # obj[["dataSourceChartProperties"]] <- try_to_gen(obj[["dataSourceChartProperties"]], "DataSourceChartProperties")
-  obj[["filterSpecs"]] <- try_to_gen(obj[["filterSpecs"]], "FitlerSpecs")
-  obj[["sortSpecs"]] <- try_to_gen(obj[["sortSpecs"]], "SortSpecs")
-
-  do.call(ChartSpec, args = obj)
-
 }
 
 #' @title Chart Data Labels
@@ -329,27 +264,6 @@ is.DataLabel <- function(x) {
   inherits(x, "DataLabel")
 }
 
-#' @rdname DataLabel
-#' @param obj list produced by `deepgs_listinize()`
-#' @param sheetId optional sheetId
-#' @export
-gen_DataLabel <- function(obj, sheetId = NULL) {
-
-  args <- list() |>
-    append_cond(obj$type, "type") |>
-    append_cond(obj$placement, "placement") |>
-    append_cond(try_to_gen(obj$textFormat,
-                           class = "TextFormat"),
-                "textFormat") |>
-    append_cond(try_to_gen(obj$customLabelData,
-                           class = "ChartData",
-                           sheetId = sheetId),
-                "customLabelData")
-
-  do.call(DataLabel,
-          args = args)
-}
-
 #' @title EmbeddedChart
 #' @description Specification of a chart embedded in a sheet
 #' @param spec object of [ChartSpec] class, declaring chart specification
@@ -382,25 +296,4 @@ EmbeddedChart <- function(
 #' @export
 is.EmbeddedChart <- function(x) {
   inherits(x, "EmbeddedChart")
-}
-
-#' @rdname EmbeddedChart
-#' @param obj list produced by `deepgs_listinize()`
-#' @param sheetId optional sheetId
-#' @export
-gen_EmbeddedChart <- function(obj, sheetId = NULL) {
-
-  spec <- try_to_gen(obj$spec, "ChartSpec", sheetId)
-  position <- try_to_gen(obj$position, "EmbeddedObjectPosition", sheetId)
-  borderColor <- try_to_gen(obj$border$colorStyle, "ColorStyle")
-
-  args <- list() |>
-    append_cond(spec) |>
-    append_cond(position) |>
-    append_cond(borderColor) |>
-    append_cond(obj$chartId, "chartId")
-
-  do.call(EmbeddedChart,
-          args = args)
-
 }

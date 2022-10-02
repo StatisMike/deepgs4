@@ -3,7 +3,6 @@
 \name{CellData}
 \alias{CellData}
 \alias{is.CellData}
-\alias{gen_CellData}
 \title{Cell Data}
 \usage{
 CellData(
@@ -21,8 +20,6 @@ CellData(
 )
 
 is.CellData(x)
-
-gen_CellData(obj)
 }
 \arguments{
 \item{userEnteredValue}{object of class \link{ExtendedValue}. Value that user
@@ -67,8 +64,6 @@ or in \code{textFormatRuns} for multiple links or link spanning part of the valu
 \item{...}{Other}
 
 \item{x}{any R object}
-
-\item{obj}{list produced by \code{deepgs_listinize()}}
 }
 \description{
 Specification of data contained in singular sheet cell

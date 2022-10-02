@@ -3,7 +3,6 @@
 \name{TextFormat}
 \alias{TextFormat}
 \alias{is.TextFormat}
-\alias{gen_TextFormat}
 \title{TextFormat}
 \usage{
 TextFormat(
@@ -19,8 +18,6 @@ TextFormat(
 )
 
 is.TextFormat(x)
-
-gen_TextFormat(obj)
 }
 \arguments{
 \item{foregroundColorStyle}{object of class \code{ColorStyle}}
@@ -42,8 +39,6 @@ gen_TextFormat(obj)
 \item{...}{additional deprecated fields returned from GoogleSheet API}
 
 \item{x}{any R file}
-
-\item{obj}{list produced by \code{deepgs_listinize()}}
 }
 \description{
 Class holding specification for text format. All arguments

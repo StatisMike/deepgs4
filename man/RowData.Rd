@@ -3,22 +3,17 @@
 \name{RowData}
 \alias{RowData}
 \alias{is.RowData}
-\alias{gen_RowData}
 \title{RowData}
 \usage{
 RowData(values)
 
 is.RowData(x)
-
-gen_RowData(obj)
 }
 \arguments{
 \item{values}{object of class \link{CellData} or list of such objects. Each one
 provides information about one sheet cell}
 
 \item{x}{any R object}
-
-\item{obj}{list produced by \code{deepgs_listinize()}}
 }
 \description{
 Values of one spreadsheet row

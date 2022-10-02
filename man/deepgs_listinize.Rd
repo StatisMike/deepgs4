@@ -5,28 +5,14 @@
 \alias{deepgs_listinize.default}
 \alias{deepgs_listinize.deepgsheets4Req}
 \alias{deepgs_listinize.deepgsheets4Obj}
-\alias{deepgs_listinize.GridCoordinate}
-\alias{deepgs_listinize.GridRange}
 \alias{deepgs_listinize.TextFormat}
 \alias{deepgs_listinize.ColorStyle}
-\alias{deepgs_listinize.ChartAxisViewWindowOptions}
 \alias{deepgs_listinize.ChartData}
 \alias{deepgs_listinize.BasicChartAxis}
-\alias{deepgs_listinize.BasicChartDomain}
-\alias{deepgs_listinize.BasicChartSeries}
 \alias{deepgs_listinize.Borders}
 \alias{deepgs_listinize.CellFormat}
-\alias{deepgs_listinize.Padding}
-\alias{deepgs_listinize.NumberFormat}
-\alias{deepgs_listinize.DataLabel}
-\alias{deepgs_listinize.LineStyle}
-\alias{deepgs_listinize.PointStyle}
-\alias{deepgs_listinize.BasicSeriesDataPointStyleOverride}
-\alias{deepgs_listinize.BasicChartSpec}
-\alias{deepgs_listinize.OverlayPosition}
-\alias{deepgs_listinize.EmbeddedObjectPosition}
+\alias{deepgs_listinize.ExtendedValue}
 \alias{deepgs_listinize.EmbeddedChart}
-\alias{deepgs_listinize.ChartSpec}
 \title{Transform \code{deepgsheets4} object to list}
 \usage{
 deepgs_listinize(x, ...)
@@ -37,49 +23,21 @@ deepgs_listinize(x, ...)
 
 \method{deepgs_listinize}{deepgsheets4Obj}(x, ...)
 
-\method{deepgs_listinize}{GridCoordinate}(x, ...)
-
-\method{deepgs_listinize}{GridRange}(x, ...)
-
 \method{deepgs_listinize}{TextFormat}(x, ...)
 
 \method{deepgs_listinize}{ColorStyle}(x, ...)
-
-\method{deepgs_listinize}{ChartAxisViewWindowOptions}(x, ...)
 
 \method{deepgs_listinize}{ChartData}(x, ...)
 
 \method{deepgs_listinize}{BasicChartAxis}(x, ...)
 
-\method{deepgs_listinize}{BasicChartDomain}(x, ...)
-
-\method{deepgs_listinize}{BasicChartSeries}(x, ...)
-
 \method{deepgs_listinize}{Borders}(x, ...)
 
 \method{deepgs_listinize}{CellFormat}(x, ...)
 
-\method{deepgs_listinize}{Padding}(x, ...)
-
-\method{deepgs_listinize}{NumberFormat}(x, ...)
-
-\method{deepgs_listinize}{DataLabel}(x, ...)
-
-\method{deepgs_listinize}{LineStyle}(x, ...)
-
-\method{deepgs_listinize}{PointStyle}(x, ...)
-
-\method{deepgs_listinize}{BasicSeriesDataPointStyleOverride}(x, ...)
-
-\method{deepgs_listinize}{BasicChartSpec}(x, ...)
-
-\method{deepgs_listinize}{OverlayPosition}(x, ...)
-
-\method{deepgs_listinize}{EmbeddedObjectPosition}(x, ...)
+\method{deepgs_listinize}{ExtendedValue}(x, ...)
 
 \method{deepgs_listinize}{EmbeddedChart}(x, ...)
-
-\method{deepgs_listinize}{ChartSpec}(x, ...)
 }
 \arguments{
 \item{x}{object to coerce}

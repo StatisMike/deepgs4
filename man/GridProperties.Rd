@@ -2,7 +2,7 @@
 % Please edit documentation in R/Grid.R
 \name{GridProperties}
 \alias{GridProperties}
-\alias{gen_GridProperties}
+\alias{is.GridProperties}
 \title{GridProperties}
 \usage{
 GridProperties(
@@ -10,24 +10,24 @@ GridProperties(
   columnCount,
   frozenRowCount = NULL,
   frozenColumnCount = NULL,
-  hideGridLines = NULL,
+  hideGridlines = NULL,
   rowGroupControlAfter = NULL,
   columnGroupControlAfter = NULL
 )
 
-gen_GridProperties(obj)
+is.GridProperties(x)
 }
 \arguments{
 \item{rowCount, columnCount}{number of rows and columns in the grid}
 
 \item{frozenRowCount, frozenColumnCount}{number of frozen rows and columns in the grid}
 
-\item{hideGridLines}{boolean indicating if gridlines should be shown}
-
 \item{rowGroupControlAfter, columnGroupControlAfter}{boolean indicating if
 row/column toggle is shown after the group}
 
-\item{obj}{list produced by \code{deepgs_listinize()}}
+\item{x}{any R object}
+
+\item{hideGridLines}{boolean indicating if gridlines should be shown}
 }
 \description{
 Properties of a chart grid

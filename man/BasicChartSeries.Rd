@@ -3,7 +3,6 @@
 \name{BasicChartSeries}
 \alias{BasicChartSeries}
 \alias{is.BasicChartSeries}
-\alias{gen_BasicChartSeries}
 \title{BasicChartSeries}
 \usage{
 BasicChartSeries(
@@ -18,8 +17,6 @@ BasicChartSeries(
 )
 
 is.BasicChartSeries(x)
-
-gen_BasicChartSeries(obj, sheetId = NULL)
 }
 \arguments{
 \item{series}{object of class \link{ChartData} specifying the data scope.}
@@ -46,10 +43,6 @@ LINE, SCATTER or COMBO with correct series \code{type}}
 reading}
 
 \item{x}{any R object}
-
-\item{obj}{list produced by \code{deepgs_listinize()}}
-
-\item{sheetId}{optional sheetId}
 }
 \description{
 object of class BasicChartDomain. Specifies the data

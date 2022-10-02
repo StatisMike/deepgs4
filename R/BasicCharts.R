@@ -36,24 +36,6 @@ is.BasicChartAxis <- function(x) {
   inherits(x, "BasicChartAxis")
 }
 
-
-#' @rdname BasicChartAxis
-#' @param obj list produced by `deepgs_listinize()`
-#' @export
-gen_BasicChartAxis <- function(obj) {
-
-  args <- list(position = obj$position) |>
-    append_cond(obj$title, "title") |>
-    append_cond(try_to_gen(obj$format, "TextFormat"), "format") |>
-    append_cond(obj$titleTextPosition$horizontalAlignment, "titleTextPosition") |>
-    append_cond(try_to_gen(obj$viewWindowOptions, "ChartAxisViewWindowOptions"),
-                "viewWindowOptions")
-
-  do.call(BasicChartAxis,
-          args = args)
-}
-
-
 #' @title BasicChartDomain
 #' @description object of class BasicChartDomain. Specifies the context
 #' of series.
@@ -79,26 +61,6 @@ BasicChartDomain <- function(
 is.BasicChartDomain <- function(x) {
   inherits(x, "BasicChartDomain")
 }
-
-#' @rdname BasicChartDomain
-#' @param obj list produced by `deepgs_listinize()`
-#' @param sheetId optional sheetId
-#' @export
-gen_BasicChartDomain <- function(obj,
-                                 sheetId = NULL) {
-
-  args <- list(
-    domain = gen_ChartData(
-      sheetId = sheetId,
-      obj = obj$domain)
-  ) |>
-    append_cond(obj$reversed, "reversed")
-
-  do.call(BasicChartDomain,
-          args = args)
-}
-
-
 
 #' @title Style override for BasicChartSeries
 #' @description Style override settings for a single series data point.
@@ -127,18 +89,6 @@ BasicSeriesDataPointStyleOverride <- function(
 #' @export
 is.BasicSeriesDataPointStyleOverride <- function(x) {
   inherits(x, "BasicSeriesDataPointStyleOverride")
-}
-
-#' @rdname BasicSeriesDataPointStyleOverride
-#' @param obj list produced by `deepgs_listinize()`
-#' @export
-gen_BasicSeriesDataPointStyleOverride <- function(obj){
-
-  obj$colorStyle <- try_to_gen(obj$colorStyle, "ColorStyle")
-  obj$pointStyle <- try_to_gen(obj$pointStyle, "PointStyle")
-
-  do.call(BasicSeriesDataPointStyleOverride, args = obj)
-
 }
 
 #' @title BasicChartSeries
@@ -204,40 +154,6 @@ BasicChartSeries <- function(
 #' @export
 is.BasicChartSeries <- function(x) {
   inherits(x, "BasicChartSeries")
-}
-
-#' @rdname BasicChartSeries
-#' @param obj list produced by `deepgs_listinize()`
-#' @param sheetId optional sheetId
-#' @export
-gen_BasicChartSeries <- function(obj,
-                                 sheetId = NULL) {
-
-  styleOverrides <- NULL
-
-  if (!is.null(obj$styleOverrides))
-    styleOverrides <- lapply(obj$styleOverrides,
-                             gen_BasicSeriesDataPointStyleOverride)
-
-  dataLabel <- try_to_gen(obj$dataLabel, "DataLabel")
-  lineStyle <- try_to_gen(obj$lineStyle, "LineStyle")
-  pointStyle <- try_to_gen(obj$pointStyle, "PointStyle")
-  colorStyle <- try_to_gen(obj$colorStyle, "ColorStyle")
-
-  args <- list(
-    series = gen_ChartData(
-      sheetId = sheetId,
-      obj = obj$series),
-    targetAxis = obj$targetAxis) |>
-    append_cond(dataLabel) |>
-    append_cond(obj$type, "type") |>
-    append_cond(lineStyle) |>
-    append_cond(colorStyle) |>
-    append_cond(pointStyle) |>
-    append_cond(styleOverrides)
-
-  do.call(BasicChartSeries,
-          args = args)
 }
 
 #' @title BasicChartSpec
@@ -340,32 +256,4 @@ BasicChartSpec <- function(
 #' @export
 is.BasicChartSpec <- function(x) {
   inherits(x, "BasicChartSpec")
-}
-
-#' @rdname BasicChartSpec
-#' @param obj list produced by `deepgs_listinize()`
-#' @param sheetId optional sheetId
-#' @export
-gen_BasicChartSpec <- function(obj,
-                               sheetId = NULL) {
-
-  totalDataLabel <- try_to_gen(obj$totalDataLabel, "DataLabel")
-
-  args <- list(
-    axis = lapply(obj$axis, gen_BasicChartAxis),
-    domains = lapply(obj$domains, gen_BasicChartDomain, sheetId = sheetId),
-    series = lapply(obj$series, gen_BasicChartSeries, sheetId = sheetId)
-  ) |>
-    append_cond(obj$legendPosition, "legendPosition") |>
-    append_cond(obj$chartType, "chartType") |>
-    append_cond(obj$headerCount, "headerCount") |>
-    append_cond(obj$threeDimensional, "threeDimensional") |>
-    append_cond(obj$interpolateNulls, "interpolateNulls") |>
-    append_cond(obj$stackedType, "stackedType") |>
-    append_cond(obj$lineSmoothing, "lineSmoothing") |>
-    append_cond(obj$compareMode, "compareMode") |>
-    append_cond(totalDataLabel)
-
-  do.call(BasicChartSpec,
-          args = args)
 }

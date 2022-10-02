@@ -2,22 +2,23 @@
 % Please edit documentation in R/Spreadsheet.R
 \name{Spreadsheet}
 \alias{Spreadsheet}
+\alias{is.Spreadsheet}
 \title{GoogleSheet Soreadsheet}
 \usage{
 Spreadsheet(
-  spreadsheetId,
   properties = NULL,
   sheets = NULL,
   namedRanges = NULL,
   developerMetadata = NULL,
   dataSources = NULL,
-  spreadsheetUrl = NULL,
-  dataSourceSchedules = NULL
+  dataSourceSchedules = NULL,
+  spreadsheetId = NULL,
+  spreadsheetUrl = NULL
 )
+
+is.Spreadsheet(x)
 }
 \arguments{
-\item{spreadsheetId}{ID of the spreadsheet}
-
 \item{properties}{object of class \link{SpreadsheetProperties}}
 
 \item{sheets}{object of class \link{SheetProperties} or list of such objects}
@@ -30,10 +31,14 @@ objects.}
 \item{dataSources}{object of class \link{DataSource} or list of such objects.
 Represents external data sources for the spreadsheet}
 
-\item{spreadsheetUrl}{\strong{READ ONLY} spreadsheet URL}
-
 \item{dataSourceSchedules}{\strong{READ ONLY} object of class \link{DataSourceRefreshSchedule}
 or list of such objects. Represents schedules for refreshment of data sources.}
+
+\item{spreadsheetId}{**READ ONLY ** ID of the spreadsheet}
+
+\item{spreadsheetUrl}{\strong{READ ONLY} spreadsheet URL}
+
+\item{x}{any R object}
 }
 \description{
 GoogleSheet Soreadsheet

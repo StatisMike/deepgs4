@@ -91,36 +91,11 @@ CellFormat <- function(
 }
 
 #' @rdname CellFormat
-#' @param obj list produced by `deepgs_listinize()`
+#' @param x any R object
 #' @export
-gen_CellFormat <- function(obj) {
-
-  numberFormat <- try_to_gen(obj$numberFormat, "NumberFormat")
-  backgroundColorStyle <- try_to_gen(obj$backgroundColorStyle, "ColorStyle")
-  borders <- try_to_gen(obj$borders, "Borders")
-  padding <- try_to_gen(obj$padding, "Padding")
-  textFormat <- try_to_gen(obj$textFormat, "TextFormat")
-
-  args <- list() |>
-    append_cond(numberFormat) |>
-    append_cond(backgroundColorStyle) |>
-    append_cond(borders) |>
-    append_cond(padding) |>
-    append_cond(textFormat) |>
-    append_cond(obj$textDirection, "textDirection") |>
-    append_cond(obj$horizontalAlignment, "horizontalAlignment") |>
-    append_cond(obj$verticalAlignment, "verticalAlignment") |>
-    append_cond(obj$wrapStrategy, "wrapStrategy") |>
-    append_cond(obj$hyperlinkDisplayType, "hyperlinkDisplayType") |>
-    append_cond(obj$textRotation$angle, "textRotation")
-
-  if (isTRUE(obj$textRotation$vertical))
-    args[["textRotation"]] <- "v"
-
-  do.call(CellFormat, args = args)
-
+is.CellFormat <- function(x) {
+  inherits(x, "CellFormat")
 }
-
 
 #' @title Number Format
 #' @description Specification for numeric values display
@@ -158,12 +133,11 @@ NumberFormat <- function(
 }
 
 #' @rdname NumberFormat
-#' @param obj list produced by `deepgs_listinize()`
+#' @param x any R object
 #' @export
-gen_NumberFormat <- function(obj) {
-  do.call(NumberFormat, args = obj)
+is.NumberFormat <- function(x) {
+  inherits(x, "NumberFormat")
 }
-
 
 #' @title Cell border specification
 #' @param top_style,bottom_style,left_style,right_style Type of the top, bottom,
@@ -213,27 +187,10 @@ Borders <- function(
 }
 
 #' @rdname Borders
-#' @param obj list produced by `deepgs_listinize()`
+#' @param x any R object
 #' @export
-gen_Borders <- function(obj) {
-
-  top_colorStyle <- try_to_gen(obj$top$colorStyle, "ColorStyle")
-  bottom_colorStyle <- try_to_gen(obj$bottom$colorStyle, "ColorStyle")
-  left_colorStyle <- try_to_gen(obj$left$colorStyle, "ColorStyle")
-  right_colorStyle <- try_to_gen(obj$right$colorStyle, "ColorStyle")
-
-  args <- list(
-    top_style = obj$top$style,
-    bottom_style = obj$bottom$style,
-    left_style = obj$left$style,
-    right_style = obj$right$style
-  ) |>
-    append_cond(top_colorStyle) |>
-    append_cond(bottom_colorStyle) |>
-    append_cond(left_colorStyle) |>
-    append_cond(right_colorStyle)
-
-  do.call(Borders, args = args)
+is.Borders <- function(x) {
+  inherits(x, "Borders")
 }
 
 #' @title Cell padding
@@ -259,10 +216,10 @@ Padding <- function(
 }
 
 #' @rdname Padding
-#' @param obj list produced by `deepgs_listinize()`
+#' @param x any R object
 #' @export
-gen_Padding <- function(obj) {
-  do.call(Padding, args = obj)
+is.Padding <- function(x) {
+  inherits(x, "Padding")
 }
 
 #' @title Error Value
@@ -300,9 +257,10 @@ ErrorValue <- function(
 }
 
 #' @rdname ErrorValue
-#' @param obj list produced by [deepgs_listinize()]
-gen_ErrorValue <- function(obj) {
-  do.call(ErrorValue, obj)
+#' @param x any R object
+#' @export
+is.ErrorValue <- function(x) {
+  inherits(x, "ErrorValue")
 }
 
 #' @title Value of the cell
@@ -339,8 +297,14 @@ ExtendedValue <- function(
     append_cond(stringValue, type = "character") |>
     append_cond(boolValue, type = "logical") |>
     append_cond(formulaValue, type = "character") |>
-    append_cond(errorValue, class = "ErrorValue") |>
+    append_cond(errorValue, class = "ErrorValue")
+
+  value_type <- gsub(names(out), pattern = "Value", replacement = "")
+
+  out <- out[[1]] |>
     deepgs_class("ExtendedValue")
+
+  attr(out, "type") <- value_type
 
   return(out)
 
@@ -350,16 +314,6 @@ ExtendedValue <- function(
 #' @param x any R object
 is.ExtendedValue <- function(x) {
   inherits(x, "ExtendedValue")
-}
-
-#' @rdname ExtendedValue
-#' @param obj list produced by [deepgs_listinize()]
-#' @export
-gen_ExtendedValue <- function(obj) {
-
-  obj$ErrorValue <- try_to_gen(obj$ErrorValue, "ErrorValue")
-  do.call(ExtendedValue, args = obj)
-
 }
 
 #' @title Cell Data
@@ -435,13 +389,6 @@ is.CellData <- function(x) {
   inherits(x, "CellData")
 }
 
-#' @rdname CellData
-#' @param obj list produced by `deepgs_listinize()`
-#' @export
-gen_CellData <- function(obj) {
-
-}
-
 #' @title RowData
 #' @description Values of one spreadsheet row
 #' @param values object of class [CellData] or list of such objects. Each one
@@ -467,11 +414,4 @@ RowData <- function(values) {
 #' @export
 is.RowData <- function(x) {
   inherits(x, "RowData")
-}
-
-#' @rdname RowData
-#' @param obj list produced by `deepgs_listinize()`
-#' @export
-gen_RowData <- function(obj) {
-  do.call(RowData, args = obj)
 }

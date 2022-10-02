@@ -3,7 +3,6 @@
 \name{ExtendedValue}
 \alias{ExtendedValue}
 \alias{is.ExtendedValue}
-\alias{gen_ExtendedValue}
 \title{Value of the cell}
 \usage{
 ExtendedValue(
@@ -15,8 +14,6 @@ ExtendedValue(
 )
 
 is.ExtendedValue(x)
-
-gen_ExtendedValue(obj)
 }
 \arguments{
 \item{numberValue}{Represents a double value. Date, Times and DateTimes
@@ -32,8 +29,6 @@ included}
 \item{errorValue}{object of class \link{ErrorValue} signaling error in the cell}
 
 \item{x}{any R object}
-
-\item{obj}{list produced by \code{\link[=deepgs_listinize]{deepgs_listinize()}}}
 }
 \description{
 Object holding specification of cell value in \link{CellData}. Only

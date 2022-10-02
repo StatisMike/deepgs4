@@ -3,7 +3,6 @@
 \name{ColorStyle}
 \alias{ColorStyle}
 \alias{is.ColorStyle}
-\alias{gen_ColorStyle}
 \title{ColorStyle}
 \usage{
 ColorStyle(
@@ -16,8 +15,6 @@ ColorStyle(
 )
 
 is.ColorStyle(x)
-
-gen_ColorStyle(obj)
 }
 \arguments{
 \item{red, green, blue}{Floats between \code{0} and \code{1}, describing amount of given
@@ -30,8 +27,6 @@ Sheets API}
 See \strong{details} for more info.}
 
 \item{x}{Any R object}
-
-\item{obj}{list produced by \code{deepgs_listinize()}}
 }
 \value{
 ColorStyle object

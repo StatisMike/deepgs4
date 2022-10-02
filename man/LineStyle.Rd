@@ -2,7 +2,6 @@
 % Please edit documentation in R/Varia.R
 \name{LineStyle}
 \alias{LineStyle}
-\alias{gen_LineStyle}
 \title{Chart line style specification}
 \usage{
 LineStyle(
@@ -10,15 +9,11 @@ LineStyle(
   type = c("SOLID", "DOTTED", "MEDIUM_DASHED", "MEDIUM_DASHED_DOTTED", "LONG_DASHED",
     "LONG_DASHED_DOTTED", "INVISIBLE", "CUSTOM")
 )
-
-gen_LineStyle(obj)
 }
 \arguments{
 \item{width}{width of the line in pixels}
 
 \item{type}{type of the line. For description of each type, check details section.}
-
-\item{obj}{list produced by \code{deepgs_listinize()}}
 }
 \description{
 Object allowing for specifying the chart line style.

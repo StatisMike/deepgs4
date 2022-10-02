@@ -13,6 +13,7 @@ Imports:
     cli,
     gargle,
     glue,
+    httr,
     R6,
     rlang
 Encoding: UTF-8
@@ -23,3 +24,5 @@ Suggests:
     googlesheets4,
     testthat (>= 3.0.0)
 Config/testthat/edition: 3
+Depends: 
+    R (>= 2.10)

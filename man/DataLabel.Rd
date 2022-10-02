@@ -3,7 +3,6 @@
 \name{DataLabel}
 \alias{DataLabel}
 \alias{is.DataLabel}
-\alias{gen_DataLabel}
 \title{Chart Data Labels}
 \usage{
 DataLabel(
@@ -15,8 +14,6 @@ DataLabel(
 )
 
 is.DataLabel(x)
-
-gen_DataLabel(obj, sheetId = NULL)
 }
 \arguments{
 \item{textFormat}{object of class \link{TextFormat} specifying formats of data
@@ -30,10 +27,6 @@ labels}
 for data labels with \code{type = "CUSTOM"}}
 
 \item{x}{any R object}
-
-\item{obj}{list produced by \code{deepgs_listinize()}}
-
-\item{sheetId}{optional sheetId}
 }
 \description{
 Settings for chart data labels - annotations that appear on

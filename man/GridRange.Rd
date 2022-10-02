@@ -3,7 +3,6 @@
 \name{GridRange}
 \alias{GridRange}
 \alias{is.GridRange}
-\alias{gen_GridRange}
 \title{GridRange}
 \usage{
 GridRange(
@@ -15,11 +14,9 @@ GridRange(
 )
 
 is.GridRange(x)
-
-gen_GridRange(obj, sheetId = NULL)
 }
 \arguments{
-\item{sheetId}{optional sheetId}
+\item{sheetId}{Integer - sheet ID}
 
 \item{startRowIndex}{Integer. Starts from 0, inclusive}
 
@@ -30,8 +27,6 @@ gen_GridRange(obj, sheetId = NULL)
 \item{endColumnIndex}{Integer. Starts from 0, exclusive}
 
 \item{x}{any R object}
-
-\item{obj}{list produced by \code{deepgs_listinize()}}
 }
 \description{
 Specification of grid range in spreadsheet

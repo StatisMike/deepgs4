@@ -3,7 +3,6 @@
 \name{OverlayPosition}
 \alias{OverlayPosition}
 \alias{is.OverlayPosition}
-\alias{gen_OverlayPosition}
 \title{Overlay Position}
 \usage{
 OverlayPosition(
@@ -15,8 +14,6 @@ OverlayPosition(
 )
 
 is.OverlayPosition(x)
-
-gen_OverlayPosition(obj, sheetId = NULL)
 }
 \arguments{
 \item{anchorCell}{object of class \link{GridCoordinate} - cell that the object
@@ -28,10 +25,6 @@ from the anchor cell}
 \item{widthPixels, heightPixels}{width and height of the object in pixels}
 
 \item{x}{any R object}
-
-\item{obj}{list produced by \code{deepgs_listinize()}}
-
-\item{sheetId}{optional sheetId}
 }
 \description{
 The location an object is overlaid on top of a grid.

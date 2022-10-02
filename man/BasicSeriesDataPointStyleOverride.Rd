@@ -3,7 +3,6 @@
 \name{BasicSeriesDataPointStyleOverride}
 \alias{BasicSeriesDataPointStyleOverride}
 \alias{is.BasicSeriesDataPointStyleOverride}
-\alias{gen_BasicSeriesDataPointStyleOverride}
 \title{Style override for BasicChartSeries}
 \usage{
 BasicSeriesDataPointStyleOverride(
@@ -14,8 +13,6 @@ BasicSeriesDataPointStyleOverride(
 )
 
 is.BasicSeriesDataPointStyleOverride(x)
-
-gen_BasicSeriesDataPointStyleOverride(obj)
 }
 \arguments{
 \item{index}{zero-based index for the series data point}
@@ -28,8 +25,6 @@ type is on of: \code{"AREA"}, \code{"LINE"} or \code{"SCATTER"}}
 \item{...}{for deprecated GoogleSheets API fields}
 
 \item{x}{any R object}
-
-\item{obj}{list produced by \code{deepgs_listinize()}}
 }
 \description{
 Style override settings for a single series data point.

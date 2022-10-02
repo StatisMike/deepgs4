@@ -18,9 +18,11 @@ expect_genned_identical <- function(object,
     args = list(obj = listinized)
     if (!is.null(sheetId))
       args$sheetId <- sheetId
-    do.call(paste("gen", constructed_class, sep = "_"),
+
+    args$class <- constructed_class
+    do.call(gen_deepgsheets4Obj,
             args = args)
-    }, error = function(e) FALSE
+  }, error = function(e) FALSE
   )
 
   if (isFALSE(genned))

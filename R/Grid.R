@@ -11,7 +11,7 @@ GridProperties <- function(
     columnCount,
     frozenRowCount = NULL,
     frozenColumnCount = NULL,
-    hideGridLines = NULL,
+    hideGridlines = NULL,
     rowGroupControlAfter = NULL,
     columnGroupControlAfter = NULL) {
 
@@ -19,7 +19,7 @@ GridProperties <- function(
               columnCount = columnCount) |>
     append_cond(frozenRowCount, type = "integer") |>
     append_cond(frozenColumnCount, type = "integer") |>
-    append_cond(hideGridLines, type = "logical") |>
+    append_cond(hideGridlines, type = "logical") |>
     append_cond(rowGroupControlAfter, type = "logical") |>
     append_cond(columnGroupControlAfter, type = "logical") |>
     deepgs_class("GridProperties")
@@ -29,10 +29,10 @@ GridProperties <- function(
 }
 
 #' @rdname GridProperties
-#' @param obj list produced by `deepgs_listinize()`
+#' @param x any R object
 #' @export
-gen_GridProperties <- function(obj) {
-  do.call(GridProperties, args = obj)
+is.GridProperties <- function(x) {
+  inherits(x, "GridProperties")
 }
 
 #' @title GridCoordinate
@@ -63,22 +63,8 @@ GridCoordinate <- function(
 #' @rdname GridCoordinate
 #' @param x any R object
 #' @export
-is.GridCoordinate <- function(x)
+is.GridCoordinate <- function(x) {
   inherits(x, "GridCoordinate")
-
-#' @rdname GridCoordinate
-#' @param obj list produced by `deepgs_listinize()`
-#' @param sheetId optional sheetId
-#' @export
-gen_GridCoordinate <- function(obj,
-                               sheetId = NULL) {
-
-  args <- obj
-
-  if (is.null(obj$sheetId))
-    args[["sheetId"]] <- sheetId
-
-  do.call(GridCoordinate, args = args)
 }
 
 
@@ -126,20 +112,5 @@ GridRange <- function(
 #' @export
 is.GridRange <- function(x) {
   inherits(x, "GridRange")
-}
-
-#' @rdname GridRange
-#' @param obj list produced by `deepgs_listinize()`
-#' @param sheetId optional sheetId
-#' @export
-gen_GridRange <- function(obj,
-                          sheetId = NULL) {
-
-  args <- obj
-
-  if (is.null(obj$sheetId))
-    args[["sheetId"]] <- sheetId
-
-  do.call(GridRange, args = args)
 }
 

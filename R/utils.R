@@ -114,10 +114,10 @@ check_if_all_class <- function(
     skip_null = TRUE) {
 
   if (skip_null && is.null(l))
-    return(l)
+    return(NULL)
 
   if (skip_null && all(vapply(l, is.null, logical(1))))
-    return(l)
+    return(NULL)
 
   if (!all(vapply(l, inherits, what = class, FUN.VALUE = logical(1))))
     deepgs_error(
@@ -168,7 +168,7 @@ check_if_options <- function(
     deepgs_error(
       message = if(is.null(custom_message))
         "Value provided to {.arg {arg}} should be of {.val {options}}."
-              else custom_message,
+      else custom_message,
       class = "WrongArgValue",
       call = call
     )
@@ -297,12 +297,47 @@ try_to_gen <- function(x, class, sheetId = NULL) {
   if (is.null(x) || length(x) == 0)
     return(NULL)
 
-  args <- list(obj = x) |>
+  args <- list(obj = x,
+               class = class) |>
     append_cond(sheetId)
 
-  do.call(paste("gen", class, sep = "_"),
+  do.call(gen_deepgsheets4Obj,
           args = args)
 
+}
+
+#' @title Try to generate objects in list in place
+#' @param l list where the object is located
+#' @param name name of the field
+#' @param class name of the class to try to generate
+#' @param use_lapply should the generation occur in `lapply`
+#' @param skip_null should it skip NULL field
+#' @param sheetId optional sheetId
+#' @noRd
+try_to_gen_inplace <- function(
+    l,
+    name,
+    class,
+    use_lapply = FALSE,
+    skip_null = TRUE,
+    sheetId = NULL
+) {
+
+  if (skip_null && is.null(l[[name]]))
+    return(l)
+
+  if (!isTRUE(use_lapply)) {
+    l[[name]] <- try_to_gen(l[[name]],
+                            class = class,
+                            sheetId = sheetId)
+    return(l)
+  }
+
+  l[[name]] <- lapply(l[[name]],
+                      try_to_gen,
+                      class = class,
+                      sheetId = sheetId)
+  return(l)
 }
 
 #' @title Remove classes from nested lists

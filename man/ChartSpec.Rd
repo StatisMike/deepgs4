@@ -3,7 +3,6 @@
 \name{ChartSpec}
 \alias{ChartSpec}
 \alias{is.ChartSpec}
-\alias{gen_ChartSpec}
 \title{ChartSpec}
 \usage{
 ChartSpec(
@@ -26,8 +25,6 @@ ChartSpec(
 )
 
 is.ChartSpec(x)
-
-gen_ChartSpec(obj, sheetId = NULL)
 }
 \arguments{
 \item{chart}{Specification of the chart to render. One of \link{TypeChartSpec}.}
@@ -65,10 +62,6 @@ rows or columns.}
 \item{...}{for support of deprecated GoogleSheets API fields during read}
 
 \item{x}{any R object}
-
-\item{obj}{list produced by \code{deepgs_listinize()}}
-
-\item{sheetId}{optional sheetId}
 }
 \description{
 Specification for googlesheets chart

@@ -3,23 +3,16 @@
 \name{BasicChartDomain}
 \alias{BasicChartDomain}
 \alias{is.BasicChartDomain}
-\alias{gen_BasicChartDomain}
 \title{BasicChartDomain}
 \usage{
 BasicChartDomain(domain, reversed = NULL)
 
 is.BasicChartDomain(x)
-
-gen_BasicChartDomain(obj, sheetId = NULL)
 }
 \arguments{
 \item{reversed}{boolean indicating if values should be reversed}
 
 \item{x}{any R object}
-
-\item{obj}{list produced by \code{deepgs_listinize()}}
-
-\item{sheetId}{optional sheetId}
 
 \item{domains}{object of class \link{ChartData} specifying the data scope.}
 }

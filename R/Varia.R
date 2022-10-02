@@ -48,20 +48,6 @@ is.TextFormat <- function(x) {
   inherits(x, "TextFormat")
 }
 
-
-#' @rdname TextFormat
-#' @param obj list produced by `deepgs_listinize()`
-#' @export
-gen_TextFormat <- function(obj) {
-
-  obj[["foregroundColorStyle"]] <- try_to_gen(obj$foregroundColorStyle, "ColorStyle")
-  obj[["link"]] <- obj$link$uri
-
-  do.call(TextFormat,
-          args = obj)
-
-}
-
 #' @title Validate RGBA
 #' @param x RGBA value
 #' @noRd
@@ -142,30 +128,6 @@ is.ColorStyle <- function(x) {
   inherits(x, "ColorStyle")
 }
 
-
-#' @rdname ColorStyle
-#' @param obj list produced by `deepgs_listinize()`
-#' @export
-gen_ColorStyle <- function(obj) {
-
-  if (!is.null(obj$rgbColor)) {
-    args <- obj$rgbColor
-
-    null_i <- which(vapply(c("red", "green", "blue"),
-                           \(col) is.null(args[[col]]),
-                           logical(1)))
-
-    if (length(null_i) > 0)
-      args[c("red", "green", "blue")[null_i]] <- 0
-
-  } else
-    args <- list(themeColorType = obj$themeColor)
-
-  do.call(ColorStyle,
-          args = args)
-
-}
-
 #' @title Chart line style specification
 #' @description Object allowing for specifying the chart line style.
 #' @param width width of the line in pixels
@@ -190,17 +152,11 @@ LineStyle <- function(
 
   out <- list() |>
     append_cond(width, type = "integer", skip_null = FALSE) |>
+    append_cond(type) |>
     deepgs_class("LineStyle")
 
   return(out)
 
-}
-
-#' @rdname LineStyle
-#' @param obj list produced by `deepgs_listinize()`
-#' @export
-gen_LineStyle <- function(obj) {
-  do.call(LineStyle, args = obj)
 }
 
 #' @title Chart point style specification
@@ -223,92 +179,6 @@ PointStyle <- function(
 
   return(obj)
 
-}
-
-#' @rdname PointStyle
-#' @param obj list produced by `deepgs_listinize()`
-#' @export
-gen_PointStyle <- function(obj) {
-  do.call(PointStyle, args = obj)
-}
-
-#' @title Coerce Dates to googlesheets Serial Number
-#' @param date value to convert. It needs to be a value recognized by
-#' [lubridate::as_datetime()]
-#' @details
-#' "Serial number" format, as popularized by Lotus 1-2-3. The whole number
-#' portion of the value (left of the decimal) counts the days since December
-#' 30th 1899. The fractional portion (right of the decimal) counts the time
-#' as a fraction of the day. For example, January 1st 1900 at noon would be
-#' `2.5`, `2` because it's 2 days after December 30th 1899, and `.5` because
-#' noon is half a day. February 1st 1900 at 3pm would be `33.625`.
-#' @export
-deepgs_serial_number <- function(date) {
-
-  diff <- lubridate::as_datetime(date) - lubridate::as_datetime("1899-12-30")
-  diff_days <- as.numeric(diff, unit = "days")
-  class(diff_days) <- "deepgs_serial_number"
-
-  return(diff_days)
-
-}
-
-#' @rdname deepgs_serial_number
-#' @param x object of class `deepgs_serial_number` to coerce
-#' @inheritParams base::strptime
-#' @export
-as.character.deepgs_serial_number <- function(
-    x,
-    format = "",
-    ...) {
-
-  whole_days <- lubridate::as_datetime("1899-12-30") + lubridate::days(floor(x))
-  fraction_day <- as.numeric(x - floor(x)) * 86400
-  datetime <- whole_days + lubridate::seconds(fraction_day)
-
-  format(datetime, format = format)
-
-}
-
-#' @rdname deepgs_serial_number
-#' @export
-as.POSIXct.deepgs_serial_number <- function(
-    x,
-    tz = "",
-    ...) {
-
-  as.character(x) |>
-    as.POSIXct(tz = tz, ...)
-
-}
-
-#' @rdname deepgs_serial_number
-#' @export
-as.POSIXlt.deepgs_serial_number <- function(
-    x,
-    tz = "",
-    ...) {
-
-  as.character(x) |>
-    as.POSIXlt(tz = tz, ...)
-
-}
-
-#' @rdname deepgs_serial_number
-#' @export
-as.Date.deepgs_serial_number <- function(
-    x,
-    ...) {
-
-  as.character(x) |>
-    as.Date(...)
-
-}
-
-#' @rdname deepgs_serial_number
-#' @export
-is.deepgs_serial_number <- function(x) {
-  inherits(x, "deepgs_serial_number")
 }
 
 #' @title TextFormat for part of the cell value
@@ -334,12 +204,5 @@ TextFormatRun <- function(
 
   return(out)
 
-}
-
-#' @rdname TextFormatRun
-#' @param obj list produced by `deepgs_listinize()`
-#' @export
-gen_TextFormatRun <- function(obj) {
-  do.call(TextFormatRun, args = obj)
 }
 

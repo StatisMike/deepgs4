@@ -3,23 +3,18 @@
 \name{GridCoordinate}
 \alias{GridCoordinate}
 \alias{is.GridCoordinate}
-\alias{gen_GridCoordinate}
 \title{GridCoordinate}
 \usage{
 GridCoordinate(sheetId, rowIndex, columnIndex)
 
 is.GridCoordinate(x)
-
-gen_GridCoordinate(obj, sheetId = NULL)
 }
 \arguments{
-\item{sheetId}{optional sheetId}
+\item{sheetId}{Integer - sheet ID}
 
 \item{rowIndex, columnIndex}{position of the cell in a grid}
 
 \item{x}{any R object}
-
-\item{obj}{list produced by \code{deepgs_listinize()}}
 }
 \description{
 Specification of cell in a grid
