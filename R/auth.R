@@ -47,11 +47,12 @@ deepgs_auth <- function(email = gargle::gargle_oauth_email(),
   # I have called `deepgs_auth(token = drive_token())` multiple times now,
   # without attaching googledrive. Expose this error noisily, before it gets
   # muffled by the `tryCatch()` treatment of `token_fetch()`.
+
   force(token)
 
   cred <- gargle::token_fetch(
     scopes = scopes,
-    app = deepgs_oauth_app() %||% deepgs_default_app(),
+    app = if (!is.null(deepgs_oauth_app())) deepgs_oauth_app() else deepgs_default_app(),
     email = email,
     path = path,
     package = "deepgsheets4",
@@ -236,4 +237,67 @@ deepgs_default_app <- function() {
     redirect_uri = "http://localhost:1410/"
   )
 
+}
+
+deepgs_default_api_key <- function() {
+  "AIzaSyCQLqEeBo8PEPH0tbm7JhhA9fcKcRD2H7k"
+}
+
+# unexported helpers that are nice for internal use ----
+deepgs_auth_internal <- function(account = c("docs", "testing"),
+                                 scopes = NULL) {
+  account <- match.arg(account)
+  can_decrypt <- gargle:::secret_can_decrypt("deepgsheets4")
+  online <- !is.null(curl::nslookup("sheets.googleapis.com", error = FALSE))
+  if (!can_decrypt || !online) {
+    cli::cli_abort(
+      message = c(
+        "Auth unsuccessful:",
+        if (!can_decrypt) {
+          c("x" = "Can't decrypt the {.field {account}} service account token.")
+        },
+        if (!online) {
+          c("x" = "We don't appear to be online. Or maybe the Sheets API is down?")
+        }
+      ),
+      class = "deepgsheets4_auth_internal_error",
+      can_decrypt = can_decrypt, online = online
+    )
+  }
+
+  if (!is_interactive()) local_deepgs_quiet()
+  filename <- glue("deepgsheets4-{account}.json")
+  # TODO: revisit when I do PKG_scopes()
+  # https://github.com/r-lib/gargle/issues/103
+  scopes <- scopes %||% "https://www.googleapis.com/auth/drive"
+  json <- gargle:::secret_read("deepgsheets4", filename)
+  deepgs_auth(scopes = scopes, path = rawToChar(json))
+  deepgs_user()
+  invisible(TRUE)
+}
+
+deepgs_auth_docs <- function(scopes = NULL) {
+  deepgs_auth_internal("docs", scopes = scopes)
+}
+
+deepgs_auth_testing <- function(scopes = NULL) {
+  deepgs_auth_internal("testing", scopes = scopes)
+}
+
+local_deauth <- function(env = parent.frame()) {
+  original_cred <- .auth$get_cred()
+  original_auth_active <- .auth$auth_active
+  cli::cli_bullets(c(i = "Going into deauthorized state."))
+  withr::defer(
+    cli::cli_bullets(c("i" = "Restoring previous auth state.")),
+    envir = env
+  )
+  withr::defer(
+    {
+      .auth$set_cred(original_cred)
+      .auth$set_auth_active(original_auth_active)
+    },
+    envir = env
+  )
+  deepgs_deauth()
 }
