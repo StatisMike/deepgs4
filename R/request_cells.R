@@ -20,7 +20,7 @@ UpdateCellsRequest <- function(
   arg_check <- vapply(list(start, range), is.null, logical(1))
 
   if (sum(arg_check) != 1)
-    deepgs_error("One and only one of {.arg start} and {.arg range} need to be provided.")
+    deepgs_error("Exactly one of {.arg start} and {.arg range} need to be provided for {.emph UpdateCellsRequest}.")
 
   fields <- rlang::arg_match(fields, multiple = TRUE)
 

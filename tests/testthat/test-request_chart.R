@@ -1,24 +1,38 @@
-googlesheets4::gs4_auth(email = Sys.getenv("G_SERVICE_MAIL"),
-                        path = Sys.getenv("G_SERVICE_ACCOUNT"),
-                        cache = F)
 googledrive::drive_auth(email = Sys.getenv("G_SERVICE_MAIL"),
                         path = Sys.getenv("G_SERVICE_ACCOUNT"),
                         cache = F)
+deepgs_auth(email = Sys.getenv("G_SERVICE_MAIL"),
+            path = Sys.getenv("G_SERVICE_ACCOUNT"),
+            cache = F)
 
 # for now using googlsheets4
-ss_id <- googlesheets4::gs4_create()
-on.exit(googledrive::drive_trash(ss_id))
-googledrive::drive_share(ss_id,
-                         role = "writer",
-                         type = "user",
-                         "emailAddress" = "statismike@gmail.com")
-
-googlesheets4::write_sheet(
-  data = cars,
-  ss = ss_id
+cars_spreadsheet <- Spreadsheet(
+  properties = SpreadsheetProperties(
+    title = "Cars Spreadsheet"
+  ),
+  sheets = list(
+    Sheet(
+      properties = SheetProperties(
+        sheetId = 0,
+        title = "Embedded chart test",
+        gridProperties = GridProperties(30, 30)
+      )),
+    Sheet(
+      properties = SheetProperties(
+        sheetId = 1,
+        title = "Cars dataset",
+        gridProperties = GridProperties(51, 2)
+      ),
+      data = to_GridData_from_df(cars, 0, 0))
+  )
 )
-
-ss_data <- SpreadSheetData$new(ss_id)
+created <- send_create_req(cars_spreadsheet)
+ss_id <- googledrive::as_id(created$spreadsheetId)
+on.exit(googledrive::drive_trash(ss_id))
+# googledrive::drive_share(ss_id,
+#                          role = "writer",
+#                          type = "user",
+#                          "emailAddress" = "statismike@gmail.com")
 
 chartReqs <- list()
 
@@ -30,13 +44,13 @@ chartSpec <- ChartSpec(
                 BasicChartAxis(title = "Distance",
                                position = "LEFT_AXIS")),
     domains = BasicChartDomain(domain = ChartData(
-      GridRange(sheetId = ss_data$sheets[["cars"]],
+      GridRange(sheetId = 1,
                 startRowIndex = 1,
                 endRowIndex = 52,
                 startColumnIndex = 0,
                 endColumnIndex = 1))),
     series = BasicChartSeries(series = ChartData(
-      GridRange(sheetId = ss_data$sheets[["cars"]],
+      GridRange(sheetId = 1,
                 startRowIndex = 1,
                 endRowIndex = 52,
                 startColumnIndex = 1,
@@ -60,7 +74,7 @@ test_that("Add chart request can be constructed", {
           chartId = 2137,
           position = EmbeddedObjectPosition(
             overlayPosition = OverlayPosition(
-              anchorCell = GridCoordinate(sheetId = ss_data$sheets["Sheet1"],
+              anchorCell = GridCoordinate(1,
                                           rowIndex = 1,
                                           columnIndex = 1)
             )

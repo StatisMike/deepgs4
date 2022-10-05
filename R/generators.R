@@ -138,13 +138,36 @@ gen_CellData <- function(obj) {
                                  class = "TextFormatRun")
 
   obj$userEnteredValue <- try_to_gen(obj$userEnteredValue, "ExtendedValue")
-  obj$userEnteredFormat <- try_to_gen(obj$userEnteredFormat, "TextFormat")
+  obj$userEnteredFormat <- try_to_gen(obj$userEnteredFormat, "CellFormat")
   obj$dataValidation <- try_to_gen(obj$dataValidation, "DataValidationRule")
   obj$pivotTable <- try_to_gen(obj$pivotTable, "PivotTable")
   obj$effectiveValue <- try_to_gen(obj$effectiveValue, "ExtendedValue")
-  obj$formattedValue <- try_to_gen(obj$effectiveFormat, "TextFormat")
+  obj$effectiveFormat <- try_to_gen(obj$effectiveFormat, "CellFormat")
 
   do.call(CellData, args = obj)
+
+}
+
+#' @rdname gen_deepgsheets4Obj
+#' @export
+gen_RowData <- function(obj) {
+
+  obj <- try_to_gen_inplace(obj, "values", "CellData", TRUE, FALSE)
+
+  do.call(RowData, args = obj)
+
+}
+
+#' @rdname gen_deepgsheets4Obj
+#' @export
+gen_GridData <- function(obj) {
+
+  obj <- obj |>
+    try_to_gen_inplace("rowData", "RowData", TRUE) |>
+    try_to_gen_inplace("rowMetadata", "DimensionProperties", TRUE) |>
+    try_to_gen_inplace("columnMetadata", "DimensionProperties", TRUE)
+
+  do.call(GridData, args = obj)
 
 }
 
@@ -463,6 +486,19 @@ gen_BasicChartSpec <- function(obj,
 
   do.call(BasicChartSpec,
           args = args)
+}
+
+#### Dimension.R Generators ####
+
+#' @rdname gen_deepgsheets4Obj
+#' @export
+gen_DimensionProperties <- function(obj) {
+
+  if (!is.null(obj$dataSourceColumnReference))
+    obj$dataSourceColumnReference <- obj$dataSourceColumnReference$name
+
+  do.call(DimensionProperties, args = obj)
+
 }
 
 #### Varia.R Generators ####

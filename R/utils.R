@@ -32,8 +32,8 @@ first_to_upper <- function(x) {
 #' @param object_type type of the object
 #' @noRd
 deepgs_class <- function(x,
-                          class = NULL,
-                          object_type = c("Obj", "Req")) {
+                         class = NULL,
+                         object_type = c("Obj", "Req")) {
 
   object_type <- rlang::arg_match(object_type)
 
@@ -59,7 +59,7 @@ check_if_class <- function(x,
                            arg = rlang::caller_arg(x),
                            skip_null = TRUE) {
 
-  if (skip_null && is.null(x) == 0)
+  if (skip_null && (is.null(x) || length(x) == 0))
     return(x)
 
   if (!inherits(x, what = class))
@@ -99,6 +99,19 @@ check_if_type <- function(x,
     )
 
   return(x)
+
+}
+
+#' @title Nest object if its of given class
+#' @param x object to nest
+#' @param class name of class to check for
+#' @noRd
+nest_if_class <- function(x, class) {
+
+  if (!inherits(x, class))
+    return(x)
+
+  return(list(x))
 
 }
 

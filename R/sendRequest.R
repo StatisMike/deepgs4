@@ -1,11 +1,20 @@
 #' @title Generate deepgsheets4 request
 #' @param endpoint request endpoint
 #' @param params list of params passed to the request
+#' @param token token to be included
 #' @export
-generate_request <- function(
+request_generate <- function(
     endpoint = c("sheets.spreadsheets.get", "sheets.spreadsheets.batchUpdate",
                  "sheets.spreadsheets.create", "sheets.spreadsheets.getByDataFilter"),
-    params) {
+    params,
+    token = deepgs_token()) {
+
+  endpoint <- rlang::arg_match(endpoint)
+
+  force(params)
+  params <- append_cond(params, params$key, "key") |>
+    append_cond(deepgs_api_key(), "key") |>
+    append_cond(deepgs_default_api_key(), "key")
 
   req <- gargle::request_develop(
     endpoint = .endpoints[[endpoint]],
@@ -18,9 +27,20 @@ generate_request <- function(
     path = req$path,
     params = req$params,
     body = req$body,
-    token = deepgs_token(),
+    token = token,
     base_url = req$base_url
   )
+}
+
+#' @title Make request to googlesheets API
+#' @param x List holding components for HTTP request
+#' @param ... Optional arguments passed to the HTTP method
+#' @param encode how the body should be encoded
+#' @export
+request_make <- function(x, ..., encode = "json") {
+
+  gargle::request_retry(x, ..., encode = "json", user_agent = deepgs_user_agent())
+
 }
 
 #' @title Additional response processing
@@ -68,8 +88,6 @@ is.deepgsheets4Req <- function(x) {
   inherits(x, "deepgsheets4Req")
 }
 
-
-
 #' @title Send *batchUpdate* request to googlesheets API
 #' @description This function sends *batchUpdate* request to googlesheets API
 #' based on multiple [deepsheets4Req] objects
@@ -95,7 +113,7 @@ send_batchUpdate_req <- function(
   requests <- lapply(requests, deepgs_listinize)
   names(requests) <- NULL
 
-  req <- generate_request(
+  req <- request_generate(
     endpoint = "sheets.spreadsheets.batchUpdate",
     params = list(
       spreadsheetId = spreadsheetId,
@@ -103,7 +121,7 @@ send_batchUpdate_req <- function(
     )
   )
 
-  resp <- gargle::request_make(req)
+  resp <- request_make(req)
 
   gargle::response_process(resp) |>
     deepgs_batchUpdate_process(requests)
@@ -123,12 +141,12 @@ send_create_req <- function(
   spreadsheet <- check_if_class(spreadsheet, "Spreadsheet", skip_null = FALSE) |>
     deepgs_listinize()
 
-  req <- generate_request(
+  req <- request_generate(
     endpoint = "sheets.spreadsheets.create",
     params = spreadsheet
   )
 
-  resp <- gargle::request_make(req)
+  resp <- request_make(req)
 
   gargle::response_process(resp) |>
     gen_Spreadsheet()
@@ -140,7 +158,7 @@ send_create_req <- function(
 #' [deepgsheets4 Request sending] to construct complete [deepgsheets4Obj] objects
 #' @param reply list containing response from googlesheets4 API
 #' @param sheetId optional sheetId to input
-#' @export
+#' @noRd
 deepgsheets4Reply_batchUpdate <- function(reply, sheetId = NULL) {
 
   req_type <- names(reply)
@@ -166,4 +184,12 @@ deepgsheets4Reply_batchUpdate <- function(reply, sheetId = NULL) {
 #' @export
 is.deepgsheets4Reply <- function(x) {
   inherits(x, "deepgsheets4Reply")
+}
+
+deepgs_user_agent <- function() {
+
+  httr::user_agent(paste0("deepgsheets4/", utils::packageVersion("deepgsheets4"),
+                          " ", "gargle/", utils::packageVersion("gargle"),
+                          " ", "httr/", utils::packageVersion("httr")))
+
 }

@@ -1,5 +1,6 @@
 #' @title Googlesheets Sheet specification
-#' @description Specification of singular Sheet of the google spreadsheeet
+#' @description Specification of singular Sheet of the google spreadsheet
+#' @export
 
 Sheet <- function(
     properties = NULL,
@@ -16,12 +17,14 @@ Sheet <- function(
     columnGroups = NULL,
     slicers = NULL) {
 
-  if (is.EmbeddedChart(charts))
-    charts <- list(charts)
+  charts <- nest_if_class(charts, "EmbeddedChart") |>
+    check_if_all_class("EmbeddedChart")
 
-  charts <- check_if_all_class(charts, "EmbeddedChart")
+  data <- nest_if_class(data, "GridData") |>
+    check_if_all_class("GridData")
 
   out <- list() |>
+    append_cond(data) |>
     append_cond(properties, class = "SheetProperties") |>
     append_cond(charts) |>
     deepgs_class("Sheet")
@@ -153,6 +156,8 @@ SheetProperties <- function(
 #' @rdname SheetProperties
 #' @param x any R object
 #' @export
-is.SheetProperties <- function(x)
+is.SheetProperties <- function(x) {
   inherits(x, "SheetProperties")
+}
+
 

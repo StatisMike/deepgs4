@@ -13,6 +13,8 @@
 \alias{deepgs_listinize.CellFormat}
 \alias{deepgs_listinize.ExtendedValue}
 \alias{deepgs_listinize.EmbeddedChart}
+\alias{deepgs_listinize.DimensionProperties}
+\alias{deepgs_listinize.RowData}
 \title{Transform \code{deepgsheets4} object to list}
 \usage{
 deepgs_listinize(x, ...)
@@ -38,6 +40,10 @@ deepgs_listinize(x, ...)
 \method{deepgs_listinize}{ExtendedValue}(x, ...)
 
 \method{deepgs_listinize}{EmbeddedChart}(x, ...)
+
+\method{deepgs_listinize}{DimensionProperties}(x, ...)
+
+\method{deepgs_listinize}{RowData}(x, ...)
 }
 \arguments{
 \item{x}{object to coerce}

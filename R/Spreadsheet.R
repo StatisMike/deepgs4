@@ -63,21 +63,20 @@ is.Spreadsheet <- function(x) {
 #' @export
 SpreadsheetProperties <- function(
     title,
-    locale,
-    autoRecalc = c("ON_CHANGE", "MINUTE", "HOUR"),
+    locale = NULL,
     timeZone = NULL,
     defaultFormat = NULL,
     iterativeCalculationSettings = NULL,
     spreadsheetTheme = NULL,
+    autoRecalc = c("ON_CHANGE", "MINUTE", "HOUR"),
     ...) {
 
   autoRecalc <- rlang::arg_match(autoRecalc)
 
-  out <- list(
-    title = title,
-    locale = locale,
-    autoRecalc = autoRecalc
-  ) |>
+  out <- list() |>
+    append_cond(title, type = "character") |>
+    append_cond(locale, type = "character") |>
+    append_cond(autoRecalc) |>
     append_cond(timeZone, class = "character") |>
     append_cond(defaultFormat, class = "CellFormat") |>
     append_cond(iterativeCalculationSettings,

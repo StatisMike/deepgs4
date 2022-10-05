@@ -5,7 +5,7 @@
 
 getSpreadsheetData <- function(spreadsheetId, fields = NULL) {
 
-  req <- googlesheets4::request_generate(
+  req <- request_generate(
     endpoint = "sheets.spreadsheets.get",
     params = list(
       spreadsheetId = spreadsheetId,
@@ -13,9 +13,7 @@ getSpreadsheetData <- function(spreadsheetId, fields = NULL) {
     )
   )
 
-  resp <- googlesheets4::request_make(
-    req
-  )
+  resp <- request_make(req)
 
   gargle::response_process(resp)
 
@@ -182,7 +180,7 @@ SpreadSheetData <- R6::R6Class(
 
     getSpreadsheetData = function(fields) {
 
-      req <- googlesheets4::request_generate(
+      req <- request_generate(
         endpoint = "sheets.spreadsheets.get",
         params = list(
           spreadsheetId = private$.spreadSheetId,
@@ -190,9 +188,7 @@ SpreadSheetData <- R6::R6Class(
         )
       )
 
-      resp <- googlesheets4::request_make(
-        req
-      )
+      resp <- request_make(req)
 
       gargle::response_process(resp)
 
@@ -203,7 +199,8 @@ SpreadSheetData <- R6::R6Class(
 
       switch(fieldNm,
 
-             spreadsheetProperties = gen_SpreadsheetProperties(fieldData),
+             spreadsheetProperties = gen_deepgsheets4Obj(obj = fieldData,
+                                                         class = "SpreadsheetProperties"),
 
              fieldData)
 
@@ -215,9 +212,11 @@ SpreadSheetData <- R6::R6Class(
                                    sheetId) {
 
       switch(fieldNm,
-             sheetProperties = gen_SheetProperties(obj = fieldData),
+             sheetProperties = gen_deepgsheets4Obj(obj = fieldData,
+                                                   class = "SheetProperties"),
              merges = lapply(fieldData,
-                             gen_GridRange,
+                             gen_deepgsheets4Obj,
+                             class = "GridRange",
                              sheetId = sheetId),
              fieldData)
 

@@ -240,6 +240,7 @@ is.Padding <- function(x) {
 #' - `NUM`: Corresponds to the #NUM! error.
 #' - `N_A`: Corresponds to the #N/A error.
 #' - `LOADING`: Corresponds to the Loading... state.
+#' @export
 ErrorValue <- function(
     type = c("ERROR", "NULL_VALUE", "DIVIDE_BY_ZERO", "VALUE", "REF",
              "NAME", "NUM", "N_A", "LOADING"),
@@ -367,14 +368,14 @@ CellData <- function(
 
   out <- list() |>
     append_cond(userEnteredValue, class = "ExtendedValue") |>
-    append_cond(userEnteredFormat, class = "TextFormat") |>
+    append_cond(userEnteredFormat, class = "CellFormat") |>
     append_cond(note, type = "character") |>
     append_cond(textFormatRuns) |>
     append_cond(dataValidation, class = "DataValidationRule") |>
     append_cond(pivotTable, class = "PivotTable") |>
     append_cond(effectiveValue, class = "ExtendedValue") |>
     append_cond(formattedValue, type = "character") |>
-    append_cond(effectiveFormat, class = "TextFormat") |>
+    append_cond(effectiveFormat, class = "CellFormat") |>
     append_cond(hyperlink, type = "class") |>
     deepgs_class("CellData")
 
@@ -399,10 +400,7 @@ RowData <- function(values) {
   if (is.CellData(values))
     values <- list(values)
 
-  values <- check_if_all_class(values, "CellData")
-
-  out <- list() |>
-    append_cond(values, skip_null = FALSE) |>
+  out <- check_if_all_class(values, "CellData", skip_null = F) |>
     deepgs_class("RowData")
 
   return(out)
@@ -414,4 +412,50 @@ RowData <- function(values) {
 #' @export
 is.RowData <- function(x) {
   inherits(x, "RowData")
+}
+
+#' @title Specification of data in a grid
+#' @description Data in a grid, as well as its dimensions metadata. This function
+#' is a low-level constructor for `GridData`, requiring other `deepgsheets4`
+#' objects. For higher-level wrapper, use [to_GridData_from_df()].
+#' @param startRow,startColumn zero-based indices of first row and column
+#' this `GridData` refers to
+#' @param rowData object of class [RowData] or list of such objects. Describes
+#' data of the cells, one entry per row
+#' @param rowMetadata,columnMetadata objects of class [DimensionProperties] or
+#' lists of such objects. Properties of requested rows and columns in the grid
+#' (starting with ones in `startRow` and `startColumn`)
+#' @export
+
+GridData <- function(
+    startRow,
+    startColumn,
+    rowData = NULL,
+    rowMetadata = NULL,
+    columnMetadata = NULL) {
+
+  rowData <- nest_if_class(rowData, "RowData") |>
+    check_if_all_class("RowData")
+  rowMetadata <- nest_if_class(rowMetadata, "DimensionProperties") |>
+    check_if_all_class("DimensionProperties")
+  columnMetadata <- nest_if_class(columnMetadata, "DimensionProperties") |>
+    check_if_all_class("DimensionProperties")
+
+  out <- list() |>
+    append_cond(startRow, type = "integer") |>
+    append_cond(startColumn, type = "integer") |>
+    append_cond(rowData) |>
+    append_cond(rowMetadata) |>
+    append_cond(columnMetadata) |>
+    deepgs_class("GridData")
+
+  return(out)
+
+}
+
+#' @rdname GridData
+#' @param x any R object
+#' @export
+is.GridData <- function(x) {
+  inherits(x, "GridData")
 }

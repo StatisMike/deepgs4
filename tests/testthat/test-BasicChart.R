@@ -15,7 +15,7 @@ test_that("BasicChartAxis can be created, listinized and generated from list", {
     )
   )
 
-  expect_s3_class(basicChartAxis_max, "BasicChartAxis")
+  expect_true(is.BasicChartAxis(basicChartAxis_max))
 
   expect_failure(
     expect_error(
@@ -23,7 +23,7 @@ test_that("BasicChartAxis can be created, listinized and generated from list", {
     )
   )
 
-  expect_s3_class(basicChartAxis_min, "BasicChartAxis")
+  expect_true(is.BasicChartAxis(basicChartAxis_min))
 
   expect_genned_identical(basicChartAxis_min)
   expect_genned_identical(basicChartAxis_max)
@@ -51,7 +51,7 @@ test_that("BasicChartSeries can be created, listinized and generated from list",
     )
   )
 
-  expect_s3_class(basicChartSeries_max, "BasicChartSeries")
+  expect_true(is.BasicChartSeries(basicChartSeries_max))
 
   expect_failure(
     expect_error(
@@ -61,7 +61,7 @@ test_that("BasicChartSeries can be created, listinized and generated from list",
     )
   )
 
-  expect_s3_class(basicChartSeries_min, "BasicChartSeries")
+  expect_true(is.BasicChartSeries(basicChartSeries_min))
 
   expect_genned_identical(basicChartSeries_min, sheetId = sheetId)
   expect_genned_identical(basicChartSeries_max, sheetId = sheetId)
@@ -78,7 +78,7 @@ test_that("BasicChartDomain can be created, listinized and generated from list",
     )
   )
 
-  expect_s3_class(basicChartDomain_max, "BasicChartDomain")
+  expect_true(is.BasicChartDomain(basicChartDomain_max))
 
   expect_failure(
     expect_error(
@@ -88,7 +88,7 @@ test_that("BasicChartDomain can be created, listinized and generated from list",
     )
   )
 
-  expect_s3_class(basicChartDomain_min, "BasicChartDomain")
+  expect_true(is.BasicChartDomain(basicChartDomain_min))
 
   expect_genned_identical(basicChartDomain_min, sheetId = sheetId)
   expect_genned_identical(basicChartDomain_max, sheetId = sheetId)
@@ -125,7 +125,7 @@ test_that("BasicChartSpec can be created, listinized and generated from list", {
     )
   )
 
-  expect_s3_class(basicChartSpec_max, "BasicChartSpec")
+  expect_true(is.BasicChartSpec(basicChartSpec_max))
 
   expect_failure(
     expect_error(
@@ -137,7 +137,7 @@ test_that("BasicChartSpec can be created, listinized and generated from list", {
     )
   )
 
-  expect_s3_class(basicChartSpec_min, "BasicChartSpec")
+  expect_true(is.BasicChartSpec(basicChartSpec_min))
 
   expect_genned_identical(basicChartSpec_min, sheetId = sheetId)
   expect_genned_identical(basicChartSpec_max, sheetId = sheetId)

@@ -6,6 +6,8 @@
 \alias{gen_Borders}
 \alias{gen_ExtendedValue}
 \alias{gen_CellData}
+\alias{gen_RowData}
+\alias{gen_GridData}
 \alias{gen_Sheet}
 \alias{gen_SheetProperties}
 \alias{gen_Spreadsheet}
@@ -23,6 +25,7 @@
 \alias{gen_BasicSeriesDataPointStyleOverride}
 \alias{gen_BasicChartSeries}
 \alias{gen_BasicChartSpec}
+\alias{gen_DimensionProperties}
 \alias{gen_TextFormat}
 \alias{gen_ColorStyle}
 \alias{gen_TextFormatRun}
@@ -37,6 +40,10 @@ gen_Borders(obj)
 gen_ExtendedValue(obj)
 
 gen_CellData(obj)
+
+gen_RowData(obj)
+
+gen_GridData(obj)
 
 gen_Sheet(obj)
 
@@ -71,6 +78,8 @@ gen_BasicSeriesDataPointStyleOverride(obj)
 gen_BasicChartSeries(obj, sheetId = NULL)
 
 gen_BasicChartSpec(obj, sheetId = NULL)
+
+gen_DimensionProperties(obj)
 
 gen_TextFormat(obj)
 

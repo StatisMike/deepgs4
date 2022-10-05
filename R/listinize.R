@@ -206,3 +206,23 @@ deepgs_listinize.EmbeddedChart <- function(x, ...) {
 
 }
 
+#' @rdname deepgs_listinize
+#' @export
+deepgs_listinize.DimensionProperties <- function(x, ...) {
+
+  x <- lapply(x, deepgs_listinize, ... = ...) |>
+    nest_cond(x, "dataSourceColumnReference", nests = "name")
+
+  return(x)
+
+}
+
+#' @rdname deepgs_listinize
+#' @export
+deepgs_listinize.RowData <- function(x, ...) {
+
+  x <- lapply(x, deepgs_listinize, ... = ...)
+  out <- list(values = x)
+  return(out)
+
+}

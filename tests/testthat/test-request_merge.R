@@ -1,20 +1,34 @@
 # initialization
 
-googlesheets4::gs4_auth(email = Sys.getenv("G_SERVICE_MAIL"),
-                        path = Sys.getenv("G_SERVICE_ACCOUNT"),
-                        cache = F)
+deepgs_auth(email = Sys.getenv("G_SERVICE_MAIL"),
+            path = Sys.getenv("G_SERVICE_ACCOUNT"),
+            cache = F)
 googledrive::drive_auth(email = Sys.getenv("G_SERVICE_MAIL"),
                         path = Sys.getenv("G_SERVICE_ACCOUNT"),
                         cache = F)
 
-ss_id <- googlesheets4::gs4_create()
-on.exit(googledrive::drive_trash(ss_id))
+spreadsheet <- send_create_req(
+  spreadsheet = Spreadsheet(
+    sheets = Sheet(
+      properties = SheetProperties(
+        sheetId = 0, title = "Test_Sheet",
+        gridProperties = GridProperties(
+          10, 10
+        )
+      )
+    )
+  )
+)
 
-gridRanges <- list()
+ss_id <- spreadsheet$spreadsheetId
+
+on.exit(googledrive::drive_trash(googledrive::as_id(spreadsheet$spreadsheetUrl)))
+
+gridRanges <- new.env()
 
 test_that("Merge request can be constructed and sent", {
 
-  gridRanges$columns <<- GridRange(
+  gridRanges$columns <- GridRange(
     sheetId = 0,
     startRowIndex = 0,
     endRowIndex = 3,
@@ -22,7 +36,7 @@ test_that("Merge request can be constructed and sent", {
     endColumnIndex = 3
   )
 
-  gridRanges$rows <<- GridRange(
+  gridRanges$rows <- GridRange(
     sheetId = 0,
     startRowIndex = 5,
     endRowIndex = 9,
@@ -30,7 +44,7 @@ test_that("Merge request can be constructed and sent", {
     endColumnIndex = 3
   )
 
-  gridRanges$all <<- GridRange(
+  gridRanges$all <- GridRange(
     sheetId = 0,
     startRowIndex = 0,
     endRowIndex = 3,

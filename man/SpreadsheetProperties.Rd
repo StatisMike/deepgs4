@@ -7,12 +7,12 @@
 \usage{
 SpreadsheetProperties(
   title,
-  locale,
-  autoRecalc = c("ON_CHANGE", "MINUTE", "HOUR"),
+  locale = NULL,
   timeZone = NULL,
   defaultFormat = NULL,
   iterativeCalculationSettings = NULL,
   spreadsheetTheme = NULL,
+  autoRecalc = c("ON_CHANGE", "MINUTE", "HOUR"),
   ...
 )
 
@@ -23,9 +23,6 @@ is.SpreadsheetProperties(x)
 
 \item{locale}{Locale of the spreadsheet}
 
-\item{autoRecalc}{Amount of time to wait before recalculation of
-volatile functions}
-
 \item{timeZone}{Time zone of the spreadsheet, in \code{CLDR} format}
 
 \item{defaultFormat}{object of \link{CellFormat} class: default format of all cells.}
@@ -35,6 +32,9 @@ declaring how circular references are resolved with iterative calculation}
 
 \item{spreadsheetTheme}{object of \link{SpreadsheetTheme} class: theme applied to
 spreadsheet}
+
+\item{autoRecalc}{Amount of time to wait before recalculation of
+volatile functions}
 
 \item{...}{additional deprecated fields returned from GoogleSheet API}
 

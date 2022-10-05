@@ -27,5 +27,5 @@ is.Sheet(x)
 \item{x}{any R object}
 }
 \description{
-Specification of singular Sheet of the google spreadsheeet
+Specification of singular Sheet of the google spreadsheet
 }
