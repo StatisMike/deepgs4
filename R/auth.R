@@ -231,9 +231,9 @@ deepgs_user <- function() {
 deepgs_default_app <- function() {
 
   httr::oauth_app(
-    appname = "deepgs4_dev",
-    key = "616888423467-bibvheuhs4lh4620ss1dtjfk332bfljh.apps.googleusercontent.com",
-    secret = "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",
+    appname = "deepgs4_dev2",
+    key = "616888423467-3s2fcdde4nt0oaaem6gs30s8ms30qjt2.apps.googleusercontent.com",
+    secret = "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",
     redirect_uri = "http://localhost:1410/"
   )
 
@@ -301,3 +301,15 @@ local_deauth <- function(env = parent.frame()) {
   )
   deepgs_deauth()
 }
+
+
+# deepgs_default_app <- function() {
+#
+#   httr::oauth_app(
+#     appname = "deepgs4_dev",
+#     key = "616888423467-bibvheuhs4lh4620ss1dtjfk332bfljh.apps.googleusercontent.com",
+#     secret = "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",
+#     redirect_uri = "http://localhost:1410/"
+#   )
+#
+# }

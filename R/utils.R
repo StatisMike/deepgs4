@@ -33,7 +33,7 @@ first_to_upper <- function(x) {
 #' @noRd
 deepgs_class <- function(x,
                          class = NULL,
-                         object_type = c("Obj", "Req")) {
+                         object_type = c("Obj", "Req", "Data")) {
 
   object_type <- rlang::arg_match(object_type)
 
