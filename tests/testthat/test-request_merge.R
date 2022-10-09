@@ -1,10 +1,8 @@
 # initialization
 
-deepgs_auth(email = Sys.getenv("G_SERVICE_MAIL"),
-            path = Sys.getenv("G_SERVICE_ACCOUNT"),
+deepgs_auth(path = Sys.getenv("G_SERVICE_ACCOUNT"),
             cache = F)
-googledrive::drive_auth(email = Sys.getenv("G_SERVICE_MAIL"),
-                        path = Sys.getenv("G_SERVICE_ACCOUNT"),
+googledrive::drive_auth(path = Sys.getenv("G_SERVICE_ACCOUNT"),
                         cache = F)
 
 spreadsheet <- send_create_req(

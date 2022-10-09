@@ -1,6 +1,6 @@
 Package: deepgsheets4
 Title: Lower-level access to GoogleSheets REST API v4
-Version: 0.1.0
+Version: 0.1.1
 Authors@R: 
     person(given = "Michal",
            family = "Kosinski",
@@ -26,6 +26,7 @@ Encoding: UTF-8
 Roxygen: list(markdown = TRUE)
 RoxygenNote: 7.2.1
 Suggests: 
+    covr,
     googledrive,
     testthat (>= 3.0.0)
 Config/testthat/edition: 3

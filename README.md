@@ -9,6 +9,8 @@
 
 [![Lifecycle:
 experimental](https://img.shields.io/badge/lifecycle-experimental-orange.svg)](https://lifecycle.r-lib.org/articles/stages.html#experimental)
+[![Codecov test
+coverage](https://codecov.io/gh/StatisMike/deepgsheets4/branch/main/graph/badge.svg)](https://app.codecov.io/gh/StatisMike/deepgsheets4?branch=main)
 <!-- badges: end -->
 
 The goal of `deepgsheets4` is to provide a low-level access to Google
@@ -70,5 +72,5 @@ provided:
     emails.
     -   it is possible to use `googlesheets4` token with
         `deepgs_auth(token = googlesheets4::gs4_token())`
-    -   or provide a service account with \`deepgs_auth(path =
-        “path_to_service_account_json.json”)
+    -   or provide a service account with
+        `deepgs_auth(path = "path_to_service_account_json.json")`
