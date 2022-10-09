@@ -15,6 +15,7 @@
 \alias{deepgs_listinize.EmbeddedChart}
 \alias{deepgs_listinize.DimensionProperties}
 \alias{deepgs_listinize.RowData}
+\alias{deepgs_listinize.ConditionValue}
 \title{Transform \code{deepgsheets4} object to list}
 \usage{
 deepgs_listinize(x, ...)
@@ -44,6 +45,8 @@ deepgs_listinize(x, ...)
 \method{deepgs_listinize}{DimensionProperties}(x, ...)
 
 \method{deepgs_listinize}{RowData}(x, ...)
+
+\method{deepgs_listinize}{ConditionValue}(x, ...)
 }
 \arguments{
 \item{x}{object to coerce}

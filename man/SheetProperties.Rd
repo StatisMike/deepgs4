@@ -38,8 +38,8 @@ be inserted at the end of the sheets}
 
 \item{rightToLeft}{boolean indicating if sheet should be RTL}
 
-\item{dataSourceSheetProperties}{object of \link{DataSourceSheetProperties}. Field
-is only accessible during reads from Sheets API.}
+\item{dataSourceSheetProperties}{**READ ONLY ** object of class
+\link{DataSourceSheetProperties}.}
 
 \item{...}{additional deprecated fields returned from GoogleSheet API}
 

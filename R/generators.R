@@ -181,7 +181,9 @@ gen_Sheet <- function(obj) {
 
   obj <- obj |>
     try_to_gen_inplace("properties", "SheetProperties") |>
-    try_to_gen_inplace("charts", "EmbeddedChart", TRUE, sheetId = sheetId)
+    try_to_gen_inplace("charts", "EmbeddedChart", TRUE, sheetId = sheetId) |>
+    try_to_gen_inplace("conditionalFormats", "ConditionalFormatRule", TRUE,
+                       sheetId = sheetId)
 
   do.call(Sheet, args = obj)
 
@@ -498,6 +500,73 @@ gen_DimensionProperties <- function(obj) {
     obj$dataSourceColumnReference <- obj$dataSourceColumnReference$name
 
   do.call(DimensionProperties, args = obj)
+
+}
+
+#### Conditions.R Generators ####
+
+#' @rdname gen_deepgsheets4Obj
+#' @export
+gen_BooleanCondition <- function(obj) {
+
+  obj <- try_to_gen_inplace(obj, "values", "ConditionValue", use_lapply = T)
+
+  do.call(BooleanCondition,
+          args = obj)
+
+}
+
+#### ConditionalFormat.R Generators ####
+#' @rdname gen_deepgsheets4Obj
+#' @export
+gen_InterpolationPoint <- function(obj) {
+
+  obj <- try_to_gen_inplace(obj, "colorStyle", "ColorStyle")
+
+  do.call(InterpolationPoint,
+          args = obj)
+
+}
+
+#' @rdname gen_deepgsheets4Obj
+#' @export
+gen_BooleanRule <- function(obj) {
+
+  obj <- obj |>
+    try_to_gen_inplace("condition", "BooleanCondition") |>
+    try_to_gen_inplace("format", "CellFormat")
+
+  do.call(BooleanRule,
+          args = obj)
+
+}
+
+#' @rdname gen_deepgsheets4Obj
+#' @export
+gen_GradientRule <- function(obj) {
+
+  obj <- obj |>
+    try_to_gen_inplace("minpoint", "InterpolationPoint", skip_null = F) |>
+    try_to_gen_inplace("maxpoint", "InterpolationPoint", skip_null = F) |>
+    try_to_gen_inplace("midpoint", "InterpolationPoint")
+
+  do.call(InterpolationPoint,
+          args = obj)
+
+}
+
+#' @rdname gen_deepgsheets4Obj
+#' @export
+gen_ConditionalFormatRule <- function(obj, sheetId = NULL) {
+
+  obj <- obj |>
+    try_to_gen_inplace("ranges", class = "GridRange",
+                       use_lapply = TRUE, sheetId = sheetId) |>
+    try_to_gen_inplace("booleanRule", class = "BooleanRule") |>
+    try_to_gen_inplace("gradientRule", class = "GradientRule")
+
+  do.call(ConditionalFormatRule,
+          args = obj)
 
 }
 

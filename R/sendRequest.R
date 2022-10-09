@@ -153,6 +153,30 @@ send_create_req <- function(
 
 }
 
+#' @title Get data about the spreadsheet
+#' @param spreadsheetId ID of the spreadsheet
+#' @param fields fields to get
+#' @param range specified range in *A1* notation. See [get_A1_not] for more info.
+#' @export
+
+send_get_req <- function(spreadsheetId, fields = NULL, range = NULL) {
+
+  params <- list() |>
+    append_cond(spreadsheetId, type = "character", skip_null = FALSE) |>
+    append_cond(fields, type = "character") |>
+    append_cond(range, type = "character")
+
+  req <- request_generate(
+    endpoint = "sheets.spreadsheets.get",
+    params = params
+  )
+
+  resp <- request_make(req)
+
+  gargle::response_process(resp)
+
+}
+
 #' @title Reply from googlesheets API
 #' @description Mostly internal post-processing function, applied after
 #' [deepgsheets4 Request sending] to construct complete [deepgsheets4Obj] objects

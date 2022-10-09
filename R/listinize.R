@@ -226,3 +226,18 @@ deepgs_listinize.RowData <- function(x, ...) {
   return(out)
 
 }
+
+#### Conditions.R listinizers ####
+
+#' @rdname deepgs_listinize
+#' @export
+deepgs_listinize.ConditionValue <- function(x, ...) {
+
+  if (isTRUE(attr(x, "relativeDate")))
+    out <- list(relativeDate = as.character(x))
+  else
+    out <- list(userEnteredValue = unclass_obj(x))
+
+  return(out)
+
+}

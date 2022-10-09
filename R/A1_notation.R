@@ -1,5 +1,26 @@
-enc_sing_q <- function(x)
-  paste0("'", x, "'")
+enc_sing_q <- function(x) {
+  if (grepl(x, pattern = "\\s"))
+    return(x)
+
+  return(paste0("'", x, "'"))
+}
+
+check_unbounded_grid <- function(x, call = rlang::caller_call(),
+                                 split_rows = FALSE, split_cols = FALSE) {
+
+  # for now, until figured out
+  if (is.null(x$endRowIndex) || is.null(x$endColumnIndex))
+    deepgs_error("Currently cannot split on unbounded GridRange",
+                 call = call)
+
+  if ((is.null(x$endRowIndex) && isTRUE(split_rows)) ||
+      (is.null(x$endColumnIndex) && isTRUE(split_cols)))
+    deepgs_error("Cannot split on unbounded dimension.",
+                 call = call)
+
+  return(x)
+
+}
 
 #' @title Get sheet name from sheetVec or provided
 #' @param sheetVec sheetVec
@@ -30,75 +51,6 @@ get_sheetName <- function(sheetVec = NULL, sheetName = NULL, sheetId = NULL) {
                  call = rlang::caller_call(1))
 
   return(names(sheetVec)[n])
-
-}
-
-#' @title Manipulate GridRange object
-#' @name manipulate_GridRange
-#' @rdname manipulate_GridRange
-#' @aliases split_GridRange extract_GridCoordinates
-#' @description Functions to manipulate [GridRange] objects.
-#'
-#' - `split_GridRange` splits `gr` into collections of one-row or one-column
-#' [GridRange] objects, depending on the `split` argument
-#' - `extract_GridCoordinates` extracts [GridCoordinate] objects specifying all
-#' cells cantained within the provided `gr`
-NULL
-
-#' @rdname manipulate_GridRange
-#' @description Split `GridRange` object into multiple ones: individual rows,
-#' individual columns or individual cells
-#' @param gr [GridRange] object
-#' @param split how the split be made. With `split = cell` it return nested list of
-#' [GridCoordinate] objects: outer list containing rows, inner list: cells in a range.
-#' With other `split` the function returns list of [GridRange] objects splitted
-#' accordingly
-#' @export
-split_GridRange <- function(gr, split = c("row", "col")) {
-
-  split <- rlang::arg_match(split)
-
-  if (gr$endRowIndex - gr$startRowIndex == 1 && split == "row")
-    deepgs_error("Cannot split by {.val row}: {.arg GridRange} specifies an one-row range")
-
-  if (gr$endColumnIndex - gr$startColumnIndex == 1 && split == "col")
-    deepgs_error("Cannot split by {.val col}: {.arg GridRange} specifies an one-column range")
-
-  switch(split,
-         row = lapply(seq(gr$startRowIndex,
-                          gr$endRowIndex - 1, by = 1),
-                      \(x) GridRange(gr$sheetId, x,
-                                     x+1, gr$startColumnIndex,
-                                     gr$endColumnIndex)),
-         col = lapply(seq(gr$startColumnIndex,
-                          gr$endColumnIndex - 1, by = 1),
-                      \(x) GridRange(gr$sheetId, gr$startRowIndex,
-                                     gr$endRowIndex,x,
-                                     x+1)),
-         cell = {
-
-           lapply(rows, \(r)
-                  lapply(
-                    seq(r$startColumnIndex,
-                        r$endColumnIndex - 1, by = 1),
-                    \(x) GridCoordinate(r$sheetId,
-                                        r$startRowIndex,
-                                        x)))
-         })
-
-}
-
-#' @rdname manipulate_GridRange
-#' @param gr [GridRange]` object
-#' @export
-extract_GridCoordinates <- function(gr) {
-
-  row_indices <- seq(gr$startRowIndex, gr$endRowIndex - 1, by = 1)
-  col_indices <- seq(gr$startColumnIndex, gr$endColumnIndex - 1, by = 1)
-  grid_indices <- expand.grid(row = row_indices, col = col_indices)
-
-  mapply(GridCoordinate, SIMPLIFY = FALSE, sheetId = gr$sheetId,
-         rowIndex = grid_indices$row, columnIndex = grid_indices$col)
 
 }
 
@@ -149,6 +101,10 @@ get_A1_not.GridRange <- function(x, strict = TRUE, sheetName = NULL,
 
   if (any(isTRUE(split_rows), isTRUE(split_cols))) {
 
+    x <- sanitize_unbounded_grid(x = x,
+                                 split_rows = split_rows,
+                                 split_cols = split_cols)
+
     n_rows <- x$endRowIndex - x$startRowIndex
     n_cols <- x$endColumnIndex - x$startColumnIndex
 
@@ -187,9 +143,15 @@ get_A1_not.GridRange <- function(x, strict = TRUE, sheetName = NULL,
 
   }
 
+  ul <- c(x$startRowIndex + 1,
+          x$startColumnIndex + 1)
+
+  lr <- c(if (is.null(x$endRowIndex)) NA_integer_ else x$endRowIndex,
+          if (is.null(x$endColumnIndex)) NA_integer_ else x$endColumnIndex)
+
   limits <- cell_limits(
-    ul = c(x$startRowIndex + 1, x$startColumnIndex + 1),
-    lr = c(x$endRowIndex, x$endColumnIndex),
+    ul = ul,
+    lr = lr,
     sheet = if (is.null(sheetName)) NA_character_ else enc_sing_q(sheetName)
   )
 

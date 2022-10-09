@@ -26,6 +26,11 @@
 \alias{gen_BasicChartSeries}
 \alias{gen_BasicChartSpec}
 \alias{gen_DimensionProperties}
+\alias{gen_BooleanCondition}
+\alias{gen_InterpolationPoint}
+\alias{gen_BooleanRule}
+\alias{gen_GradientRule}
+\alias{gen_ConditionalFormatRule}
 \alias{gen_TextFormat}
 \alias{gen_ColorStyle}
 \alias{gen_TextFormatRun}
@@ -80,6 +85,16 @@ gen_BasicChartSeries(obj, sheetId = NULL)
 gen_BasicChartSpec(obj, sheetId = NULL)
 
 gen_DimensionProperties(obj)
+
+gen_BooleanCondition(obj)
+
+gen_InterpolationPoint(obj)
+
+gen_BooleanRule(obj)
+
+gen_GradientRule(obj)
+
+gen_ConditionalFormatRule(obj, sheetId = NULL)
 
 gen_TextFormat(obj)
 

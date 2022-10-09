@@ -1,5 +1,12 @@
 #' @title Googlesheets Sheet specification
 #' @description Specification of singular Sheet of the google spreadsheet
+#' @param properties object of class [SheetProperties], describing the
+#' properties of the sheet
+#' @param data object of class [GridData] or list of such. Data present in the sheet.
+#' @param merges object of class [GridRange] or list of such. Describe merged
+#' cells.
+#' @param conditionalFormat object of class [ConditionalFormatRule] or list of such.
+#' Describe conditional format rules applied to the cells in the sheet
 #' @export
 
 Sheet <- function(
@@ -23,10 +30,19 @@ Sheet <- function(
   data <- nest_if_class(data, "GridData") |>
     check_if_all_class("GridData")
 
+  merges <- nest_if_class(merges, "GridRange") |>
+    check_if_all_class("GridRange")
+
+  conditionalFormats <- nest_if_class(conditionalFormats,
+                                      "ConditionalFormatRule") |>
+    check_if_all_class("ConditionalFormatRule")
+
   out <- list() |>
     append_cond(data) |>
     append_cond(properties, class = "SheetProperties") |>
+    append_cond(merges) |>
     append_cond(charts) |>
+    append_cond(conditionalFormats) |>
     deepgs_class("Sheet")
 
   return(out)
@@ -115,8 +131,8 @@ is.Sheet <- function(x) {
 #' @param hidden boolean indicating if sheet should be hidden in the UI
 #' @param tabColorStyle object of class [ColorStyle], describing color of the tab
 #' @param rightToLeft boolean indicating if sheet should be RTL
-#' @param dataSourceSheetProperties object of [DataSourceSheetProperties]. Field
-#' is only accessible during reads from Sheets API.
+#' @param dataSourceSheetProperties **READ ONLY ** object of class
+#' [DataSourceSheetProperties].
 #' @param ... additional deprecated fields returned from GoogleSheet API
 #' @export
 #' @return SheetProperties object

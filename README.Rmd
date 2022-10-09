@@ -1,0 +1,74 @@
+---
+output: github_document
+---
+
+<!-- README.md is generated from README.Rmd. Please edit that file -->
+
+```{r, include = FALSE}
+knitr::opts_chunk$set(
+  collapse = TRUE,
+  comment = "#>",
+  fig.path = "man/figures/README-",
+  out.width = "100%"
+)
+```
+
+# deepgsheets4
+
+## Overview
+
+<!-- badges: start -->
+[![Lifecycle: experimental](https://img.shields.io/badge/lifecycle-experimental-orange.svg)](https://lifecycle.r-lib.org/articles/stages.html#experimental)
+<!-- badges: end -->
+
+The goal of `deepgsheets4` is to provide a low-level access to Google Sheets API, in
+opposition to [googlesheets4](https://github.com/tidyverse/googlesheets4){target="_blank"}
+package, which provides high-level access. It basically means that `deepgsheets4`
+allows operations on *cell-level*, and `googlesheets4` on *sheet-level*. 
+
+If you want to create great looking report in Google Sheet - and produce them
+programatically, with custom formats, addition of formulas, creation of charts,
+merge cells etc: the low-level access is an inevitability. If you want to only 
+read, write and append *data.frame-like* data into and from Google Sheets
+the high-level access would be enough.
+
+## Installation
+
+You can install the development version of deepgsheets4 from [GitHub](https://github.com/) with:
+
+``` r
+# install.packages("devtools")
+devtools::install_github("StatisMike/deepgsheets4")
+```
+
+## Currently available functionalities
+
+Ultimate goal of this package is to bind every Google Sheets API object on the
+R side to allow for as easy as possible request generation. There is still a
+long way to go, but currently some functionalities are provided:
+
+- `send_create_req()` allowing Spreadsheet creation
+- `send_get_req()` allowing retrieval of data by Sheets API
+- `send_batchUpdate_req()` allowing updating spreadsheets with lower-level 
+`deepgsheets4Req` objects:
+  - Sheet creation, update and deletion
+  - CellData creation allowing:
+    - entering numeric (and date/datetime with the help of `deepgs_serial_number()`), 
+    character, boolean and formula values
+    - formatting individual cells (or parts of the cells)
+    - coercing into *RowData* and *GridData*
+    - helpers: `to_RowData_from_df()` and `to_GridData_from_df()` are also available
+    for coercing `data.frame` into these objects
+  - Updating and appending *RowData* to the sheet
+  - Modifying the columns and rows properties (eg. their width and height)
+  - Creation, modification and deletion of conditional format rules
+  - Creation, modification and deletion of BasicCharts
+  - Pasting data into sheets: either by cut-paste or copy-paste from the same
+  spreadsheet or by providing delimited text or html
+  
+- package oauth client available in `deepgs_auth()` is currently running in
+development mode, so getting your own token through `deepgsheets4` alone is not
+currently available. If you plan on contributing, contact me to add your google
+account into allowed emails.
+  - it is possible to use `googlesheets4` token with `deepgs_auth(token = googlesheets4::gs4_token())`
+  - or provide a service account with `deepgs_auth(path = "path_to_service_account_json.json")

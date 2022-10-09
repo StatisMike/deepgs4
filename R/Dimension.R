@@ -36,3 +36,40 @@ DimensionProperties <- function(
 is.DimensionProperties <- function(x) {
   inherits(x, "DimensionProperties")
 }
+
+#' @title Dimension Range
+#' @description Object representing range alongside one of the dimensions.
+#' @param sheetId ID of the sheet this range is on
+#' @param dimension type of the dimension
+#' @param startIndex,endIndex zero-based indices bounding the range. `startIndex`
+#' is inclusive, `endIndex` is exclusive. Missing indices indicate the range is
+#' unbounded on that side.
+#' @export
+DimensionRange <- function(
+    sheetId,
+    dimension = c("ROWS", "COLUMNS"),
+    startIndex = NULL,
+    endIndex = NULL) {
+
+  if (is.null(startIndex))
+    startIndex <- 0
+
+  dimension <- rlang::arg_match(dimension)
+
+  out <- list() |>
+    append_cond(sheetId, type = "integer", skip_null = FALSE) |>
+    append_cond(dimension) |>
+    append_cond(startIndex, type = "integer") |>
+    append_cond(startIndex, type = "integer") |>
+    deepgs_class("DimensionRange")
+
+  return(out)
+
+}
+
+#' @rdname DimensionRange
+#' @param x any R object
+#' @export
+is.DimensionRange <- function(x) {
+  inherits(x, "DimensionRange")
+}

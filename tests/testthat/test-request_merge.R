@@ -58,15 +58,15 @@ test_that("Merge request can be constructed and sent", {
     expect_error(
       requests <- list(
         columns = MergeCellsRequest(
-          gridRange = gridRanges$columns,
+          range = gridRanges$columns,
           mergeType = "MERGE_COLUMNS"
         ),
         rows = MergeCellsRequest(
-          gridRange = gridRanges$rows,
+          range = gridRanges$rows,
           mergeType = "MERGE_ROWS"
         ),
         all = MergeCellsRequest(
-          gridRange = gridRanges$all,
+          range = gridRanges$all,
           mergeType = "MERGE_ALL"
         )
       )

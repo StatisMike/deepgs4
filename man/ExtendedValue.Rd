@@ -17,7 +17,7 @@ is.ExtendedValue(x)
 }
 \arguments{
 \item{numberValue}{Represents a double value. Date, Times and DateTimes
-need to be coerced first to}
+need to be coerced first to \code{\link[=deepgs_serial_number]{deepgs_serial_number()}}}
 
 \item{stringValue}{String value. Leading single quotes with numbers aren't
 included}

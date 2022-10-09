@@ -268,7 +268,7 @@ is.ErrorValue <- function(x) {
 #' @description Object holding specification of cell value in [CellData]. Only
 #' one of the parameters can be specified.
 #' @param numberValue Represents a double value. Date, Times and DateTimes
-#' need to be coerced first to
+#' need to be coerced first to [deepgs_serial_number()]
 #' @param stringValue String value. Leading single quotes with numbers aren't
 #' included
 #' @param boolValue Logical value.

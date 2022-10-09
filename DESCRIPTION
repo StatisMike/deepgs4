@@ -1,6 +1,6 @@
 Package: deepgsheets4
 Title: Lower-level access to GoogleSheets REST API v4
-Version: 0.0.6
+Version: 0.1.0
 Authors@R: 
     person(given = "Michal",
            family = "Kosinski",

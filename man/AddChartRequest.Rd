@@ -17,8 +17,6 @@ Constructs request for creation of googlesheets chart
 }
 \seealso{
 Other deepgsheets4Req: 
-\code{\link{MergeCellsRequest}()},
-\code{\link{UnmergeCellsRequest}()},
 \code{\link{UpdateChartSpecRequest}()},
 \code{\link{is.deepgsheets4Req}()}
 }

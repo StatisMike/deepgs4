@@ -24,7 +24,18 @@ Sheet(
 is.Sheet(x)
 }
 \arguments{
+\item{properties}{object of class \link{SheetProperties}, describing the
+properties of the sheet}
+
+\item{data}{object of class \link{GridData} or list of such. Data present in the sheet.}
+
+\item{merges}{object of class \link{GridRange} or list of such. Describe merged
+cells.}
+
 \item{x}{any R object}
+
+\item{conditionalFormat}{object of class \link{ConditionalFormatRule} or list of such.
+Describe conditional format rules applied to the cells in the sheet}
 }
 \description{
 Specification of singular Sheet of the google spreadsheet

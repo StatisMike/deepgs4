@@ -7,10 +7,10 @@
 \usage{
 GridRange(
   sheetId,
-  startRowIndex,
-  endRowIndex,
-  startColumnIndex,
-  endColumnIndex
+  startRowIndex = NULL,
+  endRowIndex = NULL,
+  startColumnIndex = NULL,
+  endColumnIndex = NULL
 )
 
 is.GridRange(x)
@@ -18,13 +18,10 @@ is.GridRange(x)
 \arguments{
 \item{sheetId}{Integer - sheet ID}
 
-\item{startRowIndex}{Integer. Starts from 0, inclusive}
-
-\item{endRowIndex}{Integer. Starts from 0, exclusive}
-
-\item{startColumnIndex}{Integer. Starts from 0, inclusive}
-
-\item{endColumnIndex}{Integer. Starts from 0, exclusive}
+\item{startRowIndex, startColumnIndex, endRowIndex, endColumnIndex}{Zero-based
+indices declaring the range on the grid. \code{start} indices are inclusive, \code{end}
+indices are exclusive. Missing index means that the range is unbounded on that
+side.}
 
 \item{x}{any R object}
 }

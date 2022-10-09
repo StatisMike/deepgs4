@@ -67,7 +67,6 @@ is.GridCoordinate <- function(x) {
   inherits(x, "GridCoordinate")
 }
 
-
 #' @title GridRange
 #' @description Specification of grid range in spreadsheet
 #' @section Warning:
@@ -75,32 +74,38 @@ is.GridCoordinate <- function(x) {
 #' don't include `sheetId`. It is filled during response processing with `sheetId`
 #' of the sheet in which the object was located in.
 #' @param sheetId Integer - sheet ID
-#' @param startRowIndex Integer. Starts from 0, inclusive
-#' @param endRowIndex Integer. Starts from 0, exclusive
-#' @param startColumnIndex Integer. Starts from 0, inclusive
-#' @param endColumnIndex Integer. Starts from 0, exclusive
+#' @param startRowIndex,startColumnIndex,endRowIndex,endColumnIndex Zero-based
+#' indices declaring the range on the grid. `start` indices are inclusive, `end`
+#' indices are exclusive. Missing index means that the range is unbounded on that
+#' side.
 #' @export
 GridRange <- function(
     sheetId,
-    startRowIndex,
-    endRowIndex,
-    startColumnIndex,
-    endColumnIndex) {
+    startRowIndex = NULL,
+    endRowIndex = NULL,
+    startColumnIndex = NULL,
+    endColumnIndex = NULL) {
 
-  if (endRowIndex <= startRowIndex)
+  if (is.null(startRowIndex))
+    startRowIndex <- 0
+
+  if (is.null(startColumnIndex))
+    startColumnIndex <- 0
+
+  if (isTRUE(endRowIndex <= startRowIndex))
     deepgs_error("{.arg endRowIndex} needs to be greater than {.arg startRowIndex}",
                  class = "WrongIndexError")
 
-  if (endColumnIndex <= startColumnIndex)
+  if (isTRUE(endColumnIndex <= startColumnIndex))
     deepgs_error("{.arg endColumnIndex} needs to be greater than {.arg startColumnIndex}",
                  class = "WrongIndexError")
 
   out <- list() |>
     append_cond(sheetId, type = "integer", skip_null = F) |>
-    append_cond(startRowIndex, type = "integer", skip_null = F) |>
-    append_cond(endRowIndex, type = "integer", skip_null = F) |>
-    append_cond(startColumnIndex, type = "integer", skip_null = F) |>
-    append_cond(endColumnIndex, type = "integer", skip_null = F) |>
+    append_cond(startRowIndex, type = "integer") |>
+    append_cond(endRowIndex, type = "integer") |>
+    append_cond(startColumnIndex, type = "integer") |>
+    append_cond(endColumnIndex, type = "integer") |>
     deepgs_class("GridRange")
 
   return(out)
@@ -214,8 +219,8 @@ construct_CellData_from_types <- function(
     })
 }
 
-#' @title Create GridData out of `data.frame`
-#' @description Higher-level wrapper for [GridData] creation, taking as input
+#' @title Create RowData or GridData objects out of `data.frame`
+#' @description Higher-level wrapper for mass [RowData] creation, taking as input
 #' data in form of `data.frame`.
 #' @param df `data.frame` object to use the data from
 #' @inheritParams GridData
@@ -240,11 +245,15 @@ construct_CellData_from_types <- function(
 #'
 #' If `values_types` argument is kept as `NULL`, the types will be interpreted
 #' from data.frame column type.
+#' @name rd_gd_from_df
+#' @rdname rd_gd_from_df
+#' @aliases to_RowData_from_df to_GridData_from_df
+NULL
+
+#' @rdname rd_gd_from_df
 #' @export
-to_GridData_from_df <- function(
+to_RowData_from_df <- function(
     df,
-    startRow,
-    startColumn,
     names_format = NULL,
     values_format = NULL,
     names_types = NULL,
@@ -287,9 +296,105 @@ to_GridData_from_df <- function(
 
   })
 
+  out <- c(list(names_row),
+           values_rows)
+
+  return(out)
+
+}
+
+#' @rdname rd_gd_from_df
+#' @export
+to_GridData_from_df <- function(
+    df,
+    startRow,
+    startColumn,
+    names_format = NULL,
+    values_format = NULL,
+    names_types = NULL,
+    values_types = NULL) {
+
+  startRow <- check_if_type(startRow, "integer")
+  startColumn <- check_if_type(startColumn, "integer")
+
+  rows <- to_RowData_from_df(
+    df = df,
+    names_format = names_format,
+    values_format = values_format,
+    names_types = names_types,
+    values_types = values_types
+  )
+
   GridData(startRow = startRow,
            startColumn = startColumn,
-           rowData = c(list(names_row),
-                       values_rows))
+           rowData = rows)
+
+}
+
+#' @title Manipulate GridRange object
+#' @name manipulate_GridRange
+#' @rdname manipulate_GridRange
+#' @aliases split_GridRange extract_GridCoordinates
+#' @description Functions to manipulate [GridRange] objects.
+#'
+#' - `split_GridRange` splits `gr` into collections of one-row or one-column
+#' [GridRange] objects, depending on the `split` argument. Cannot split grid on
+#' unbounded dimension.
+#' - `extract_GridCoordinates` extracts [GridCoordinate] objects specifying all
+#' cells cantained within the provided `gr`. Cannot extract if object specifies
+#' unbounded range.
+NULL
+
+#' @rdname manipulate_GridRange
+#' @param gr [GridRange] object
+#' @param split how the split be made. With `split = cell` it return nested list of
+#' [GridCoordinate] objects: outer list containing rows, inner list: cells in a range.
+#' With other `split` the function returns list of [GridRange] objects splitted
+#' accordingly
+#' @export
+split_GridRange <- function(gr, split = c("row", "col")) {
+
+  split <- rlang::arg_match(split)
+
+  if (is.null(gr$endRowIndex) && split == "row")
+    deepgs_error("Cannot split by {.val row}: {.cls GridRange} spans unbinded rows")
+
+  if (gr$endRowIndex - gr$startRowIndex == 1 && split == "row")
+    deepgs_error("Cannot split by {.val row}: {.cls GridRange} specifies an one-row range")
+
+  if (is.null(gr$endColumnIndex) && split == "col")
+    deepgs_error("Cannot split by {.val col}: {.cls GridRange} spans unbinded columns")
+
+  if (gr$endColumnIndex - gr$startColumnIndex == 1 && split == "col")
+    deepgs_error("Cannot split by {.val col}: {.cls GridRange} specifies an one-column range")
+
+  switch(split,
+         row = lapply(seq(gr$startRowIndex,
+                          gr$endRowIndex - 1, by = 1),
+                      \(x) GridRange(gr$sheetId, x,
+                                     x+1, gr$startColumnIndex,
+                                     gr$endColumnIndex)),
+         col = lapply(seq(gr$startColumnIndex,
+                          gr$endColumnIndex - 1, by = 1),
+                      \(x) GridRange(gr$sheetId, gr$startRowIndex,
+                                     gr$endRowIndex,x,
+                                     x+1)))
+
+}
+
+#' @rdname manipulate_GridRange
+#' @param gr [GridRange] object
+#' @export
+extract_GridCoordinates <- function(gr) {
+
+  if (is.null(gr$endRowIndex) || is.null(gr$endColumnIndex))
+    deepgs_error("Cannot extract from unbounded {.cls GridRange)")
+
+  row_indices <- seq(gr$startRowIndex, gr$endRowIndex - 1, by = 1)
+  col_indices <- seq(gr$startColumnIndex, gr$endColumnIndex - 1, by = 1)
+  grid_indices <- expand.grid(row = row_indices, col = col_indices)
+
+  mapply(GridCoordinate, SIMPLIFY = FALSE, sheetId = gr$sheetId,
+         rowIndex = grid_indices$row, columnIndex = grid_indices$col)
 
 }

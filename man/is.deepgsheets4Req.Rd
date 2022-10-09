@@ -19,8 +19,6 @@ package need to be parsed into object of \code{deepgsheets4Req}
 \seealso{
 Other deepgsheets4Req: 
 \code{\link{AddChartRequest}()},
-\code{\link{MergeCellsRequest}()},
-\code{\link{UnmergeCellsRequest}()},
 \code{\link{UpdateChartSpecRequest}()}
 }
 \concept{deepgsheets4Req}
