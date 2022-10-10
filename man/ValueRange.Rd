@@ -2,7 +2,7 @@
 % Please edit documentation in R/Values.R
 \name{ValueRange}
 \alias{ValueRange}
-\title{Values within range of a spreadsheet}
+\title{Value Range}
 \usage{
 ValueRange(range, values, majorDimension = c("ROWS", "COLUMNS"))
 }

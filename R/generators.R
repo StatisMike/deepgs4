@@ -615,6 +615,20 @@ gen_TextFormatRun <- function(obj) {
   )
 
   do.call(TextFormatRun,
-          args = args)
+          args = obj)
+
+}
+
+#### Values.R Generators ####
+
+#' @rdname gen_deepgsheets4Obj
+#' @export
+gen_UpdateValuesResponse <- function(obj) {
+
+  obj <- obj |>
+    try_to_gen_inplace("updatedData", "ValueRange")
+
+  do.call(UpdateValuesResponse,
+          args = obj)
 
 }

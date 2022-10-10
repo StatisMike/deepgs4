@@ -25,11 +25,13 @@ See \link{get_A1_not} for more info.}
 \item{valueRendeOption}{How values should be represented in the output.}
 }
 \value{
-ValueRange object
+\link{ValueRange} object
 }
 \description{
 Request to the \href{https://developers.google.com/sheets/api/reference/rest/v4/spreadsheets.values/get}{spreadsheets.values.get}{target="_blank"}
 method.
+}
+\details{
 \subsection{majorDimension}{
 
 If the spreadsheet data on Sheet1 are:\tabular{lll}{
@@ -72,6 +74,7 @@ on the spreadsheet locale).
 }
 \seealso{
 Other Sheets Values requests: 
-\code{\link{send_clear_values_req}()}
+\code{\link{send_clear_values_req}()},
+\code{\link{send_update_values_req}()}
 }
 \concept{Sheets Values requests}
