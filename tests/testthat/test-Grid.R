@@ -16,6 +16,8 @@ test_that("GridProperties can be created, listinized and generated from list", {
     )
   )
 
+  expect_true(is.GridProperties(gridProperties_max))
+
   expect_failure(
     expect_error(
       gridProperties_min <- GridProperties(
@@ -23,6 +25,8 @@ test_that("GridProperties can be created, listinized and generated from list", {
         columnCount = 10)
     )
   )
+
+  expect_true(is.GridProperties(gridProperties_min))
 
   expect_genned_identical(gridProperties_max)
   expect_genned_identical(gridProperties_min)
@@ -37,7 +41,7 @@ test_that("GridCoordinate can be created, listinized and generated from list", {
     )
   )
 
-  expect_s3_class(gridCoordinate, "GridCoordinate")
+  expect_true(is.GridCoordinate(gridCoordinate))
 
   expect_genned_identical(gridCoordinate,
                           sheetId)
@@ -56,7 +60,7 @@ test_that("GridRange can be created, listinized and generated from list", {
     )
   )
 
-  expect_s3_class(gridRange, "GridRange")
+  expect_true(is.GridRange(gridRange))
 
   expect_genned_identical(gridRange,
                           sheetId)
@@ -64,5 +68,27 @@ test_that("GridRange can be created, listinized and generated from list", {
   expect_genned_identical(gridRange,
                           sheetId,
                           remove_sheetId = TRUE)
+
+})
+
+test_that("GridRange can be splitted correctly", {
+
+  to_split <- GridRange(0, 0, 5, 0, 6)
+
+  expect_failure(
+    expect_error(
+      splitted_by_col <- split_GridRange(to_split, split = "col")
+    )
+  )
+
+  expect_identical(length(splitted_by_col), 6L)
+
+  expect_failure(
+    expect_error(
+      splitted_by_row <- split_GridRange(to_split, split = "row")
+    )
+  )
+
+  expect_identical(length(splitted_by_row), 5L)
 
 })
