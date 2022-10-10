@@ -4,12 +4,9 @@
 #' @param token token to be included
 #' @export
 request_generate <- function(
-    endpoint = c("sheets.spreadsheets.get", "sheets.spreadsheets.batchUpdate",
-                 "sheets.spreadsheets.create", "sheets.spreadsheets.getByDataFilter"),
+    endpoint,
     params,
     token = deepgs_token()) {
-
-  endpoint <- rlang::arg_match(endpoint)
 
   force(params)
   params <- append_cond(params, params$key, "key") |>

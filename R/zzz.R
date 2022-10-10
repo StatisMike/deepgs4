@@ -8,12 +8,5 @@
     gargle::init_AuthState(package = "deepgsheets4", auth_active = TRUE)
   )
 
-  if (identical(Sys.getenv("IN_PKGDOWN"), "true")) {
-    tryCatch(
-      gs4_auth_docs(),
-      deepgsheets4_auth_internal_error = function(e) NULL
-    )
-  }
-
   invisible()
 }
