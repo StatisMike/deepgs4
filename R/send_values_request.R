@@ -64,7 +64,7 @@ send_get_values_req <- function(
 
 
   req <- gargle::request_build(
-    path = paste0("v4/spreadsheets/", spreadsheetId, "/values/", range, ":clear"),
+    path = paste0("v4/spreadsheets/", spreadsheetId, "/values/", range),
     params = params,
     token = deepgs_token(),
     key = deepgs_api_key(),
@@ -93,7 +93,7 @@ send_clear_values_req <- function(
 
   req <- gargle::request_build(
     method = "POST",
-    path = paste0("v4/spreadsheets/", spreadsheetId, "/values/", range),
+    path = paste0("v4/spreadsheets/", spreadsheetId, "/values/", range, ":clear"),
     params = params,
     token = deepgs_token(),
     key = deepgs_api_key(),
