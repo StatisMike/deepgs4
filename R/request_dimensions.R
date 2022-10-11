@@ -20,6 +20,10 @@
 #' [DimensionRange] or [DataSourceDimensionRange], declaring the range in `GRID`
 #' or `DATA_SOURCE` sheet to resize automatically. Exactly one of these arguments
 #' needs to be provided.
+#' @param source object of class [DimensionRange] declaring the source range
+#' for move
+#' @param destinationIndex index of the first column or row to where the dimensions
+#' should be moved. Provide the index as in **before** the move.
 #'
 #' @name DimensionRequests
 #' @rdname DimensionRequests
@@ -130,6 +134,24 @@ AutoResizeDimensionsRequest <- function(dimensions = NULL,
     append_cond(dataSourceSheetDimensions, "DataSourceDimensionRange")
 
   obj <- list(autoResizeDimensions = req) |>
+    deepgs_class(object_type = "Req")
+
+  return(obj)
+
+}
+
+#' @rdname DimensionRequests
+#' @section Move:
+#' Moves one or more rows or columns declared by `source` into destination
+#' marked by `destinationIndex` (index of first row or column)
+#' @export
+MoveDimensionRequest <- function(source, destinationIndex) {
+
+  req <- list() |>
+    append_cond(source, class = "DimensionRange", skip_null = FALSE) |>
+    append_cond(destinationIndex, type = "integer", skip_null = FALSE)
+
+  obj <- list(moveDimension = req) |>
     deepgs_class(object_type = "Req")
 
   return(obj)

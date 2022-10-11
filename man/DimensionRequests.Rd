@@ -7,6 +7,7 @@
 \alias{UpdateDimensionPropertiesRequest}
 \alias{AutoResizeDimensionsRequest}
 \alias{DeleteDimensionRequest}
+\alias{MoveDimensionRequest}
 \title{Requests related to dimensions (rows/columns) in a sheet}
 \usage{
 InsertDimensionRequest(range, inheritFromBefore = NULL)
@@ -24,6 +25,8 @@ AutoResizeDimensionsRequest(
   dimensions = NULL,
   dataSourceSheetDimensions = NULL
 )
+
+MoveDimensionRequest(source, destinationIndex)
 
 DeleteDimensionRequest(range)
 }
@@ -53,6 +56,12 @@ the range of columns in \code{DATA_SOURCE} sheet}
 \link{DimensionRange} or \link{DataSourceDimensionRange}, declaring the range in \code{GRID}
 or \code{DATA_SOURCE} sheet to resize automatically. Exactly one of these arguments
 needs to be provided.}
+
+\item{source}{object of class \link{DimensionRange} declaring the source range
+for move}
+
+\item{destinationIndex}{index of the first column or row to where the dimensions
+should be moved. Provide the index as in \strong{before} the move.}
 }
 \value{
 deepgsheets4Req object
@@ -83,6 +92,14 @@ or \code{dataSourceSheetRange} (for \code{DATA_SOURCE} sheets) arguments
 
 \section{AutoResize}{
 
+Automatically resizes dimensions based on the contents of the cells in that
+dimension.
+}
+
+\section{Move}{
+
+Moves one or more rows or columns declared by \code{source} into destination
+marked by \code{destinationIndex} (index of first row or column)
 }
 
 \section{Delete}{
