@@ -26,6 +26,7 @@
 \alias{gen_BasicChartSeries}
 \alias{gen_BasicChartSpec}
 \alias{gen_DimensionProperties}
+\alias{gen_DimensionGroup}
 \alias{gen_BooleanCondition}
 \alias{gen_InterpolationPoint}
 \alias{gen_BooleanRule}
@@ -86,6 +87,8 @@ gen_BasicChartSeries(obj, sheetId = NULL)
 gen_BasicChartSpec(obj, sheetId = NULL)
 
 gen_DimensionProperties(obj)
+
+gen_DimensionGroup(obj)
 
 gen_BooleanCondition(obj)
 

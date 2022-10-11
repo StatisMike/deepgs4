@@ -62,3 +62,34 @@ test_that("DimensionRange can be created, listinized and generated from list", {
   expect_genned_identical(dim_max, sheetId = sheetId, remove_sheetId = TRUE)
 
 })
+
+test_that("DimensionGroup can be created, listinized and generated from list", {
+
+  expect_failure(
+    expect_error(
+      dim_min <- DimensionGroup(
+        range = DimensionRange(sheetId, "ROWS", 1, 4)
+      )
+    )
+  )
+
+  expect_true(is.DimensionGroup(dim_min))
+
+  expect_failure(
+    expect_error(
+      dim_max <- DimensionGroup(
+        range = DimensionRange(sheetId, "ROWS", 1, 4),
+        collapsed = TRUE,
+        depth = 2
+      )
+    )
+  )
+
+  expect_true(is.DimensionGroup(dim_max))
+
+  expect_genned_identical(dim_min)
+  expect_genned_identical(dim_max)
+
+})
+
+

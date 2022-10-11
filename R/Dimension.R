@@ -73,3 +73,38 @@ DimensionRange <- function(
 is.DimensionRange <- function(x) {
   inherits(x, "DimensionRange")
 }
+
+#' @title Dimension Group
+#' @description A group over an interval of rows or columns on a sheet, which
+#' can contain or be contained within other groups. A group can be collapsed
+#' or expanded as a unit on the sheet.
+#' @param range object of class [DimensionRange] that declares the range over
+#' which this group exists.
+#' @param depth the depth of the group - integer stating how many groups have a
+#' range that wholly contains the range of this group.
+#' @param collapsed This field is true if this group is collapsed. A collapsed
+#' group remains collapsed if an overlapping group at a shallower depth is expanded.
+#'
+#' A `TRUE` value does not imply that all dimensions within the group are hidden,
+#' since a dimension's visibility can change independently from this group
+#' property. However, when this property is updated, all dimensions within it
+#' are set to hidden if this field is `TRUE`, or set to visible if this field is `FALSE`.
+#' @export
+DimensionGroup <- function(range, depth = NULL, collapsed = NULL) {
+
+  out <- list() |>
+    append_cond(range, class = "DimensionRange", skip_null = FALSE) |>
+    append_cond(depth, type = "integer") |>
+    append_cond(collapsed, type = "logical") |>
+    deepgs_class("DimensionGroup")
+
+  return(out)
+
+}
+
+#' @rdname DimensionGroup
+#' @param x any R object
+#' @export
+is.DimensionGroup <- function(x) {
+  inherits(x, "DimensionGroup")
+}

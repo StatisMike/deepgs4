@@ -503,6 +503,17 @@ gen_DimensionProperties <- function(obj) {
 
 }
 
+#' @rdname gen_deepgsheets4Obj
+#' @export
+gen_DimensionGroup <- function(obj) {
+
+  obj <- obj |>
+    try_to_gen_inplace("range", "DimensionRange")
+
+  do.call(DimensionGroup, args = obj)
+
+}
+
 #### Conditions.R Generators ####
 
 #' @rdname gen_deepgsheets4Obj
