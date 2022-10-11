@@ -57,6 +57,7 @@ type, the associated DataSource is also deleted.
 Other deepgsheets4Req constructors: 
 \code{\link{CellRequests}},
 \code{\link{ConditionalFormatRequests}},
+\code{\link{DimensionRequests}},
 \code{\link{MergeRequests}},
 \code{\link{PasteRequests}}
 }

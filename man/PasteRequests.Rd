@@ -107,6 +107,7 @@ or an html source (in which case \code{html} needs to be specified and \code{TRU
 Other deepgsheets4Req constructors: 
 \code{\link{CellRequests}},
 \code{\link{ConditionalFormatRequests}},
+\code{\link{DimensionRequests}},
 \code{\link{MergeRequests}},
 \code{\link{SheetRequests}}
 }

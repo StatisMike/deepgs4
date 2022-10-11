@@ -23,7 +23,7 @@ DimensionProperties <- function(
     append_cond(pixelSize, type = "integer") |>
     append_cond(developerMetadata) |>
     append_cond(hiddenByUser, type = "logical") |>
-    append_cond(hiddenbyFilter, type = "logical") |>
+    append_cond(hiddenByFilter, type = "logical") |>
     append_cond(dataSourceColumnReference, type = "character") |>
     deepgs_class("DimensionProperties")
 

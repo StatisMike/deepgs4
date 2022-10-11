@@ -1,14 +1,83 @@
-#' @title Request update of dimension properties
-#' @description Send a request to update properties of dimension (column/row) in
-#' a given range. Range can be specified with either `range` (for `GRID` sheets)
-#' or `dataSourceSheetRange` (for `DATA_SOURCE` sheets) arguments
+#' @title Requests related to dimensions (rows/columns) in a sheet
+#' @description
+#' Create `deepgsheets4Req` objects that allows inserting, appending, deletion
+#' or updating a dimension in a sheet. Send created requests with
+#' [send_batchUpdate_req()]
+#' @param range object of class [DimensionRange] declaring range of dimension
+#' in `GRID` sheet
+#' @param inheritFromBefore boolean indicating if the dimension properties
+#' should be inherited from before the `range` (if TRUE) or from after the range
+#' (FALSE)
+#' @param sheetId ID of the sheet to append rows/columns
+#' @param length number of rows/columns to append
+#' @param dimension either `ROWS` or `COLUMNS` to check
 #' @param properties object of class [DimensionProperties] providing data to
 #' update
 #' @param fields which fields of current properties need to be updated
-#' @param range object of class [DimensionRange] specifying the range of columns
-#' or rows to update on `GRID` sheets
-#' @param dataSourceSheetRange object of class `DataSourceDimensionRange` specifying
+#' @param dataSourceSheetRange object of class [DataSourceDimensionRange] specifying
 #' the range of columns in `DATA_SOURCE` sheet
+#' @param dimensions,DataSourceSheetDimensionRange objects of class, sequentially:
+#' [DimensionRange] or [DataSourceDimensionRange], declaring the range in `GRID`
+#' or `DATA_SOURCE` sheet to resize automatically. Exactly one of these arguments
+#' needs to be provided.
+#'
+#' @name DimensionRequests
+#' @rdname DimensionRequests
+#' @aliases InsertDimensionRequest AppendDimensionRequest UpdateDimensionPropertiesRequest
+#' AutoResizeDimensionsRequest DeleteDimensionRequest
+#' @family deepgsheets4Req constructors
+#' @return deepgsheets4Req object
+NULL
+
+#' @rdname DimensionRequests
+#' @section Insert:
+#' Inserts rows or columns in a sheet at a particular range Both `startIndex`
+#' and `endIndex` must be bounded. Existing cells will be shifted to make place
+#' for inserted dimension.
+#' @export
+InsertDimensionRequest <- function(range, inheritFromBefore = NULL) {
+
+  req <- list() |>
+    append_cond(range, class = "DimensionRange", skip_null = FALSE) |>
+    append_cond(inheritFromBefore, type = "logical")
+
+  obj <- list(
+    insertDimension = req
+  ) |>
+    deepgs_class(object_type = "Req")
+
+  return(obj)
+
+}
+
+#' @rdname DimensionRequests
+#' @section Append:
+#' Appends given number of rows or columns to the end of a sheet.
+#' @export
+AppendDimensionRequest <- function(
+    sheetId,
+    length,
+    dimension = c("ROWS", "DIMENSIONS")) {
+
+  dimension <- rlang::arg_match(dimension)
+
+  req <- list() |>
+    append_cond(sheetId, type = "integer", skip_null = FALSE) |>
+    append_cond(length, type = "integer", skip_null = FALSE) |>
+    append_cond(dimension)
+
+  obj <- list(appendDimension = req) |>
+    deepgs_class(object_type = "Req")
+
+  return(obj)
+
+}
+
+#' @rdname DimensionRequests
+#' @section UpdateProperties:
+#' Send a request to update properties of dimension (column/row) in
+#' a given range. Range can be specified with either `range` (for `GRID` sheets)
+#' or `dataSourceSheetRange` (for `DATA_SOURCE` sheets) arguments
 #' @export
 #'
 
@@ -29,7 +98,7 @@ UpdateDimensionPropertiesRequest <- function(
   fields <- paste(fields, collapse = ",")
 
   req <- list() |>
-    append_cond(properties, class = "DimensionProperties") |>
+    append_cond(properties, class = "DimensionProperties", skip_null = FALSE) |>
     append_cond(fields) |>
     append_cond(range, class = "DimensionRange") |>
     append_cond(dataSourceSheetRange, class = "DataSourceSheetDimensionRange")
@@ -38,5 +107,50 @@ UpdateDimensionPropertiesRequest <- function(
     deepgs_class(object_type = "Req")
 
   return(out)
+
+}
+
+#' @rdname DimensionRequests
+#' @section AutoResize:
+#' Automatically resizes dimensions based on the contents of the cells in that
+#' dimension.
+#' @export
+AutoResizeDimensionsRequest <- function(dimensions = NULL,
+                                        dataSourceSheetDimensions = NULL) {
+
+  ranges_provided <- vapply(list(dimensions, dataSourceSheetDimensions),
+                            is.null,
+                            logical(1))
+
+  if (sum(ranged_provided) != 1)
+    deepgs_error("Exactly one of {.arg dimensions} or {.arg dataSourceSheetDimensions} need to be provided")
+
+  req <- list() |>
+    append_cond(dimensions, class = "DimensionRange") |>
+    append_cond(dataSourceSheetDimensions, "DataSourceDimensionRange")
+
+  obj <- list(autoResizeDimensions = req) |>
+    deepgs_class(object_type = "Req")
+
+  return(obj)
+
+}
+
+#' @rdname DimensionRequests
+#' @section Delete:
+#' Deletes the dimensions from the sheet in the given `range`. Other cells
+#' will be shifted in their place.
+#' @export
+DeleteDimensionRequest <- function(range) {
+
+  req <- list() |>
+    append_cond(range, class = "DimensionRange", skip_null = FALSE)
+
+  obj <- list(
+    deleteDimension = req
+  ) |>
+    deepgs_class(object_type = "Req")
+
+  return(obj)
 
 }

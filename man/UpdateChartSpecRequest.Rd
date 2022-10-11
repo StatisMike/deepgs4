@@ -19,7 +19,6 @@ Constructs request for updating chart specification
 }
 \seealso{
 Other deepgsheets4Req: 
-\code{\link{AddChartRequest}()},
-\code{\link{is.deepgsheets4Req}()}
+\code{\link{AddChartRequest}()}
 }
 \concept{deepgsheets4Req}

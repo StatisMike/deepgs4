@@ -17,7 +17,6 @@ Constructs request for creation of googlesheets chart
 }
 \seealso{
 Other deepgsheets4Req: 
-\code{\link{UpdateChartSpecRequest}()},
-\code{\link{is.deepgsheets4Req}()}
+\code{\link{UpdateChartSpecRequest}()}
 }
 \concept{deepgsheets4Req}

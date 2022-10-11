@@ -46,6 +46,7 @@ all will be unmerged. It must not span any merge partially
 Other deepgsheets4Req constructors: 
 \code{\link{CellRequests}},
 \code{\link{ConditionalFormatRequests}},
+\code{\link{DimensionRequests}},
 \code{\link{PasteRequests}},
 \code{\link{SheetRequests}}
 }

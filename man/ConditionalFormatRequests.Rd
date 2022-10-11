@@ -56,6 +56,7 @@ deleted, and all subsequent rules' indices are decremented.
 \seealso{
 Other deepgsheets4Req constructors: 
 \code{\link{CellRequests}},
+\code{\link{DimensionRequests}},
 \code{\link{MergeRequests}},
 \code{\link{PasteRequests}},
 \code{\link{SheetRequests}}

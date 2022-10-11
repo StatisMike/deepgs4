@@ -211,7 +211,7 @@ deepgs_listinize.EmbeddedChart <- function(x, ...) {
 deepgs_listinize.DimensionProperties <- function(x, ...) {
 
   x <- lapply(x, deepgs_listinize, ... = ...) |>
-    nest_cond(x, "dataSourceColumnReference", nests = "name")
+    nest_cond("dataSourceColumnReference", nests = "name")
 
   return(x)
 
