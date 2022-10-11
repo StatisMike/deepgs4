@@ -84,7 +84,7 @@ CopyPasteRequest <- function(
   req <- list() |>
     append_cond(source, class = "GridRange", skip_null = FALSE) |>
     append_cond(destination, class = "GridRange", skip_null = FALSE) |>
-    append_cond(paste_type) |>
+    append_cond(pasteType) |>
     append_cond(pasteOrientation)
 
   out <- list(copyPaste = req) |>
