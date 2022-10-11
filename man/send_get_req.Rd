@@ -4,14 +4,14 @@
 \alias{send_get_req}
 \title{Get data about the spreadsheet}
 \usage{
-send_get_req(spreadsheetId, fields = NULL, range = NULL)
+send_get_req(spreadsheetId, fields = NULL, ranges = NULL)
 }
 \arguments{
 \item{spreadsheetId}{ID of the spreadsheet}
 
 \item{fields}{fields to get}
 
-\item{range}{specified range in \emph{A1} notation. See \link{get_A1_not} for more info.}
+\item{ranges}{specified ranges in \emph{A1} notation. See \link{get_A1_not} for more info.}
 }
 \description{
 Get data about the spreadsheet

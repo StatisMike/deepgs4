@@ -31,7 +31,7 @@
 #' @name PasteRequests
 #' @rdname PasteRequests
 #' @family deepgsheets4Req constructors
-#' @aliases AddSheetRequest UpdateSheetPropertiesRequest DeleteSheet
+#' @aliases CutPasteRequest CopyPasteRequest PasteDataRequest
 #' @return deepgsheets4Req object
 NULL
 

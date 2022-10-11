@@ -6,8 +6,8 @@
 \title{SheetProperties}
 \usage{
 SheetProperties(
-  sheetId,
-  title,
+  sheetId = NULL,
+  title = NULL,
   index = NULL,
   sheetType = c("GRID", "OBJECT", "DATA_SOURCE"),
   gridProperties = NULL,

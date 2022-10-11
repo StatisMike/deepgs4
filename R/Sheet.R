@@ -138,8 +138,8 @@ is.Sheet <- function(x) {
 #' @return SheetProperties object
 
 SheetProperties <- function(
-    sheetId,
-    title,
+    sheetId = NULL,
+    title = NULL,
     index = NULL,
     sheetType = c("GRID", "OBJECT", "DATA_SOURCE"),
     gridProperties = NULL,
@@ -151,16 +151,15 @@ SheetProperties <- function(
 
   sheetType = rlang::arg_match(sheetType)
 
-  out <- list(
-    sheetId = sheetId,
-    title = title,
-    sheetType = sheetType
-  ) |>
-    append_cond(index, class = c("numeric", "integer")) |>
+  out <- list() |>
+    append_cond(sheetId, type = "integer") |>
+    append_cond(title, type = "character") |>
+    append_cond(sheetType) |>
+    append_cond(index, type = "integer") |>
     append_cond(gridProperties, class = "GridProperties") |>
     append_cond(hidden, class = "logical") |>
     append_cond(tabColorStyle, class = "ColorStyle") |>
-    append_cond(rightToLeft, class = "logical") |>
+    append_cond(rightToLeft, type = "logical") |>
     append_cond(dataSourceSheetProperties,
                 class = "DataSourceSheetProperties") |>
     deepgs_class("SheetProperties")

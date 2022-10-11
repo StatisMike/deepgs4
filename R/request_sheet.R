@@ -39,7 +39,7 @@ AddSheetRequest <- function(properties) {
 #' be updated.
 #' @export
 
-UpdateSheetRequest <- function(
+UpdateSheetPropertiesRequest <- function(
     properties,
     fields = c("title", "index", "gridProperties", "hidden", "tabColorStyle",
                "rightToLeft")) {

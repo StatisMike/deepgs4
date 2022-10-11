@@ -2,9 +2,6 @@
 % Please edit documentation in R/request_cp.R
 \name{PasteRequests}
 \alias{PasteRequests}
-\alias{AddSheetRequest}
-\alias{UpdateSheetPropertiesRequest}
-\alias{DeleteSheet}
 \alias{CutPasteRequest}
 \alias{CopyPasteRequest}
 \alias{PasteDataRequest}

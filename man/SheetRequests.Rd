@@ -5,13 +5,12 @@
 \alias{AddSheetRequest}
 \alias{UpdateSheetPropertiesRequest}
 \alias{DeleteSheet}
-\alias{UpdateSheetRequest}
 \alias{DeleteSheetRequest}
 \title{Requests to add, modify and delete Sheet}
 \usage{
 AddSheetRequest(properties)
 
-UpdateSheetRequest(
+UpdateSheetPropertiesRequest(
   properties,
   fields = c("title", "index", "gridProperties", "hidden", "tabColorStyle",
     "rightToLeft")
