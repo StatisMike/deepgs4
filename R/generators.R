@@ -561,7 +561,7 @@ gen_GradientRule <- function(obj) {
     try_to_gen_inplace("maxpoint", "InterpolationPoint", skip_null = F) |>
     try_to_gen_inplace("midpoint", "InterpolationPoint")
 
-  do.call(InterpolationPoint,
+  do.call(GradientRule,
           args = obj)
 
 }
