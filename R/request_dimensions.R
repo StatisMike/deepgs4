@@ -176,3 +176,105 @@ DeleteDimensionRequest <- function(range) {
   return(obj)
 
 }
+
+#' @title Requests related to Dimension Groups
+#' @description
+#' Create `deepgsheets4Req` objects that allow addition, update and deletion of
+#' dimension groups on the sheet. Send created requests with [send_batchUpdate_req()]
+#' @param range object of class [DimensionRange] declaring the range of the
+#' operation
+#'
+#' @name DimensionGroupRequests
+#' @rdname DimensionGroupRequests
+#' @aliases AddDimensionGroupRequest DeleteDimensionGroupRequest
+#' UpdateDimensionGroupRequest
+#' @family deepgsheets4Req constructors
+#' @return deepgsheets4Req object
+NULL
+
+#' @rdname DimensionGroupRequests
+#' @section Add:
+#' Creates a group over the specified range.
+#'
+#' ## Depth incrementation and groups unification
+#'
+#' - If the requested range is a superset of the range of an existing group G,
+#'   then the depth of G is incremented and this new group G' has the depth of
+#'   that group.
+#'
+#'   For example: a group **C:D** with depth of 1 + group **B:E** results in groups:
+#'   **B:E** of depth 1 and **C:D** of depth 2.
+#'
+#' - If the requested range is a subset of the range of an existing group G,
+#'   then the depth of the new group G' becomes one greater than the depth of G.
+#'
+#'   For example, a group **B:E** of depth 1 + group **C:D** results in groups
+#'   **B:E** of depth 1 and **C:D** of depth 2.
+#'
+#' - If the requested range starts before and ends within, or starts within
+#'   and ends after, the range of an existing group G, then the range of the
+#'   existing group G becomes the union of the ranges, and the new group G'
+#'   has depth one greater than the depth of G and range as the intersection
+#'   of the ranges.
+#'
+#'   For example, a group **B:D** of depth 1 + **C:E** results in groups
+#'   **B:E** of depth 1 and **C:D** of depth 2.
+#' @export
+AddDimensionGroupRequest <- function(range) {
+
+  req <- list() |>
+    append_cond(range, class = "DimensionRange", skip_null = F)
+
+  obj <- list(addDimensionGroup = req) |>
+    deepgs_class(object_type = "Req")
+
+  return(obj)
+
+}
+
+#' @rdname DimensionGroupRequests
+#' @section Delete:
+#' Deletes a group over the specified range by decrementing the depth of the
+#' dimensions in the range.
+#'
+#' ## Depth decrementation
+#' For example, assume the sheet has a group **B:E** of depth 1 and group **C:D**
+#' of depth 2. Deleting a group over `D:E` range leaves the sheet with a
+#' group **B:D** of depth 1 and group **C:C** of depth 2.
+#' @export
+DeleteDimensionGroupRequest <- function(range) {
+
+  req <- list() |>
+    append_cond(range, class = "DimensionRange", skip_null = F)
+
+  obj <- list(deleteDimensionGroup = req) |>
+    deepgs_class(object_type = "Req")
+
+  return(obj)
+
+}
+
+#' @rdname DimensionGroupRequests
+#' @section Update:
+#' Updates the state of specified group.
+#'
+#' ## Depth decrementation
+#' For example, assume the sheet has a group **B:E** of depth 1 and group **C:D**
+#' of depth 2. Deleting a group over `D:E` range leaves the sheet with a
+#' group **B:D** of depth 1 and group **C:C** of depth 2.
+#' @export
+UpdateDimensionGroupRequest <- function(dimensionGroup,
+                                        fields = c("collapsed")) {
+
+  fields <- rlang::arg_match(fields)
+
+  req <- list() |>
+    append_cond(dimensionGroup, class = "DimensionGroup", skip_null = FALSE) |>
+    append_cond(fields)
+
+  obj <- list(updateDimensionGroup = req) |>
+    deepgs_class(object_type = "Req")
+
+  return(obj)
+
+}

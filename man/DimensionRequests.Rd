@@ -112,6 +112,7 @@ will be shifted in their place.
 Other deepgsheets4Req constructors: 
 \code{\link{CellRequests}},
 \code{\link{ConditionalFormatRequests}},
+\code{\link{DimensionGroupRequests}},
 \code{\link{MergeRequests}},
 \code{\link{PasteRequests}},
 \code{\link{SheetRequests}}
