@@ -256,12 +256,9 @@ DeleteDimensionGroupRequest <- function(range) {
 
 #' @rdname DimensionGroupRequests
 #' @section Update:
-#' Updates the state of specified group.
-#'
-#' ## Depth decrementation
-#' For example, assume the sheet has a group **B:E** of depth 1 and group **C:D**
-#' of depth 2. Deleting a group over `D:E` range leaves the sheet with a
-#' group **B:D** of depth 1 and group **C:C** of depth 2.
+#' Updates the state of specified group. For now, the only field that
+#' can be updated is `collapsed` - so you can collapse and un-collapse
+#' to dimension group identified on basis of other fields in `dimensionGroup`
 #' @export
 UpdateDimensionGroupRequest <- function(dimensionGroup,
                                         fields = c("collapsed")) {

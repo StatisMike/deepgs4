@@ -66,13 +66,9 @@ group \strong{B:D} of depth 1 and group \strong{C:C} of depth 2.
 
 \section{Update}{
 
-Updates the state of specified group.
-\subsection{Depth decrementation}{
-
-For example, assume the sheet has a group \strong{B:E} of depth 1 and group \strong{C:D}
-of depth 2. Deleting a group over \code{D:E} range leaves the sheet with a
-group \strong{B:D} of depth 1 and group \strong{C:C} of depth 2.
-}
+Updates the state of specified group. For now, the only field that
+can be updated is \code{collapsed} - so you can collapse and un-collapse
+to dimension group identified on basis of other fields in \code{dimensionGroup}
 }
 
 \seealso{
