@@ -3,7 +3,8 @@
 #' Create `deepgsheets4Req` objects that allow for update or append
 #' rows of cell data into sheet. Send created requests with [send_batchUpdate_req()]
 #' @param rows object of class [RowData] or list of multiple such objects
-#' @param fields name of [CellData] fields to update
+#' @param fields name of [CellData] fields to update. To get a list of valid fields,
+#' check [valid_update_fields()]
 #' @param start object of class [GridCoordinate]. The coordinate to start writing
 #' data at. Any number of rows and columns (including a different number of
 #' columns per row) may be written. Can't be specified alongside `range.`
@@ -28,8 +29,7 @@ NULL
 #' @export
 UpdateCellsRequest <- function(
     rows,
-    fields= c("userEnteredValue", "userEnteredFormat", "note", "textFormatRuns",
-              "dataValidation", "pivotTable", "dataSourceTable", "dataSourceFormula"),
+    fields,
     start = NULL,
     range = NULL) {
 
@@ -38,7 +38,7 @@ UpdateCellsRequest <- function(
   if (sum(arg_check) != 1)
     deepgs_error("Exactly one of {.arg start} and {.arg range} need to be provided for {.emph UpdateCellsRequest}.")
 
-  fields <- rlang::arg_match(fields, multiple = TRUE)
+  fields <- check_valid_update_fields(fields, "Cells")
   fields <- paste(fields, collapse = ",")
 
   rows <- nest_if_class(rows, "RowData") |>
@@ -66,10 +66,9 @@ UpdateCellsRequest <- function(
 AppendCellsRequest <- function(
     sheetId,
     rows,
-    fields= c("userEnteredValue", "userEnteredFormat", "note", "textFormatRuns",
-              "dataValidation", "pivotTable", "dataSourceTable", "dataSourceFormula")) {
+    fields) {
 
-  fields <- rlang::arg_match(fields, multiple = TRUE)
+  fields <- check_valid_update_fields(fields, "Cells")
   fields <- paste(fields, collapse = ",")
 
   rows <- nest_if_class(rows, "RowData") |>

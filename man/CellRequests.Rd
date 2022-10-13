@@ -6,25 +6,15 @@
 \alias{AppendCellsRequest}
 \title{Requests to update or append cells in the grid}
 \usage{
-UpdateCellsRequest(
-  rows,
-  fields = c("userEnteredValue", "userEnteredFormat", "note", "textFormatRuns",
-    "dataValidation", "pivotTable", "dataSourceTable", "dataSourceFormula"),
-  start = NULL,
-  range = NULL
-)
+UpdateCellsRequest(rows, fields, start = NULL, range = NULL)
 
-AppendCellsRequest(
-  sheetId,
-  rows,
-  fields = c("userEnteredValue", "userEnteredFormat", "note", "textFormatRuns",
-    "dataValidation", "pivotTable", "dataSourceTable", "dataSourceFormula")
-)
+AppendCellsRequest(sheetId, rows, fields)
 }
 \arguments{
 \item{rows}{object of class \link{RowData} or list of multiple such objects}
 
-\item{fields}{name of \link{CellData} fields to update}
+\item{fields}{name of \link{CellData} fields to update. To get a list of valid fields,
+check \code{\link[=valid_update_fields]{valid_update_fields()}}}
 
 \item{start}{object of class \link{GridCoordinate}. The coordinate to start writing
 data at. Any number of rows and columns (including a different number of
