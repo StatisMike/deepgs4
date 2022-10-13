@@ -73,9 +73,9 @@ construct_CellData_from_types <- function(
       to_date <- value %% 1 == 0
 
       if (is.null(format))
-        format <- CellFormat(numberFormat = NumberFormat(if (to_date) "DATE" else "DATE_TIME"))
+        format <- CellFormat(numberFormat = NumberFormat(if (isTRUE(to_date)) "DATE" else "DATE_TIME"))
       else if (is.null(format$numberFormat))
-        format$numberFormat <- NumberFormat(if (to_date) "DATE" else "DATE_TIME")
+        format$numberFormat <- NumberFormat(if (isTRUE(to_date)) "DATE" else "DATE_TIME")
 
       CellData(userEnteredValue = ExtendedValue(numberValue = value),
                userEnteredFormat = format)
