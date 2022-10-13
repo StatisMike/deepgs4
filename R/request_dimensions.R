@@ -95,7 +95,7 @@ UpdateDimensionPropertiesRequest <- function(
                             is.null,
                             logical(1))
 
-  if (sum(ranged_provided) != 1)
+  if (sum(ranges_provided) != 1)
     deepgs_error("Exactly one of {.arg range} or {.arg dataSourceSheetRange} need to be provided")
 
   fields <- rlang::arg_match(fields, multiple = TRUE)
