@@ -77,6 +77,10 @@ construct_CellData_from_types <- function(
       else if (is.null(format$numberFormat))
         format$numberFormat <- NumberFormat(if (isTRUE(to_date)) "DATE" else "DATE_TIME")
 
+      if (is.na(value)) {
+        return(CellData(userEnteredFormat = format))
+      }
+
       CellData(userEnteredValue = ExtendedValue(numberValue = value),
                userEnteredFormat = format)
 
