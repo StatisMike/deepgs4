@@ -428,8 +428,8 @@ is.RowData <- function(x) {
 #' @export
 
 GridData <- function(
-    startRow,
-    startColumn,
+    startRow = NULL,
+    startColumn = NULL,
     rowData = NULL,
     rowMetadata = NULL,
     columnMetadata = NULL) {
