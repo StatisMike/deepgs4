@@ -164,8 +164,8 @@ ChartSpec <- function(
 
   chart <- check_if_class(chart, class = pkg_env$valid_chart_specs)
 
-  titlePosition <- check_if_options(titlePosition, "CENTER", "LEFT", "RIGHT")
-  subtitlePosition <- check_if_options(subtitlePosition, "CENTER", "LEFT", "RIGHT")
+  titleTextPosition <- check_if_options(titleTextPosition, "CENTER", "LEFT", "RIGHT")
+  subtitleTextPosition <- check_if_options(subtitleTextPosition, "CENTER", "LEFT", "RIGHT")
   hiddenDimensionStrategy <- check_if_options(hiddenDimensionStrategy,
                                               "SKIP_HIDDEN_ROWS_AND_COLUMNS",
                                               "SKIP_HIDDEN_ROWS",

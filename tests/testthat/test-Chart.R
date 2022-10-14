@@ -101,10 +101,10 @@ test_that("ChartSpec can be created, listinized and generated from list", {
           BasicChartSeries(ChartData(GridRange(0,1,2,1,6)))
         ),
         title = "Test chart",
-        titlePosition = "CENTER",
+        titleTextPosition = "CENTER",
         titleTextFormat = TextFormat(fontSize = 16),
         subtitle = "Test subtitle",
-        subtitlePosition = "RIGHT",
+        subtitleTextPosition = "RIGHT",
         subtitleTextFormat = TextFormat(fontSize = 13),
         fontName = "Arial",
         altText = "Test chart with all features",
