@@ -8,10 +8,10 @@
 ChartSpec(
   chart,
   title = NULL,
-  titlePosition = NULL,
+  titleTextPosition = NULL,
   titleTextFormat = NULL,
   subtitle = NULL,
-  subtitlePosition = NULL,
+  subtitleTextPosition = NULL,
   subtitleTextFormat = NULL,
   fontName = NULL,
   altText = NULL,
@@ -31,7 +31,7 @@ is.ChartSpec(x)
 
 \item{title, subtitle}{Title and subtitle of the chart.}
 
-\item{titlePosition, subtitlePosition}{Horizntal aligmnent of the title and
+\item{titleTextPosition, subtitleTextPosition}{Horizntal aligmnent of the title and
 subtitle.}
 
 \item{titleTextFormat, subtitleTextFormat}{Objects of \code{\link[=TextFormat]{TextFormat()}} class.

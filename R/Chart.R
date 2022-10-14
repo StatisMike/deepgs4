@@ -124,7 +124,7 @@ ChartData <- function(
 #' @description Specification for googlesheets chart
 #' @param chart Specification of the chart to render. One of [TypeChartSpec].
 #' @param title,subtitle Title and subtitle of the chart.
-#' @param titlePosition,subtitlePosition Horizntal aligmnent of the title and
+#' @param titleTextPosition,subtitleTextPosition Horizntal aligmnent of the title and
 #' subtitle.
 #' @param titleTextFormat,subtitleTextFormat Objects of [TextFormat()] class.
 #' Strikethrough, underline and link aren't supported.
@@ -147,10 +147,10 @@ ChartData <- function(
 ChartSpec <- function(
     chart,
     title = NULL,
-    titlePosition = NULL,
+    titleTextPosition = NULL,
     titleTextFormat = NULL,
     subtitle = NULL,
-    subtitlePosition = NULL,
+    subtitleTextPosition = NULL,
     subtitleTextFormat = NULL,
     fontName = NULL,
     altText = NULL,
@@ -177,10 +177,10 @@ ChartSpec <- function(
                 name = extract_chart_field(chart),
                 skip_null = FALSE) |>
     append_cond(title, type = "character") |>
-    append_cond(titlePosition) |>
+    append_cond(titleTextPosition) |>
     append_cond(titleTextFormat, class = "TextFormat") |>
     append_cond(subtitle, type = "character") |>
-    append_cond(subtitlePosition) |>
+    append_cond(subtitleTextPosition) |>
     append_cond(subtitleTextFormat, class = "TextFormat") |>
     append_cond(fontName, type = "character") |>
     append_cond(altText, type = "character") |>
