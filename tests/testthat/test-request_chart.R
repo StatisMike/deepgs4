@@ -54,7 +54,9 @@ chartSpec <- ChartSpec(
                 startColumnIndex = 1,
                 endColumnIndex = 2)),
       targetAxis = "LEFT_AXIS")
-  )
+  ),
+  title = "Test chart",
+  titleTextPosition = "CENTER"
 )
 
 test_that("Add chart request can be constructed", {

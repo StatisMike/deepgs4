@@ -131,6 +131,21 @@ deepgs_listinize.BasicChartAxis <- function(x, ...) {
 
 #' @rdname deepgs_listinize
 #' @export
+deepgs_listinize.ChartSpec <- function(x, ...) {
+
+  x <- lapply(x, deepgs_listinize, ... = ...)
+
+  x <- x |>
+    nest_cond("titleTextPosition", "horizontalAlignment") |>
+    nest_cond("subtitleTextPosition", "horizontalAlignment") |>
+    unclass_obj()
+
+  return(x)
+
+}
+
+#' @rdname deepgs_listinize
+#' @export
 deepgs_listinize.Borders <- function(x, ...) {
 
   x <- lapply(x, deepgs_listinize, ... = ...)

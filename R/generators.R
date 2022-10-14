@@ -339,6 +339,11 @@ gen_ChartSpec <- function(obj, sheetId = NULL) {
                                sheetId = sheetId)
   obj[[chart_name]] <- NULL
 
+  if (!is.null(obj$titleTextPosition))
+    obj[["titleTextPosition"]] <- obj$titleTextPosition$horizontalAlignment
+  if (!is.null(obj$subtitleTextPosition))
+    obj[["subtitleTextPosition"]] <- obj$subtitleTextPosition$horizontalAlignment
+
   obj[["titleTextFormat"]] <- try_to_gen(obj[["titleTextFormat"]], "TextFormat")
   obj[["subtitleTextFormat"]] <- try_to_gen(obj[["subtitleTextFormat"]], "TextFormat")
   obj[["backgroundColorStyle"]] <- try_to_gen(obj[["backgroundColorStyle"]], "ColorStyle")
