@@ -47,21 +47,45 @@ Higher-level wrapper for mass \link{RowData} creation, taking as input
 data in form of \code{data.frame}.
 }
 \details{
+\subsection{Set types}{
+
 \code{names_types} and \code{values_types} could be provided as singular value, in which
 case ALL names and ALL columns will be saved as the same class, or as a vector
 of the same length as number of columns, in which case the every column will
 have its own class provided.
 
-Possible values are:
+Possible types are:
 \itemize{
 \item \code{n} for values formatted as numeric
 \item \code{c} for values formatted as character
 \item \code{b} for values formatted as boolean (logical)
-\item \code{dt} for values to be coerced by \code{\link[=deepgs_serial_number]{deepgs_serial_number()}}
 \item \code{f} if values are characters that need to be interpreted as googlesheets
-formulas. This type is never guessed.
+formulas. This type is never guessed
+\item \code{d} for values to be formatted as \code{DATE} numeric type. If they aren't
+\code{deepgsh_serial_number}, they will be coerced first
+\item \code{dt} for values to be formatted as \code{DATE_TIME} numeric type. If they aren't
+\code{deepgsh_serial_number}, they will be coerced first
 }
 
 If \code{values_types} argument is kept as \code{NULL}, the types will be interpreted
 from data.frame column type.
+}
+
+\subsection{Type guess}{
+
+If \code{values_types} aren't provided, they will be guessed
+automatically. Guessing is done on basis of vector type in following order:
+\enumerate{
+\item \code{logical} vectors will be given \code{b} type (entered as \emph{boolValue})
+\item \code{numeric} vectors will be given \code{n} type (entered as \emph{numberValue})
+\item \code{factor} vectors will be given \code{c} type (entered as \emph{stringValue})
+\item vectors will be tested if they can be processed with \code{lubridate::as_date_time()}
+or if they consists of \link{deepgs_serial_number}.
+4a. First 20 values will be tested if they are dates or NAs. If so,
+they will be given \code{d} type (entered as \emph{numberValue} with \code{DATE} \link{NumberFormat})
+4b. If not, they will be given \code{dt} type (entered as \emph{numberValue} with
+\code{DATE_TIME} \link{NumberFormat})
+\item If none of above applies, they will be given \code{c} type.
+}
+}
 }

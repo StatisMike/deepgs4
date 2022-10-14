@@ -31,19 +31,41 @@ test_that("NumberFormat can be created, listinized and generated from list", {
 
 })
 
+test_that("Border can be created, listinized and generated from list", {
+
+  expect_failure(
+    expect_error(
+      els$border1 <- border_min <- Border()
+    )
+  )
+
+  expect_true(is.Border(border_min))
+
+  expect_failure(
+    expect_error(
+      els$border2 <- border_max <- Border(
+        "DASHED",
+        ColorStyle("ACCENT1")
+      )
+    )
+  )
+
+  expect_true(is.Border(border_max))
+
+  expect_genned_identical(border_min)
+  expect_genned_identical(border_max)
+
+})
+
 test_that("Borders can be created, listinized and generated from list", {
 
   expect_failure(
     expect_error(
       els$borders <- borders_max <- Borders(
-        top_style = "SOLID_MEDIUM",
-        top_colorStyle = ColorStyle(0.2, 0.5, 1),
-        bottom_style = "DASHED",
-        bottom_colorStyle = ColorStyle(0.5, 0, 1, 0.7),
-        left_style = "DOTTED",
-        left_colorStyle = ColorStyle(themeColorType = "ACCENT6"),
-        right_style = "DOUBLE",
-        right_colorStyle = ColorStyle()
+        top = els$border1,
+        bottom = els$border2,
+        left = els$border1,
+        right = els$border2
       )
     )
   )
@@ -52,7 +74,7 @@ test_that("Borders can be created, listinized and generated from list", {
 
   expect_failure(
     expect_error(
-      borders_min <- Borders()
+      borders_min <- Borders(top = els$border1)
     )
   )
 

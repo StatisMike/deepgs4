@@ -10,7 +10,6 @@
 \alias{deepgs_listinize.ChartData}
 \alias{deepgs_listinize.BasicChartAxis}
 \alias{deepgs_listinize.ChartSpec}
-\alias{deepgs_listinize.Borders}
 \alias{deepgs_listinize.CellFormat}
 \alias{deepgs_listinize.ExtendedValue}
 \alias{deepgs_listinize.EmbeddedChart}
@@ -36,8 +35,6 @@ deepgs_listinize(x, ...)
 \method{deepgs_listinize}{BasicChartAxis}(x, ...)
 
 \method{deepgs_listinize}{ChartSpec}(x, ...)
-
-\method{deepgs_listinize}{Borders}(x, ...)
 
 \method{deepgs_listinize}{CellFormat}(x, ...)
 

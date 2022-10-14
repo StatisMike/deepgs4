@@ -10,8 +10,11 @@ unclass_obj <- function(x, ...) {
 #' @title Is an object
 #' @param x object
 #' @export
-is.deepgsheets4Obj <- function(x)
+is.deepgsheets4Obj <- function(x) {
   inherits(x, "deepgsheets4Obj")
+}
+
+#### default listinizers ####
 
 #' @name deepgs_listinize
 #' @rdname deepgs_listinize
@@ -65,6 +68,8 @@ deepgs_listinize.deepgsheets4Obj <- function(x, ...) {
   return(x)
 
 }
+
+#### specific listinizers ####
 
 #' @rdname deepgs_listinize
 #' @export
@@ -141,27 +146,6 @@ deepgs_listinize.ChartSpec <- function(x, ...) {
     unclass_obj()
 
   return(x)
-
-}
-
-#' @rdname deepgs_listinize
-#' @export
-deepgs_listinize.Borders <- function(x, ...) {
-
-  x <- lapply(x, deepgs_listinize, ... = ...)
-
-  obj <- list(
-    top = list(style = x$top_style) |>
-      append_cond(x$top_colorStyle, "colorStyle"),
-    bottom = list(style = x$bottom_style) |>
-      append_cond(x$bottom_colorStyle, "colorStyle"),
-    left = list(style = x$left_style) |>
-      append_cond(x$left_colorStyle, "colorStyle"),
-    right = list(style = x$right_style) |>
-      append_cond(x$right_colorStyle, "colorStyle")
-  )
-
-  return(obj)
 
 }
 

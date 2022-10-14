@@ -141,3 +141,41 @@ UnmergeCellsRequest <- function(
   return(out)
 
 }
+
+#' @title Update borders of a given range
+#' @description Generate request to update borders of a given range of cells.
+#' Can specify both cell borders on outside of range and within the range.
+#' If a field is not set in the request, that means the border remains as-is:
+#' to clear a border, explicitly set the style to `"NONE"`.
+#' @param range object of class [GridRange]
+#' @param top,bottom,left,right objects of class [Border], specifying borders
+#' to put at the outside of the range
+#' @param innerHorizontal,innerVertical objects of class [Border], specifying
+#' borders to put between the cells inside the range
+#'
+#' @family deepgsheets4Req constructors
+#' @return deepgsheets4Req object
+#' @export
+UpdateBordersRequest <- function(range,
+                                 top = NULL,
+                                 bottom = NULL,
+                                 left = NULL,
+                                 right = NULL,
+                                 innerHorizontal = NULL,
+                                 innerVertical = NULL) {
+
+  req <- list() |>
+    append_cond(range, class = "GridRange", skip_null = FALSE) |>
+    append_cond(top, class = "Border") |>
+    append_cond(bottom, class = "Border") |>
+    append_cond(left, class = "Border") |>
+    append_cond(right, class = "Border") |>
+    append_cond(innerHorizontal, class = "Border") |>
+    append_cond(innerVertical, class = "Border")
+
+  obj <- list(updateBorders = req) |>
+    deepgs_class(object_type = "Req")
+
+  return(obj)
+
+}

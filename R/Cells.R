@@ -139,54 +139,64 @@ is.NumberFormat <- function(x) {
   inherits(x, "NumberFormat")
 }
 
-#' @title Cell border specification
-#' @param top_style,bottom_style,left_style,right_style Type of the top, bottom,
-#' left and right borders.
-#' @param top_colorStyle,bottom_colorStyle,left_colorStyle,right_colorStyle Object
-#' of class [ColorStyle()] describing color for top, bottom, left and right
-#' border
+#' @title Border specification
+#' @param style Type of the border.
+#' @param colorStyle object of class [ColorStyle] describing color of the border
+#' @param ... additional deprecated fields returned from GoogleSheet API
 #' @details
 #' **Border styles**:
-#' - `DOTTED`: The border is dotted.
-#' - `DASHED`: The border is dashed.
 #' - `SOLID`: The border is a thin solid line.
 #' - `SOLID_MEDIUM`: The border is a medium solid line.
 #' - `SOLID_THICK`: The border is a thick solid line.
+#' - `DOTTED`: The border is dotted.
+#' - `DASHED`: The border is dashed.
 #' - `NONE`: No border. Used only when updating a border in order to erase it.
 #' - `DOUBLE`: The border is two solid lines.
 #' @export
+Border <- function(style = c("SOLID", "SOLID_MEDIUM", "SOLID_THICK", "DOTTED", "DASHED", "NONE", "DOUBLE"),
+                   colorStyle = NULL) {
+
+  style <- rlang::arg_match(style)
+
+  out <- list() |>
+    append_cond(style) |>
+    append_cond(colorStyle, class = "ColorStyle") |>
+    deepgs_class("Border")
+
+
+  return(out)
+
+}
+
+#' @rdname Border
+#' @param top,bottom,left,right Objects of class [Border] declaring style
+#' of specified border in a cell
+#' @export
 Borders <- function(
-    top_style = c("SOLID", "DOTTED", "DASHED", "SOLID_MEDIUM", "SOLID_THICK", "NONE", "DOUBLE"),
-    bottom_style = c("SOLID", "DOTTED", "DASHED", "SOLID_MEDIUM", "SOLID_THICK", "NONE", "DOUBLE"),
-    left_style = c("SOLID", "DOTTED", "DASHED", "SOLID_MEDIUM", "SOLID_THICK", "NONE", "DOUBLE"),
-    right_style = c("SOLID", "DOTTED", "DASHED", "SOLID_MEDIUM", "SOLID_THICK", "NONE", "DOUBLE"),
-    top_colorStyle = NULL,
-    bottom_colorStyle = NULL,
-    left_colorStyle = NULL,
-    right_colorStyle = NULL) {
+    top = NULL,
+    bottom = NULL,
+    left = NULL,
+    right = NULL) {
 
-  top_style <- rlang::arg_match(top_style)
-  bottom_style <- rlang::arg_match(bottom_style)
-  left_style <- rlang::arg_match(left_style)
-  right_style <- rlang::arg_match(right_style)
-
-  out <- list(
-    top_style = top_style,
-    bottom_style = bottom_style,
-    left_style = left_style,
-    right_style = right_style
-  ) |>
-    append_cond(top_colorStyle, class = "ColorStyle") |>
-    append_cond(bottom_colorStyle, class = "ColorStyle") |>
-    append_cond(left_colorStyle, class = "ColorStyle") |>
-    append_cond(right_colorStyle, class = "ColorStyle") |>
+  out <- list() |>
+    append_cond(top, class = "Border") |>
+    append_cond(bottom, class = "Border") |>
+    append_cond(left, class = "Border") |>
+    append_cond(right, class = "Border") |>
     deepgs_class("Borders")
 
   return(out)
 
 }
 
-#' @rdname Borders
+#' @rdname Border
+#' @param x any R object
+#' @export
+is.Border <- function(x) {
+  inherits(x, "Border")
+}
+
+#' @rdname Border
 #' @param x any R object
 #' @export
 is.Borders <- function(x) {

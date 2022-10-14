@@ -97,25 +97,27 @@ gen_CellFormat <- function(obj) {
 
 #' @rdname gen_deepgsheets4Obj
 #' @export
+gen_Border <- function(obj) {
+
+  obj <- obj |>
+    try_to_gen_inplace("colorStyle", "ColorStyle")
+
+  do.call(Border, args = obj)
+
+}
+
+#' @rdname gen_deepgsheets4Obj
+#' @export
 gen_Borders <- function(obj) {
 
-  top_colorStyle <- try_to_gen(obj$top$colorStyle, "ColorStyle")
-  bottom_colorStyle <- try_to_gen(obj$bottom$colorStyle, "ColorStyle")
-  left_colorStyle <- try_to_gen(obj$left$colorStyle, "ColorStyle")
-  right_colorStyle <- try_to_gen(obj$right$colorStyle, "ColorStyle")
+  obj <- obj |>
+    try_to_gen_inplace("top", "Border") |>
+    try_to_gen_inplace("bottom", "Border") |>
+    try_to_gen_inplace("left", "Border") |>
+    try_to_gen_inplace("right", "Border")
 
-  args <- list(
-    top_style = obj$top$style,
-    bottom_style = obj$bottom$style,
-    left_style = obj$left$style,
-    right_style = obj$right$style
-  ) |>
-    append_cond(top_colorStyle) |>
-    append_cond(bottom_colorStyle) |>
-    append_cond(left_colorStyle) |>
-    append_cond(right_colorStyle)
+  do.call(Borders, args = obj)
 
-  do.call(Borders, args = args)
 }
 
 #' @rdname gen_deepgsheets4Obj
@@ -180,6 +182,7 @@ gen_Sheet <- function(obj) {
   sheetId <- obj$properties$sheetId
 
   obj <- obj |>
+    try_to_gen_inplace("data", "GridData", TRUE) |>
     try_to_gen_inplace("properties", "SheetProperties") |>
     try_to_gen_inplace("charts", "EmbeddedChart", TRUE, sheetId = sheetId) |>
     try_to_gen_inplace("conditionalFormats", "ConditionalFormatRule", TRUE,
