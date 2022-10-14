@@ -93,7 +93,6 @@ send_get_req <- function(spreadsheetId, fields = NULL, ranges = NULL) {
 
   resp <- request_make(req)
 
-  gargle::response_process(resp) |>
-    gen_Spreadsheet()
+  gargle::response_process(resp)
 
 }
