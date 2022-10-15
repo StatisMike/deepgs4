@@ -78,6 +78,7 @@ Other deepgsheets4Req constructors:
 \code{\link{DimensionRequests}},
 \code{\link{MergeRequests}},
 \code{\link{PasteRequests}},
-\code{\link{SheetRequests}}
+\code{\link{SheetRequests}},
+\code{\link{UpdateBordersRequest}()}
 }
 \concept{deepgsheets4Req constructors}

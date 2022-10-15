@@ -29,7 +29,7 @@ AddConditionalFormatRule <- function(index,
     append_cond(rule, class = "ConditionalFormatRule", skip_null = FALSE)
 
   obj <- list(addConditionalFormatRule = req) |>
-    deepgs_class(object_type = "Req")
+    dgs4_class(object_type = "Req")
 
   return(obj)
 
@@ -62,10 +62,10 @@ UpdateConditionalFormatRule <- function(
       append_cond(sheetId, type = "integer")
 
   } else
-    deepgs_error("Either specify {.arg rule} for rule replacement or {.arg newIndex} and {.arg sheetId} to move given rule.")
+    dgs4_error("Either specify {.arg rule} for rule replacement or {.arg newIndex} and {.arg sheetId} to move given rule.")
 
   obj <- list(updateConditionalFormatRule = req) |>
-    deepgs_class(object_type = "Req")
+    dgs4_class(object_type = "Req")
 
   return(obj)
 
@@ -84,7 +84,7 @@ DeleteConditionalFormatRule <- function(index,
     append_cond(sheetId, type = "integer", skip_null = FALSE)
 
   obj <- list(deleteConditionalFormatRule = req) |>
-    deepgs_class(object_type = "Req")
+    dgs4_class(object_type = "Req")
 
   return(obj)
 

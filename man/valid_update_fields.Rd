@@ -4,7 +4,7 @@
 \alias{valid_update_fields}
 \title{Check validity of specified fields}
 \usage{
-valid_update_fields(updateRequest = c("Cells"))
+valid_update_fields(updateRequest = c("UpdateCells", "UpdateSheetProperties"))
 }
 \arguments{
 \item{updateRequest}{which update request to check}
@@ -15,11 +15,11 @@ valid_update_fields(updateRequest = c("Cells"))
 character vector
 }
 \description{
-All update requests to be sent by \code{\link[=send_batchUpdate_req]{send_batchUpdate_req()}} take
+Many requests send to Sheets API take
 a \code{fields} argument in form of \href{https://developers.google.com/protocol-buffers/docs/reference/google.protobuf#google.protobuf.FieldMask}{FieldMask}{target="_blank"}
 
 \emph{FieldMask} format is helpful for specifying accurately which fields should
-be updated by BatchUpdate request.
+be updated by batchUpdate request or retrieved with \emph{get} request
 
 This function works as a helper for retrieval of valid update fields per
 request.

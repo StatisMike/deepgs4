@@ -1,7 +1,7 @@
 googledrive::drive_auth(path = Sys.getenv("G_SERVICE_ACCOUNT"),
                         cache = F)
-deepgs_auth(path = Sys.getenv("G_SERVICE_ACCOUNT"),
-            cache = F)
+dgs4_auth(path = Sys.getenv("G_SERVICE_ACCOUNT"),
+          cache = F)
 
 # for now using googlsheets4
 cars_spreadsheet <- Spreadsheet(

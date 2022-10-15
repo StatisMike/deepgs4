@@ -7,7 +7,7 @@
 #' @param resp whole response
 #' @param reqs requests
 #' @noRd
-deepgs_batchUpdate_process <- function(
+dgs4_batchUpdate_process <- function(
     resp,
     reqs) {
 
@@ -53,10 +53,10 @@ send_batchUpdate_req <- function(
     requests <- list(...)
 
   if (!all(vapply(requests, is.deepgsheets4Req, logical(1))))
-    deepgs_error("All objects provided to {.arg ...} or {.arg .dots} argument need to be of {.cls deepgsheets4Req} class",
+    dgs4_error("All objects provided to {.arg ...} or {.arg .dots} argument need to be of {.cls deepgsheets4Req} class",
                  class = "WrongReqClass")
 
-  requests <- lapply(requests, deepgs_listinize)
+  requests <- lapply(requests, dgs4_listinize)
   names(requests) <- NULL
 
   req <- request_generate(
@@ -70,7 +70,7 @@ send_batchUpdate_req <- function(
   resp <- request_make(req)
 
   gargle::response_process(resp) |>
-    deepgs_batchUpdate_process(requests)
+    dgs4_batchUpdate_process(requests)
 
 }
 

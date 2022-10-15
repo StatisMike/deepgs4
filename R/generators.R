@@ -2,6 +2,9 @@ is_sheetId_in_args <- function(f) {
   "sheetId" %in% names(formals(f))
 }
 
+is_specific_gen <- function(gen_name) {
+  gen_name %in% pkg_env$generators
+}
 
 #' @title Generate deepgsheets4 object
 #' @description
@@ -26,19 +29,9 @@ is_sheetId_in_args <- function(f) {
 
 gen_deepgsheets4Obj <- function(obj, class, sheetId = NULL) {
 
-  if (!exists(class, where = "package:deepgsheets4", mode = "function"))
-    deepgs_error("Constructor for {.cls {class}} is not available!",
-                 class = "NoClassGenError")
-
   specific_gen_name <- paste0("gen_", class)
 
-  specific_gen_exists <- exists(
-    x = specific_gen_name,
-    where = "package:deepgsheets4",
-    mode = "function"
-  )
-
-  if (specific_gen_exists) {
+  if (is_specific_gen(specific_gen_name)) {
 
     if (is_sheetId_in_args(specific_gen_name))
       args <- list(obj = obj, sheetId = sheetId)
@@ -62,6 +55,47 @@ gen_deepgsheets4Obj <- function(obj, class, sheetId = NULL) {
 
 }
 
+##### Generators list IMPORTANT! ####
+# During addition of new specific deepgsheets4Obj generator,
+# add it to this character vector. It will be used to check
+# if for given class there is a specific generator
+pkg_env$generators <- c(
+  "gen_CellFormat",
+  "gen_Border",
+  "gen_Borders",
+  "gen_ExtendedValue",
+  "gen_CellData",
+  "gen_RowData",
+  "gen_GridData",
+  "gen_Sheet",
+  "gen_SheetProperties",
+  "gen_Spreadsheet",
+  "gen_SpreadsheetProperties",
+  "gen_SpreadsheetTheme",
+  "gen_OverlayPosition",
+  "gen_EmbeddedObjectPosition",
+  "gen_ChartAxisViewWindowOptions",
+  "gen_ChartData",
+  "gen_ChartSpec",
+  "gen_DataLabel",
+  "gen_EmbeddedChart",
+  "gen_BasicChartAxis",
+  "gen_BasicChartDomain",
+  "gen_BasicSeriesDataPointStyleOverride",
+  "gen_BasicChartSeries",
+  "gen_BasicChartSpec",
+  "gen_DimensionProperties",
+  "gen_DimensionGroup",
+  "gen_BooleanCondition",
+  "gen_InterpolationPoint",
+  "gen_BooleanRule",
+  "gen_GradientRule",
+  "gen_ConditionalFormatRule",
+  "gen_TextFormat",
+  "gen_ColorStyle",
+  "gen_TextFormatRun",
+  "gen_UpdateValuesResponse"
+)
 
 ##### Cells.R Generators ####
 
@@ -97,25 +131,27 @@ gen_CellFormat <- function(obj) {
 
 #' @rdname gen_deepgsheets4Obj
 #' @export
+gen_Border <- function(obj) {
+
+  obj <- obj |>
+    try_to_gen_inplace("colorStyle", "ColorStyle")
+
+  do.call(Border, args = obj)
+
+}
+
+#' @rdname gen_deepgsheets4Obj
+#' @export
 gen_Borders <- function(obj) {
 
-  top_colorStyle <- try_to_gen(obj$top$colorStyle, "ColorStyle")
-  bottom_colorStyle <- try_to_gen(obj$bottom$colorStyle, "ColorStyle")
-  left_colorStyle <- try_to_gen(obj$left$colorStyle, "ColorStyle")
-  right_colorStyle <- try_to_gen(obj$right$colorStyle, "ColorStyle")
+  obj <- obj |>
+    try_to_gen_inplace("top", "Border") |>
+    try_to_gen_inplace("bottom", "Border") |>
+    try_to_gen_inplace("left", "Border") |>
+    try_to_gen_inplace("right", "Border")
 
-  args <- list(
-    top_style = obj$top$style,
-    bottom_style = obj$bottom$style,
-    left_style = obj$left$style,
-    right_style = obj$right$style
-  ) |>
-    append_cond(top_colorStyle) |>
-    append_cond(bottom_colorStyle) |>
-    append_cond(left_colorStyle) |>
-    append_cond(right_colorStyle)
+  do.call(Borders, args = obj)
 
-  do.call(Borders, args = args)
 }
 
 #' @rdname gen_deepgsheets4Obj
@@ -180,10 +216,15 @@ gen_Sheet <- function(obj) {
   sheetId <- obj$properties$sheetId
 
   obj <- obj |>
+    try_to_gen_inplace("data", "GridData", TRUE) |>
     try_to_gen_inplace("properties", "SheetProperties") |>
     try_to_gen_inplace("charts", "EmbeddedChart", TRUE, sheetId = sheetId) |>
     try_to_gen_inplace("conditionalFormats", "ConditionalFormatRule", TRUE,
-                       sheetId = sheetId)
+                       sheetId = sheetId) |>
+    try_to_gen_inplace("merges", "GridRange", TRUE, sheetId = sheetId) |>
+    try_to_gen_inplace("rowGroups", "DimensionGroup", TRUE, sheetId = sheetId) |>
+    try_to_gen_inplace("columnGroups", "DimensionGroup", TRUE, sheetId = sheetId)
+
 
   do.call(Sheet, args = obj)
 
@@ -510,10 +551,10 @@ gen_DimensionProperties <- function(obj) {
 
 #' @rdname gen_deepgsheets4Obj
 #' @export
-gen_DimensionGroup <- function(obj) {
+gen_DimensionGroup <- function(obj, sheetId = NULL) {
 
   obj <- obj |>
-    try_to_gen_inplace("range", "DimensionRange")
+    try_to_gen_inplace("range", "DimensionRange", sheetId = sheetId)
 
   do.call(DimensionGroup, args = obj)
 

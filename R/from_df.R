@@ -12,9 +12,16 @@ guess_data_types <- function(x) {
       return("n")
     if (is.factor(col))
       return("c")
-    if (is.coercible.dt(col))
-      return("dt")
-
+    if (is.coercible.dt(col) || is.dgs4_serial_number(col)) {
+      if (is.dgs4_serial_number(col))
+        as_sn <- head(col, 20)
+      else
+        as_sn <- dgs4_serial_number(head(col, 20))
+      if (all(vapply(as_sn, \(x) is.na(x) || x %% 1 == 0, logical(1))))
+        return("d")
+      else
+        return("dt")
+    }
     return("c")
   })
 }
@@ -41,8 +48,8 @@ handle_val_types <- function(x, df, which = c("names", "values")) {
   }
 
   if (length(x) != ncol(df))
-    deepgs_error("Either {.val NULL}, {.val 1} or as many types as columns or names need to provided to {.arg value_types} or {.arg names_types} arguments.",
-                 call = rlang::caller_env(2))
+    dgs4_error("Either {.val NULL}, {.val 1} or as many types as columns or names need to provided to {.arg value_types} or {.arg names_types} arguments.",
+               call = rlang::caller_env(2))
 
   return(x)
 
@@ -58,24 +65,42 @@ construct_CellData_from_types <- function(
 
   switch(
     type,
-    n = CellData(userEnteredValue = ExtendedValue(numberValue = as.numeric(value)),
+    n = CellData(userEnteredValue = if (!is.na(value)) ExtendedValue(numberValue = as.numeric(value)),
                  userEnteredFormat = if (!is.null(format)) format),
-    c = CellData(userEnteredValue = ExtendedValue(stringValue = as.character(value)),
+    c = CellData(userEnteredValue = if (!is.na(value)) ExtendedValue(stringValue = as.character(value)),
                  userEnteredFormat = if (!is.null(format)) format),
-    b = CellData(userEnteredValue = ExtendedValue(boolValue = as.logical(value)),
+    b = CellData(userEnteredValue = if (!is.na(value)) ExtendedValue(boolValue = as.logical(value)),
                  userEnteredFormat = if (!is.null(format)) format),
-    f = CellData(userEnteredValue = ExtendedValue(formulaValue = as.character(value)),
+    f = CellData(userEnteredValue = if (!is.na(value)) ExtendedValue(formulaValue = as.character(value)),
                  userEnteredFormat = if (!is.null(format)) format),
-    dt = {
+    d = {
 
-      value <- deepgs_serial_number(unlist(value))
-
-      to_date <- value %% 1 == 0
+      if (!is.dgs4_serial_number(value) && !is.na(value))
+        value <- dgs4_serial_number(value)
 
       if (is.null(format))
-        format <- CellFormat(numberFormat = NumberFormat(if (isTRUE(to_date)) "DATE" else "DATE_TIME"))
+        format <- CellFormat(numberFormat = NumberFormat("DATE"))
       else if (is.null(format$numberFormat))
-        format$numberFormat <- NumberFormat(if (isTRUE(to_date)) "DATE" else "DATE_TIME")
+        format$numberFormat <- NumberFormat("DATE")
+
+      if (is.na(value)) {
+        return(CellData(userEnteredFormat = format))
+      }
+
+      CellData(userEnteredValue = ExtendedValue(numberValue = value),
+               userEnteredFormat = format)
+
+    },
+
+    dt = {
+
+      if (!is.dgs4_serial_number(value) && !is.na(value))
+        value <- dgs4_serial_number(value)
+
+      if (is.null(format))
+        format <- CellFormat(numberFormat = NumberFormat("DATE_TIME"))
+      else if (is.null(format$numberFormat))
+        format$numberFormat <- NumberFormat("DATE_TIME")
 
       if (is.na(value)) {
         return(CellData(userEnteredFormat = format))
@@ -100,21 +125,39 @@ construct_CellData_from_types <- function(
 #' @param transpose if `TRUE`, then the data.frame will be transposed, so the first
 #' column in Sheets will be the names, and every next column: one row from the `df`
 #' @details
+#' ## Set types
 #' `names_types` and `values_types` could be provided as singular value, in which
 #' case ALL names and ALL columns will be saved as the same class, or as a vector
 #' of the same length as number of columns, in which case the every column will
 #' have its own class provided.
 #'
-#' Possible values are:
+#' Possible types are:
 #' - `n` for values formatted as numeric
 #' - `c` for values formatted as character
 #' - `b` for values formatted as boolean (logical)
-#' - `dt` for values to be coerced by [deepgs_serial_number()]
 #' - `f` if values are characters that need to be interpreted as googlesheets
-#' formulas. This type is never guessed.
+#' formulas. This type is never guessed
+#' - `d` for values to be formatted as `DATE` numeric type. If they aren't
+#' `deepgsh_serial_number`, they will be coerced first
+#' - `dt` for values to be formatted as `DATE_TIME` numeric type. If they aren't
+#' `deepgsh_serial_number`, they will be coerced first
 #'
 #' If `values_types` argument is kept as `NULL`, the types will be interpreted
 #' from data.frame column type.
+#'
+#' ## Type guess
+#' If `values_types` aren't provided, they will be guessed
+#' automatically. Guessing is done on basis of vector type in following order:
+#' 1. `logical` vectors will be given `b` type (entered as *boolValue*)
+#' 2. `numeric` vectors will be given `n` type (entered as *numberValue*)
+#' 3. `factor` vectors will be given `c` type (entered as *stringValue*)
+#' 4. vectors will be tested if they can be processed with `lubridate::as_date_time()`
+#' or if they consists of [dgs4_serial_number].
+#'   4a. First 20 values will be tested if they are dates or NAs. If so,
+#'   they will be given `d` type (entered as *numberValue* with `DATE` [NumberFormat])
+#'   4b. If not, they will be given `dt` type (entered as *numberValue* with
+#'   `DATE_TIME` [NumberFormat])
+#' 5. If none of above applies, they will be given `c` type.
 #' @name rd_gd_from_df
 #' @rdname rd_gd_from_df
 #' @aliases to_RowData_from_df to_GridData_from_df
@@ -131,7 +174,7 @@ to_RowData_from_df <- function(
     transpose = FALSE) {
 
   if (!is.data.frame(df))
-    deepgsheets4:::deepgs_error("Object provided to {.arg df} needs to be a {.cls data.frame}.")
+    dgs4_error("Object provided to {.arg df} needs to be a {.cls data.frame}.")
 
   df <- as.data.frame(df)
 

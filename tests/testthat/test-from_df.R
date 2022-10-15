@@ -33,7 +33,7 @@ test_that("RowData can be created from data.frame", {
   expect_failure(
     expect_error(
       normal_explicit <- to_RowData_from_df(test_df,
-                                            values_types = c("dt", "dt", "b", "n", "c", "f"))
+                                            values_types = c("d", "dt", "b", "n", "c", "f"))
     )
   )
 
@@ -87,9 +87,11 @@ test_that("RowData can be created from data.frame", {
     })
 
   # retained formats with normal
-  names_format <- CellFormat(borders = Borders("SOLID_MEDIUM", "SOLID_MEDIUM", "SOLID", "SOLID"),
+  names_format <- CellFormat(borders = Borders(
+    Border("SOLID_MEDIUM"), Border("SOLID_MEDIUM"), Border("SOLID"), Border("SOLID")),
                              backgroundColorStyle = ColorStyle(themeColorType = "ACCENT4"))
-  values_format <- CellFormat(borders = Borders("SOLID", "SOLID", "DASHED", "DASHED"),
+  values_format <- CellFormat(borders = Borders(
+    Border("SOLID"), Border("SOLID"), Border("DASHED"), Border("DASHED")),
                               backgroundColorStyle = ColorStyle(themeColorType = "ACCENT1"))
 
   expect_failure(

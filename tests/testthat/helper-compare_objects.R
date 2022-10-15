@@ -5,6 +5,9 @@ compare_objects <- function(obj1, obj2, skip_compare = c(), pos_name = NULL,
     comparisons <- lapply(names(obj1), \(name) {
 
       if (name %in% skip_compare)
+        return(NULL)
+
+      else if (is.null(obj2[[name]]))
         comparison <- as.logical(NA)
 
       else if (is.list(obj1[[name]])) {
@@ -23,6 +26,9 @@ compare_objects <- function(obj1, obj2, skip_compare = c(), pos_name = NULL,
   else {
     comparisons <- lapply(seq_along(obj1), \(i) {
 
+      if (i %in% skip_compare)
+        return(NULL)
+
       if (is.list(obj1[[i]])) {
         comparison <- compare_objects(obj1[[i]], obj2[[i]],
                                       skip_compare = skip_compare,
@@ -30,11 +36,7 @@ compare_objects <- function(obj1, obj2, skip_compare = c(), pos_name = NULL,
                                       else paste(pos_name, i, sep = "."))
         return(comparison)
       } else {
-        if (i %in% skip_compare)
-          comparison <- as.logical(NA)
-        else {
           comparison <- obj1[[i]] == obj2[[i]]
-        }
       }
       comparison <- setNames(nm = if (is.null(pos_name)) i
                              else paste(pos_name, i, sep = "."),

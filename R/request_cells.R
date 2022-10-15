@@ -29,17 +29,16 @@ NULL
 #' @export
 UpdateCellsRequest <- function(
     rows,
-    fields,
+    fields = NULL,
     start = NULL,
     range = NULL) {
 
   arg_check <- vapply(list(start, range), is.null, logical(1))
 
   if (sum(arg_check) != 1)
-    deepgs_error("Exactly one of {.arg start} and {.arg range} need to be provided for {.emph UpdateCellsRequest}.")
+    dgs4_error("Exactly one of {.arg start} and {.arg range} need to be provided for {.emph UpdateCellsRequest}.")
 
-  fields <- check_valid_update_fields(fields, "Cells")
-  fields <- paste(fields, collapse = ",")
+  fields <- check_valid_update_fields(fields, "UpdateCells")
 
   rows <- nest_if_class(rows, "RowData") |>
     check_if_all_class("RowData")
@@ -51,7 +50,7 @@ UpdateCellsRequest <- function(
     append_cond(range, class = "GridRange")
 
   out <- list(updateCells = req) |>
-    deepgs_class(object_type = "Req")
+    dgs4_class(object_type = "Req")
 
   return(out)
 
@@ -66,9 +65,9 @@ UpdateCellsRequest <- function(
 AppendCellsRequest <- function(
     sheetId,
     rows,
-    fields) {
+    fields = NULL) {
 
-  fields <- check_valid_update_fields(fields, "Cells")
+  fields <- check_valid_update_fields(fields, "UpdateCells")
   fields <- paste(fields, collapse = ",")
 
   rows <- nest_if_class(rows, "RowData") |>
@@ -80,7 +79,7 @@ AppendCellsRequest <- function(
     append_cond(fields)
 
   out <- list(appendCells = req) |>
-    deepgs_class(object_type = "Req")
+    dgs4_class(object_type = "Req")
 
   return(out)
 
@@ -118,7 +117,7 @@ MergeCellsRequest <- function(
     append_cond(mergeType)
 
   out <- list(mergeCells = req) |>
-    deepgs_class(object_type = "Req")
+    dgs4_class(object_type = "Req")
 
   return(out)
 
@@ -136,8 +135,46 @@ UnmergeCellsRequest <- function(
     append_cond(range, class = "GridRange", skip_null = F)
 
   out <- list(unmergeCells = req) |>
-    deepgs_class(object_type = "Req")
+    dgs4_class(object_type = "Req")
 
   return(out)
+
+}
+
+#' @title Update borders of a given range
+#' @description Generate request to update borders of a given range of cells.
+#' Can specify both cell borders on outside of range and within the range.
+#' If a field is not set in the request, that means the border remains as-is:
+#' to clear a border, explicitly set the style to `"NONE"`.
+#' @param range object of class [GridRange]
+#' @param top,bottom,left,right objects of class [Border], specifying borders
+#' to put at the outside of the range
+#' @param innerHorizontal,innerVertical objects of class [Border], specifying
+#' borders to put between the cells inside the range
+#'
+#' @family deepgsheets4Req constructors
+#' @return deepgsheets4Req object
+#' @export
+UpdateBordersRequest <- function(range,
+                                 top = NULL,
+                                 bottom = NULL,
+                                 left = NULL,
+                                 right = NULL,
+                                 innerHorizontal = NULL,
+                                 innerVertical = NULL) {
+
+  req <- list() |>
+    append_cond(range, class = "GridRange", skip_null = FALSE) |>
+    append_cond(top, class = "Border") |>
+    append_cond(bottom, class = "Border") |>
+    append_cond(left, class = "Border") |>
+    append_cond(right, class = "Border") |>
+    append_cond(innerHorizontal, class = "Border") |>
+    append_cond(innerVertical, class = "Border")
+
+  obj <- list(updateBorders = req) |>
+    dgs4_class(object_type = "Req")
+
+  return(obj)
 
 }

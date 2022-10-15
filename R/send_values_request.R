@@ -37,7 +37,7 @@
 #'
 #' ## dateTimeRenderOption
 #' - **SERIAL_NUMBER**: Instructs date, time, datetime, and duration fields to
-#' be output as doubles in "serial number" format. For more info, see [deepgs_serial_number()]
+#' be output as doubles in "serial number" format. For more info, see [dgs4_serial_number()]
 #' - **FORMATTED_STRING**: Instructs date, time, datetime, and duration fields
 #' to be output as strings in their given number format (which depends
 #' on the spreadsheet locale).
@@ -66,8 +66,8 @@ send_get_values_req <- function(
   req <- gargle::request_build(
     path = paste0("v4/spreadsheets/", spreadsheetId, "/values/", range),
     params = params,
-    token = deepgs_token(),
-    key = deepgs_api_key(),
+    token = dgs4_token(),
+    key = dgs4_api_key(),
     base_url = "https://sheets.googleapis.com"
   )
 
@@ -95,8 +95,8 @@ send_clear_values_req <- function(
     method = "POST",
     path = paste0("v4/spreadsheets/", spreadsheetId, "/values/", range, ":clear"),
     params = params,
-    token = deepgs_token(),
-    key = deepgs_api_key(),
+    token = dgs4_token(),
+    key = dgs4_api_key(),
     base_url = "https://sheets.googleapis.com"
   )
 
@@ -146,7 +146,7 @@ send_clear_values_req <- function(
 #'
 #' ## responseDateTimeRenderOption
 #' - **SERIAL_NUMBER**: Instructs date, time, datetime, and duration fields to
-#' be output as doubles in "serial number" format. For more info, see [deepgs_serial_number()]
+#' be output as doubles in "serial number" format. For more info, see [dgs4_serial_number()]
 #' - **FORMATTED_STRING**: Instructs date, time, datetime, and duration fields
 #' to be output as strings in their given number format (which depends
 #' on the spreadsheet locale).
@@ -179,9 +179,9 @@ send_update_values_req <- function(
     method = "PUT",
     path = paste0("v4/spreadsheets/", spreadsheetId, "/values/", range),
     params = params,
-    body = deepgs_listinize(values),
-    token = deepgs_token(),
-    key = deepgs_api_key(),
+    body = dgs4_listinize(values),
+    token = dgs4_token(),
+    key = dgs4_api_key(),
     base_url = "https://sheets.googleapis.com"
   )
 

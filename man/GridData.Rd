@@ -6,8 +6,8 @@
 \title{Specification of data in a grid}
 \usage{
 GridData(
-  startRow,
-  startColumn,
+  startRow = NULL,
+  startColumn = NULL,
   rowData = NULL,
   rowMetadata = NULL,
   columnMetadata = NULL

@@ -1,100 +1,97 @@
-cars_gd <- to_GridData_from_df(cars, 0, 0)
+googledrive::drive_auth(path = Sys.getenv("G_SERVICE_ACCOUNT"),
+                        cache = F)
+dgs4_auth(path = Sys.getenv("G_SERVICE_ACCOUNT"),
+          cache = F)
 
+# create test spreadsheet
 test_spreadsheet <- Spreadsheet(
-  properties = SpreadsheetProperties("gridProperties test"),
-  sheets = list(
-    Sheet(
-      properties = SheetProperties(
-        sheetId = 0,
-        title = "First cars",
-        gridProperties = GridProperties(51, 2)),
-      data = cars_gd),
-    Sheet(
-      properties = SheetProperties(
-        sheetId = 1,
-        title = "Second cars",
-        gridProperties = GridProperties(51, 2)
-      ),
-      data = cars_gd
-    )
-  )
+  properties = SpreadsheetProperties(),
+  sheets = Sheet(SheetProperties(sheetId = 0,
+                                 gridProperties = GridProperties(10,10)))
 )
 
 created <- send_create_req(test_spreadsheet)
+ss_id <- googledrive::as_id(created$spreadsheetId)
 
-newRule <- ConditionalFormatRule(
-  ranges = list(GridRange(0, 0, 52, 0, 1),
-                GridRange(0, 0, 52, 1, 2)),
-  gradientRule = GradientRule(
-    InterpolationPoint(colorStyle = ColorStyle(themeColorType = "ACCENT1"), type = "MIN"),
-    InterpolationPoint(colorStyle = ColorStyle(themeColorType = "ACCENT6"), type = "MAX")
-  )
-)
+req_min <- UpdateBordersRequest(
+        range = GridRange(0, 1, 10, 2, 9),
+        top = Border("DOTTED")
+      )
 
-addReq <- AddConditionalFormatRule(
-  0, rule
-)
-
-resp <- send_batchUpdate_req(
+resp_min <- send_batchUpdate_req(
   created$spreadsheetId,
-  addReq
+  req_min
 )
 
-updateRule <- ConditionalFormatRule(
-  ranges = GridRange(0, 0, 52, 1, 2),
-  gradientRule = GradientRule(
-    InterpolationPoint(colorStyle = ColorStyle(themeColorType = "ACCENT1"), type = "MIN"),
-    InterpolationPoint(colorStyle = ColorStyle(themeColorType = "ACCENT3"), type = "MAX")
-  )
+confirm <- send_get_req(created$spreadsheetId,
+                        fields = "sheets.data.rowData.values.userEnteredFormat.borders")
+
+top_borders_row_1 <- sapply(
+  confirm$sheets[[1]]$data[[1]]$rowData[[1]]$values,
+  \(x) if (!is.null(x$userEnteredFormat$borders))
+    x$userEnteredFormat$borders$top$style
+  else NA)
+
+top_borders_row_2 <- sapply(
+  confirm$sheets[[1]]$data[[1]]$rowData[[2]]$values,
+  \(x) if (!is.null(x$userEnteredFormat$borders))
+    x$userEnteredFormat$borders$top$style
+  else NA)
+
+expect_true(length(top_borders_row_1) == 0)
+expect_equal(top_borders_row_2,
+             c(rep(NA, 2), rep("DOTTED", 7)))
+
+req_max <- UpdateBordersRequest(
+  range = GridRange(0, 1, 10, 2, 9),
+  top = Border("NONE"),
+  bottom = Border("DOUBLE"),
+  left = Border("SOLID_MEDIUM"),
+  right = Border("SOLID_THICK"),
+  innerHorizontal = Border("DASHED"),
+  innerVertical = Border(colorStyle = ColorStyle("ACCENT3"))
 )
 
-updateReq <- UpdateConditionalFormatRule(
-  0, rule = updateRule
-)
-
-resp <- send_batchUpdate_req(
+resp_max <- send_batchUpdate_req(
   created$spreadsheetId,
-  updateReq
+  req_max
 )
 
-nextRule <- ConditionalFormatRule(
-  ranges = GridRange(0, 0, 52, 0, 1),
-  booleanRule = BooleanRule(
-    condition = BooleanCondition("NUMBER_GREATER",
-                                 values = ConditionValue("10")),
-    CellFormat(backgroundColorStyle = ColorStyle(theme = "ACCENT4"))
-  )
-)
+confirm <- send_get_req(created$spreadsheetId,
+                        fields = "sheets.data.rowData.values.userEnteredFormat.borders")
 
-nextAddReq <- AddConditionalFormatRule(
-  index = 1,
-  rule = nextRule
-)
+top_borders_row_2 <- sapply(
+  confirm$sheets[[1]]$data[[1]]$rowData[[2]]$values,
+  \(x) if (!is.null(x$userEnteredFormat$borders$top$style))
+    x$userEnteredFormat$borders$top$style
+  else NA)
 
-resp <- send_batchUpdate_req(
-  created$spreadsheetId,
-  nextAddReq
-)
+top_borders_row_3 <- sapply(
+  confirm$sheets[[1]]$data[[1]]$rowData[[3]]$values,
+  \(x) if (!is.null(x$userEnteredFormat$borders))
+    x$userEnteredFormat$borders$top$style
+  else NA)
 
-moveReq <- UpdateConditionalFormatRule(
-  index = 0,
-  newIndex = 1,
-  sheetId = 0
-)
+left_borders_row_3 <- sapply(
+  confirm$sheets[[1]]$data[[1]]$rowData[[3]]$values,
+  \(x) if (!is.null(x$userEnteredFormat$borders))
+    x$userEnteredFormat$borders$left$style
+  else NA)
 
-resp <- send_batchUpdate_req(
-  created$spreadsheetId,
-  moveReq
-)
+bottom_borders_row_10 <- sapply(
+  confirm$sheets[[1]]$data[[1]]$rowData[[10]]$values,
+  \(x) if (!is.null(x$userEnteredFormat$borders))
+    x$userEnteredFormat$borders$bottom$style
+  else NA)
 
-check <- send_get_req(created$spreadsheetId,
-             fields = "sheets.conditionalFormats")
+expect_true(all(vapply(top_borders_row_2, is.na, logical(1))))
+expect_equal(top_borders_row_3,
+             c(rep(NA, 2), rep("DASHED", 7)))
+expect_equal(left_borders_row_3,
+             c(rep(NA, 2), "SOLID_MEDIUM", rep("SOLID", 6)))
+expect_equal(bottom_borders_row_10,
+             c(rep(NA, 2), rep("DOUBLE", 7)))
 
 
 
-# ss_id <- googledrive::as_id(created$spreadsheetId)
-# on.exit(googledrive::drive_trash(ss_id))
-# googledrive::drive_share(ss_id,
-#                          role = "writer",
-#                          type = "user",
-#                          "emailAddress" = "statismike@gmail.com")
+googledrive::drive_trash(ss_id)

@@ -34,7 +34,7 @@ Spreadsheet <- function(
     append_cond(spreadsheetUrl, type = "character") |>
     append_cond(properties, class = "SpreadsheetProperties") |>
     append_cond(sheets) |>
-    deepgs_class("Spreadsheet")
+    dgs4_class("Spreadsheet")
 
   return(out)
 
@@ -62,7 +62,7 @@ is.Spreadsheet <- function(x) {
 #' @param ... additional deprecated fields returned from GoogleSheet API
 #' @export
 SpreadsheetProperties <- function(
-    title,
+    title = NULL,
     locale = NULL,
     timeZone = NULL,
     defaultFormat = NULL,
@@ -83,7 +83,7 @@ SpreadsheetProperties <- function(
                 class = "iterativeCalculationSettings") |>
     append_cond(spreadsheetTheme,
                 class = "SpreadsheetTheme") |>
-    deepgs_class("SpreadsheetProperties")
+    dgs4_class("SpreadsheetProperties")
 
   return(out)
 
@@ -112,7 +112,7 @@ IterativeCalculationSettings <- function(
   out <- list() |>
     append_cond(maxIterations, type = "integer") |>
     append_cond(convergenceThreshold, type = "numeric") |>
-    deepgs_class("IterativeCalculationSetting")
+    dgs4_class("IterativeCalculationSetting")
 
   return(out)
 
@@ -156,27 +156,27 @@ SpreadsheetTheme <- function(
     append_cond(ACCENT5, class = "ColorStyle") |>
     append_cond(ACCENT6, class = "ColorStyle") |>
     append_cond(LINK, class = "ColorStyle") |>
-    deepgs_class("SpreadsheetTheme")
+    dgs4_class("SpreadsheetTheme")
 
   if (length(out) == 0)
-    deepgs_error("No arguments specified",
-                 class = "NoArgsError")
+    dgs4_error("No arguments specified",
+               class = "NoArgsError")
 
   themes_present <- vapply(c("TEXT", "BACKGROUND", "LINK", paste0("ACCENT", 1:6)),
                            \(x) is.null(out[[x]]),
                            logical(1))
 
   if (!sum(themes_present) %in% c(0, 9))
-    deepgs_error("To update {.emph Spreadsheet ColorStyles}, all of them need to be provided",
-                 class = "NotAllThemesError")
+    dgs4_error("To update {.emph Spreadsheet ColorStyles}, all of them need to be provided",
+               class = "NotAllThemesError")
 
   themes_rgb <- vapply(c("TEXT", "BACKGROUND", "LINK", paste0("ACCENT", 1:6)),
                        \(x) all(c("red", "blue", "green") %in% names(out[[x]])),
                        logical(1))
 
   if (!all(themes_rgb))
-    deepgs_error("To update {.emph Spreadsheet ColorStyles}, all of them need to be provided explicitly (with {.arg red}, {.arg green} and {.arg blue} values)",
-                 class = "NotRGBAThemesError")
+    dgs4_error("To update {.emph Spreadsheet ColorStyles}, all of them need to be provided explicitly (with {.arg red}, {.arg green} and {.arg blue} values)",
+               class = "NotRGBAThemesError")
 
   return(out)
 

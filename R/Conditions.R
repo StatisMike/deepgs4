@@ -125,7 +125,7 @@ BooleanCondition <- function(
   out <- list() |>
     append_cond(type) |>
     append_cond(values) |>
-    deepgs_class("BooleanCondition")
+    dgs4_class("BooleanCondition")
 
   return(out)
 
@@ -156,7 +156,7 @@ ConditionValue <- function(
   null_args <- vapply(list(userEnteredValue, relativeDate), is.null, logical(1))
 
   if (sum(null_args) != 1)
-    deepgs_error("Exactly one of {.arg userEnteredValue} or {.arg relativeDate} needs to be provided.")
+    dgs4_error("Exactly one of {.arg userEnteredValue} or {.arg relativeDate} needs to be provided.")
 
   if (!is.null(userEnteredValue)) {
 
@@ -170,7 +170,7 @@ ConditionValue <- function(
 
   }
 
-  obj <- deepgs_class(obj, "ConditionValue")
+  obj <- dgs4_class(obj, "ConditionValue")
 
   return(obj)
 

@@ -10,12 +10,12 @@ check_unbounded_grid <- function(x, call = rlang::caller_call(),
 
   # for now, until figured out
   if (is.null(x$endRowIndex) || is.null(x$endColumnIndex))
-    deepgs_error("Currently cannot split on unbounded GridRange",
+    dgs4_error("Currently cannot split on unbounded GridRange",
                  call = call)
 
   if ((is.null(x$endRowIndex) && isTRUE(split_rows)) ||
       (is.null(x$endColumnIndex) && isTRUE(split_cols)))
-    deepgs_error("Cannot split on unbounded dimension.",
+    dgs4_error("Cannot split on unbounded dimension.",
                  call = call)
 
   return(x)
@@ -33,7 +33,7 @@ get_sheetName <- function(sheetVec = NULL, sheetName = NULL, sheetId = NULL) {
     return(NULL)
 
   if (!is.null(sheetVec) && !is.null(sheetName))
-    deepgs_error("Only one of {.arg sheetName} or {.arg sheetVec} can be provided.",
+    dgs4_error("Only one of {.arg sheetName} or {.arg sheetVec} can be provided.",
                  call = rlang::caller_call(2))
 
   if (!is.null(sheetName))
@@ -47,7 +47,7 @@ get_sheetName <- function(sheetVec = NULL, sheetName = NULL, sheetId = NULL) {
   n <- which(sheetVec == sheetId)
 
   if (length(n) == 0)
-    deepgs_error("No sheetId found. Try to refresh the data using `SpreadSheetData$get_data('sheets', refresh = TRUE)`}",
+    dgs4_error("No sheetId found. Try to refresh the data using `SpreadSheetData$get_data('sheets', refresh = TRUE)`}",
                  call = rlang::caller_call(1))
 
   return(names(sheetVec)[n])
@@ -109,10 +109,10 @@ get_A1_not.GridRange <- function(x, strict = TRUE, sheetName = NULL,
     n_cols <- x$endColumnIndex - x$startColumnIndex
 
     if (isTRUE(split_rows) && n_rows == 1)
-      deepgs_error("Cannot split by rows - only one row available")
+      dgs4_error("Cannot split by rows - only one row available")
 
     if (isTRUE(split_cols) && n_cols == 1)
-      deepgs_error("Cannot split by columns, only one column available")
+      dgs4_error("Cannot split by columns, only one column available")
   }
 
   sheetName <- get_sheetName(sheetVec = sheetVec, sheetName = sheetName,

@@ -3,6 +3,7 @@
 \name{gen_deepgsheets4Obj}
 \alias{gen_deepgsheets4Obj}
 \alias{gen_CellFormat}
+\alias{gen_Border}
 \alias{gen_Borders}
 \alias{gen_ExtendedValue}
 \alias{gen_CellData}
@@ -41,6 +42,8 @@
 gen_deepgsheets4Obj(obj, class, sheetId = NULL)
 
 gen_CellFormat(obj)
+
+gen_Border(obj)
 
 gen_Borders(obj)
 
@@ -88,7 +91,7 @@ gen_BasicChartSpec(obj, sheetId = NULL)
 
 gen_DimensionProperties(obj)
 
-gen_DimensionGroup(obj)
+gen_DimensionGroup(obj, sheetId = NULL)
 
 gen_BooleanCondition(obj)
 

@@ -5,10 +5,10 @@
 get_field_values <- function(l, name) {
 
   rrapply::rrapply(l,
-          classes = "ANY",
-          condition = function(x, .xname) .xname == name,
-          f = function(x) x,
-          how = "flatten")
+                   classes = "ANY",
+                   condition = function(x, .xname) .xname == name,
+                   f = function(x) x,
+                   how = "flatten")
 
 }
 
@@ -31,9 +31,9 @@ first_to_upper <- function(x) {
 #' @param class name of the child class
 #' @param object_type type of the object
 #' @noRd
-deepgs_class <- function(x,
-                         class = NULL,
-                         object_type = c("Obj", "Req", "Data")) {
+dgs4_class <- function(x,
+                       class = NULL,
+                       object_type = c("Obj", "Req", "Data")) {
 
   object_type <- rlang::arg_match(object_type)
 
@@ -63,7 +63,7 @@ check_if_class <- function(x,
     return(x)
 
   if (!inherits(x, what = class))
-    deepgs_error(
+    dgs4_error(
       message = "Object provided to {.arg {arg}} should be of {.cls {class}} class.",
       .envir = rlang::current_env(),
       call = call,
@@ -91,7 +91,7 @@ check_if_type <- function(x,
     logical = is.logical(x))
 
   if (length(x) != 1 && !valid)
-    deepgs_error(
+    dgs4_error(
       message = "Object provided to {.arg {arg}} should be singular {.cls {type}} value.",
       .envir = rlang::current_env(),
       call = call,
@@ -133,7 +133,7 @@ check_if_all_class <- function(
     return(NULL)
 
   if (!all(vapply(l, inherits, what = class, FUN.VALUE = logical(1))))
-    deepgs_error(
+    dgs4_error(
       message = "All objects in a list provided to {.arg {arg}} should be of {.cls {class}} class.",
       .envir = rlang::current_env(),
       call = call,
@@ -165,7 +165,7 @@ check_if_options <- function(
   options <- list(...)
 
   if (length(x) > max_length)
-    deepgs_error(
+    dgs4_error(
       "{.arg {arg}} should be of maximum length {.val {max_length}}.",
       class = "WrongArgLength",
       call = call
@@ -178,7 +178,7 @@ check_if_options <- function(
            logical(length(x))))
 
   if (!x_in_opts)
-    deepgs_error(
+    dgs4_error(
       message = if(is.null(custom_message))
         "Value provided to {.arg {arg}} should be of {.val {options}}."
       else custom_message,
@@ -203,9 +203,9 @@ check_domains_series <- function(
                             \(x) !is.null(x$chartData$sourceRange))
 
   if (!(sum(has_sourceRange) == 0 || sum(has_sourceRange) == length(has_sourceRange)))
-    deepgs_error("All {.arg domains} and {.arg series} need to be either based on {.emph sourceRange} or {.emph data source}.",
-                 call = call,
-                 class = "UncompatibleDomainSeries")
+    dgs4_error("All {.arg domains} and {.arg series} need to be either based on {.emph sourceRange} or {.emph data source}.",
+               call = call,
+               class = "UncompatibleDomainSeries")
 
   if (sum(has_sourceRange) == 0)
     return(NULL)
@@ -219,9 +219,9 @@ check_domains_series <- function(
     \(x) length(x$chartData$sourceRange$sources))
 
   if (!all(domains_length == series_length))
-    deepgs_error("All underlying {.cls ChartData} objects need to have the same amount of {.emph SourceRanges}",
-                 call = call,
-                 class = "UncompatibleDomainSeries")
+    dgs4_error("All underlying {.cls ChartData} objects need to have the same amount of {.emph SourceRanges}",
+               call = call,
+               class = "UncompatibleDomainSeries")
 
 }
 
@@ -363,8 +363,8 @@ check_chartGridRange <- function(gridRange,
 
   if ((gridRange$endRowIndex - gridRange$startRowIndex > 1) &&
       (gridRange$endColumnIndex - gridRange$startColumnIndex > 1))
-    deepgs_error("All {.cls GridRange} objects provided to {.arg arg} need to be one-row or one-column wide.",
-                 call = call)
+    dgs4_error("All {.cls GridRange} objects provided to {.arg arg} need to be one-row or one-column wide.",
+               call = call)
 
   return(gridRange)
 }
@@ -373,11 +373,11 @@ check_chartGridRange <- function(gridRange,
 #' @inheritParams cli::cli_abort
 #' @param class additional class to add beyong `deepgsheets4_error`
 #' @noRd
-deepgs_error <- function(message,
-                         ...,
-                         class = NULL,
-                         .envir = parent.frame(),
-                         call = rlang::caller_call()) {
+dgs4_error <- function(message,
+                       ...,
+                       class = NULL,
+                       .envir = parent.frame(),
+                       call = rlang::caller_call()) {
 
   cli::cli_abort(message = message,
                  ...,

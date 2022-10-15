@@ -10,11 +10,7 @@
 \usage{
 AddSheetRequest(properties)
 
-UpdateSheetPropertiesRequest(
-  properties,
-  fields = c("title", "index", "gridProperties", "hidden", "tabColorStyle",
-    "rightToLeft")
-)
+UpdateSheetPropertiesRequest(properties, fields = NULL)
 
 DeleteSheetRequest(sheetId)
 }
@@ -60,6 +56,7 @@ Other deepgsheets4Req constructors:
 \code{\link{DimensionGroupRequests}},
 \code{\link{DimensionRequests}},
 \code{\link{MergeRequests}},
-\code{\link{PasteRequests}}
+\code{\link{PasteRequests}},
+\code{\link{UpdateBordersRequest}()}
 }
 \concept{deepgsheets4Req constructors}

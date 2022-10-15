@@ -1,11 +1,13 @@
+# Package environment will be used for many convienience things. During development
+# there will be a need to add new positions there
 pkg_env <- new.env()
 
-pkg_env$valid_chart_specs <- c(
-  "BasicChartSpec"
-)
-
+#### Valid Update Fields ####
+# valid `FieldMask` values for specific `Update*Request` need to be generated
+# there
 pkg_env$valid_update_fields <- list(
-  "Cells" = c(
+  ##### UpdatCells ####
+  "UpdateCells" = c(
     "userEnteredValue",
     "userEnteredFormat",
     paste(sep = ".", "userEnteredFormat",
@@ -36,5 +38,27 @@ pkg_env$valid_update_fields <- list(
           c("condition",
           "inputMessage",
           "strict",
-          "showCustomUi")))
+          "showCustomUi"))),
+  ##### UpdateSheetProperties ####
+  "UpdateSheetProperties" <- c(
+    "title",
+    "index",
+    "gridProperties",
+    paste(sep = ".", "gridProperties",
+          c("rowCount",
+            "columnCount",
+            "frozenColumnCount",
+            "hideGridlines",
+            "rowGroupControlAfter",
+            "columnGroupControlAfter")),
+    "hidden",
+    "tabColorStyle"
+  )
+)
+
+#### Valid Chart Specs ####
+# During addition of new type of chart spec, name of its constructor (and class)
+# needs to be added below
+pkg_env$valid_chart_specs <- c(
+  "BasicChartSpec"
 )

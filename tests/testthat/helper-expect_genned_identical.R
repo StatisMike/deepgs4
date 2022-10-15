@@ -8,7 +8,7 @@ expect_genned_identical <- function(object,
 
   constructed_class <- class(act$val)[1]
 
-  listinized <- deepgs_listinize(act$val)
+  listinized <- dgs4_listinize(act$val)
 
   # mockup object returned from Sheets API (withoud sheetId)
   if (isTRUE(remove_sheetId))

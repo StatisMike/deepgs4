@@ -72,7 +72,7 @@ currency, then A2 would return "=A1".
 \subsection{responseDateTimeRenderOption}{
 \itemize{
 \item \strong{SERIAL_NUMBER}: Instructs date, time, datetime, and duration fields to
-be output as doubles in "serial number" format. For more info, see \code{\link[=deepgs_serial_number]{deepgs_serial_number()}}
+be output as doubles in "serial number" format. For more info, see \code{\link[=dgs4_serial_number]{dgs4_serial_number()}}
 \item \strong{FORMATTED_STRING}: Instructs date, time, datetime, and duration fields
 to be output as strings in their given number format (which depends
 on the spreadsheet locale).

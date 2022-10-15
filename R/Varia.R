@@ -31,11 +31,11 @@ TextFormat <- function(
     append_cond(strikethrough, type = "logical") |>
     append_cond(underline, type = "logical") |>
     append_cond(link, type = "character") |>
-    deepgs_class("TextFormat")
+    dgs4_class("TextFormat")
 
   if (length(out) == 0)
-    deepgs_error("No arguments specified",
-                 class = "NoArgsError")
+    dgs4_error("No arguments specified",
+               class = "NoArgsError")
 
   return(out)
 
@@ -89,20 +89,20 @@ ColorStyle <- function(
   if (!any(missing(red), missing(green), missing(blue))) {
 
     if (!all(is_valid_rgba(red), is_valid_rgba(green), is_valid_rgba(blue)))
-      deepgs_error("Values provided to {.arg red}, {.arg green} and {.arg blue} need to be {.emph numeric} between (inclusive) {.val 0} and {.val 1}",
-                   class = "InvalidRGBAError")
+      dgs4_error("Values provided to {.arg red}, {.arg green} and {.arg blue} need to be {.emph numeric} between (inclusive) {.val 0} and {.val 1}",
+                 class = "InvalidRGBAError")
 
     out <- list(
       red = red,
       green = green,
       blue = blue) |>
-      deepgs_class("ColorStyle")
+      dgs4_class("ColorStyle")
 
 
     if (!is.null(alpha)) {
       if (!is_valid_rgba(alpha))
-        deepgs_error("Value provided to {.arg alpha} needs to be {.cls numeric} between (inclusive) {.val 0} and {.val 1}",
-                     class = "InvalidRGBAError")
+        dgs4_error("Value provided to {.arg alpha} needs to be {.cls numeric} between (inclusive) {.val 0} and {.val 1}",
+                   class = "InvalidRGBAError")
       out$alpha <- alpha
 
     }
@@ -116,7 +116,7 @@ ColorStyle <- function(
   out <- list(
     themeColor = themeColorType
   ) |>
-    deepgs_class("ColorStyle")
+    dgs4_class("ColorStyle")
 
   return(out)
 }
@@ -153,7 +153,7 @@ LineStyle <- function(
   out <- list() |>
     append_cond(width, type = "integer", skip_null = FALSE) |>
     append_cond(type) |>
-    deepgs_class("LineStyle")
+    dgs4_class("LineStyle")
 
   return(out)
 
@@ -175,7 +175,7 @@ PointStyle <- function(
   obj <- list() |>
     append_cond(size, type = "numeric") |>
     append_cond(shape) |>
-    deepgs_class("PointStyle")
+    dgs4_class("PointStyle")
 
   return(obj)
 
@@ -200,7 +200,7 @@ TextFormatRun <- function(
   out <- list() |>
     append_cond(startIndex, type = "integer") |>
     append_cond(textFormat, class = "TextFormat", skip_null = FALSE) |>
-    deepgs_class("TextFormatRun")
+    dgs4_class("TextFormatRun")
 
   return(out)
 

@@ -80,11 +80,11 @@ CellFormat <- function(
     append_cond(textFormat, class = "TextFormat") |>
     append_cond(hyperlinkDisplayType) |>
     append_cond(textRotation) |>
-    deepgs_class("CellFormat")
+    dgs4_class("CellFormat")
 
   if (length(out) == 0)
-    deepgs_error("No arguments specified",
-                 class = "NoArgsError")
+    dgs4_error("No arguments specified",
+               class = "NoArgsError")
 
   return(out)
 
@@ -126,7 +126,7 @@ NumberFormat <- function(
 
   out <- list(type = type) |>
     append_cond(pattern, type = "character") |>
-    deepgs_class("NumberFormat")
+    dgs4_class("NumberFormat")
 
   return(out)
 
@@ -139,54 +139,64 @@ is.NumberFormat <- function(x) {
   inherits(x, "NumberFormat")
 }
 
-#' @title Cell border specification
-#' @param top_style,bottom_style,left_style,right_style Type of the top, bottom,
-#' left and right borders.
-#' @param top_colorStyle,bottom_colorStyle,left_colorStyle,right_colorStyle Object
-#' of class [ColorStyle()] describing color for top, bottom, left and right
-#' border
+#' @title Border specification
+#' @param style Type of the border.
+#' @param colorStyle object of class [ColorStyle] describing color of the border
+#' @param ... additional deprecated fields returned from GoogleSheet API
 #' @details
 #' **Border styles**:
-#' - `DOTTED`: The border is dotted.
-#' - `DASHED`: The border is dashed.
 #' - `SOLID`: The border is a thin solid line.
 #' - `SOLID_MEDIUM`: The border is a medium solid line.
 #' - `SOLID_THICK`: The border is a thick solid line.
+#' - `DOTTED`: The border is dotted.
+#' - `DASHED`: The border is dashed.
 #' - `NONE`: No border. Used only when updating a border in order to erase it.
 #' - `DOUBLE`: The border is two solid lines.
 #' @export
-Borders <- function(
-    top_style = c("SOLID", "DOTTED", "DASHED", "SOLID_MEDIUM", "SOLID_THICK", "NONE", "DOUBLE"),
-    bottom_style = c("SOLID", "DOTTED", "DASHED", "SOLID_MEDIUM", "SOLID_THICK", "NONE", "DOUBLE"),
-    left_style = c("SOLID", "DOTTED", "DASHED", "SOLID_MEDIUM", "SOLID_THICK", "NONE", "DOUBLE"),
-    right_style = c("SOLID", "DOTTED", "DASHED", "SOLID_MEDIUM", "SOLID_THICK", "NONE", "DOUBLE"),
-    top_colorStyle = NULL,
-    bottom_colorStyle = NULL,
-    left_colorStyle = NULL,
-    right_colorStyle = NULL) {
+Border <- function(style = c("SOLID", "SOLID_MEDIUM", "SOLID_THICK", "DOTTED", "DASHED", "NONE", "DOUBLE"),
+                   colorStyle = NULL) {
 
-  top_style <- rlang::arg_match(top_style)
-  bottom_style <- rlang::arg_match(bottom_style)
-  left_style <- rlang::arg_match(left_style)
-  right_style <- rlang::arg_match(right_style)
+  style <- rlang::arg_match(style)
 
-  out <- list(
-    top_style = top_style,
-    bottom_style = bottom_style,
-    left_style = left_style,
-    right_style = right_style
-  ) |>
-    append_cond(top_colorStyle, class = "ColorStyle") |>
-    append_cond(bottom_colorStyle, class = "ColorStyle") |>
-    append_cond(left_colorStyle, class = "ColorStyle") |>
-    append_cond(right_colorStyle, class = "ColorStyle") |>
-    deepgs_class("Borders")
+  out <- list() |>
+    append_cond(style) |>
+    append_cond(colorStyle, class = "ColorStyle") |>
+    dgs4_class("Border")
+
 
   return(out)
 
 }
 
-#' @rdname Borders
+#' @rdname Border
+#' @param top,bottom,left,right Objects of class [Border] declaring style
+#' of specified border in a cell
+#' @export
+Borders <- function(
+    top = NULL,
+    bottom = NULL,
+    left = NULL,
+    right = NULL) {
+
+  out <- list() |>
+    append_cond(top, class = "Border") |>
+    append_cond(bottom, class = "Border") |>
+    append_cond(left, class = "Border") |>
+    append_cond(right, class = "Border") |>
+    dgs4_class("Borders")
+
+  return(out)
+
+}
+
+#' @rdname Border
+#' @param x any R object
+#' @export
+is.Border <- function(x) {
+  inherits(x, "Border")
+}
+
+#' @rdname Border
 #' @param x any R object
 #' @export
 is.Borders <- function(x) {
@@ -209,7 +219,7 @@ Padding <- function(
     append_cond(bottom, type = "integer", skip_null = FALSE) |>
     append_cond(left, type = "integer", skip_null = FALSE) |>
     append_cond(right, type = "integer", skip_null = FALSE) |>
-    deepgs_class("Padding")
+    dgs4_class("Padding")
 
   return(out)
 
@@ -251,7 +261,7 @@ ErrorValue <- function(
   out <- list() |>
     append_cond(type) |>
     append_cond(message, skip_null = FALSE, type = "character") |>
-    deepgs_class("ErrorValue")
+    dgs4_class("ErrorValue")
 
   return(out)
 
@@ -268,7 +278,7 @@ is.ErrorValue <- function(x) {
 #' @description Object holding specification of cell value in [CellData]. Only
 #' one of the parameters can be specified.
 #' @param numberValue Represents a double value. Date, Times and DateTimes
-#' need to be coerced first to [deepgs_serial_number()]
+#' need to be coerced first to [dgs4_serial_number()]
 #' @param stringValue String value. Leading single quotes with numbers aren't
 #' included
 #' @param boolValue Logical value.
@@ -288,9 +298,9 @@ ExtendedValue <- function(
     logical(1))
 
   if (sum(null_args) != 4)
-    deepgs_error("Only one argument can be specified.")
+    dgs4_error("Only one argument can be specified.")
 
-  if (is.deepgs_serial_number(numberValue))
+  if (is.dgs4_serial_number(numberValue))
     numberValue <- as.numeric(numberValue)
 
   out <- list() |>
@@ -303,7 +313,7 @@ ExtendedValue <- function(
   value_type <- gsub(names(out), pattern = "Value", replacement = "")
 
   out <- out[[1]] |>
-    deepgs_class("ExtendedValue")
+    dgs4_class("ExtendedValue")
 
   attr(out, "type") <- value_type
 
@@ -377,7 +387,7 @@ CellData <- function(
     append_cond(formattedValue, type = "character") |>
     append_cond(effectiveFormat, class = "CellFormat") |>
     append_cond(hyperlink, type = "class") |>
-    deepgs_class("CellData")
+    dgs4_class("CellData")
 
   return(out)
 
@@ -401,7 +411,7 @@ RowData <- function(values) {
     values <- list(values)
 
   out <- check_if_all_class(values, "CellData", skip_null = F) |>
-    deepgs_class("RowData")
+    dgs4_class("RowData")
 
   return(out)
 
@@ -428,8 +438,8 @@ is.RowData <- function(x) {
 #' @export
 
 GridData <- function(
-    startRow,
-    startColumn,
+    startRow = NULL,
+    startColumn = NULL,
     rowData = NULL,
     rowMetadata = NULL,
     columnMetadata = NULL) {
@@ -447,7 +457,7 @@ GridData <- function(
     append_cond(rowData) |>
     append_cond(rowMetadata) |>
     append_cond(columnMetadata) |>
-    deepgs_class("GridData")
+    dgs4_class("GridData")
 
   return(out)
 

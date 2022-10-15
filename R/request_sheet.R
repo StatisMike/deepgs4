@@ -26,7 +26,7 @@ AddSheetRequest <- function(properties) {
     append_cond(properties, class = "SheetProperties", skip_null = FALSE)
 
   obj <- list(addSheet = req) |>
-    deepgs_class(object_type = "Req")
+    dgs4_class(object_type = "Req")
 
   return(obj)
 
@@ -41,18 +41,16 @@ AddSheetRequest <- function(properties) {
 
 UpdateSheetPropertiesRequest <- function(
     properties,
-    fields = c("title", "index", "gridProperties", "hidden", "tabColorStyle",
-               "rightToLeft")) {
+    fields = NULL) {
 
-  fields <- rlang::arg_match(fields, multiple = TRUE)
-  fields <- paste(fields, collapse = ",")
+  fields <- check_valid_update_fields(fields, "UpdateSheetProperties")
 
   req <- list()  |>
     append_cond(properties, class = "SheetProperties", skip_null = FALSE) |>
     append_cond(fields)
 
   obj <- list(updateSheetProperties = req) |>
-    deepgs_class(object_type = "Req")
+    dgs4_class(object_type = "Req")
 
   return(obj)
 
@@ -70,7 +68,7 @@ DeleteSheetRequest <- function(sheetId) {
     append_cond(sheetId, type = "integer", skip_null = FALSE)
 
   obj <- list(deleteSheet = req) |>
-    deepgs_class(object_type = "Req")
+    dgs4_class(object_type = "Req")
 
   return(obj)
 

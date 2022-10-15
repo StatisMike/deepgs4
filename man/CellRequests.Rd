@@ -6,9 +6,9 @@
 \alias{AppendCellsRequest}
 \title{Requests to update or append cells in the grid}
 \usage{
-UpdateCellsRequest(rows, fields, start = NULL, range = NULL)
+UpdateCellsRequest(rows, fields = NULL, start = NULL, range = NULL)
 
-AppendCellsRequest(sheetId, rows, fields)
+AppendCellsRequest(sheetId, rows, fields = NULL)
 }
 \arguments{
 \item{rows}{object of class \link{RowData} or list of multiple such objects}
@@ -56,6 +56,7 @@ Other deepgsheets4Req constructors:
 \code{\link{DimensionRequests}},
 \code{\link{MergeRequests}},
 \code{\link{PasteRequests}},
-\code{\link{SheetRequests}}
+\code{\link{SheetRequests}},
+\code{\link{UpdateBordersRequest}()}
 }
 \concept{deepgsheets4Req constructors}
