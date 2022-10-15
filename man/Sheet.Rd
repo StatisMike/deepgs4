@@ -32,6 +32,12 @@ properties of the sheet}
 \item{merges}{object of class \link{GridRange} or list of such. Describe merged
 cells.}
 
+\item{charts}{object of class \link{EmbeddedChart} or list of such. Charts embedded
+on a sheet}
+
+\item{rowGroups, columnGroups}{objects of class \link{DimensionGroup} or list
+of such, describing grouped rows and columns}
+
 \item{x}{any R object}
 
 \item{conditionalFormat}{object of class \link{ConditionalFormatRule} or list of such.

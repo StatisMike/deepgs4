@@ -62,7 +62,7 @@ is.Spreadsheet <- function(x) {
 #' @param ... additional deprecated fields returned from GoogleSheet API
 #' @export
 SpreadsheetProperties <- function(
-    title,
+    title = NULL,
     locale = NULL,
     timeZone = NULL,
     defaultFormat = NULL,

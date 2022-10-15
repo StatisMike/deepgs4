@@ -91,7 +91,7 @@ gen_BasicChartSpec(obj, sheetId = NULL)
 
 gen_DimensionProperties(obj)
 
-gen_DimensionGroup(obj)
+gen_DimensionGroup(obj, sheetId = NULL)
 
 gen_BooleanCondition(obj)
 

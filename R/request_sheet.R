@@ -41,11 +41,9 @@ AddSheetRequest <- function(properties) {
 
 UpdateSheetPropertiesRequest <- function(
     properties,
-    fields = c("title", "index", "gridProperties", "hidden", "tabColorStyle",
-               "rightToLeft")) {
+    fields = NULL) {
 
-  fields <- rlang::arg_match(fields, multiple = TRUE)
-  fields <- paste(fields, collapse = ",")
+  fields <- check_valid_update_fields(fields, "UpdateSheetProperties")
 
   req <- list()  |>
     append_cond(properties, class = "SheetProperties", skip_null = FALSE) |>

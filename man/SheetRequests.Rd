@@ -10,11 +10,7 @@
 \usage{
 AddSheetRequest(properties)
 
-UpdateSheetPropertiesRequest(
-  properties,
-  fields = c("title", "index", "gridProperties", "hidden", "tabColorStyle",
-    "rightToLeft")
-)
+UpdateSheetPropertiesRequest(properties, fields = NULL)
 
 DeleteSheetRequest(sheetId)
 }

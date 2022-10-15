@@ -29,7 +29,7 @@ NULL
 #' @export
 UpdateCellsRequest <- function(
     rows,
-    fields,
+    fields = NULL,
     start = NULL,
     range = NULL) {
 
@@ -38,8 +38,7 @@ UpdateCellsRequest <- function(
   if (sum(arg_check) != 1)
     dgs4_error("Exactly one of {.arg start} and {.arg range} need to be provided for {.emph UpdateCellsRequest}.")
 
-  fields <- check_valid_update_fields(fields, "Cells")
-  fields <- paste(fields, collapse = ",")
+  fields <- check_valid_update_fields(fields, "UpdateCells")
 
   rows <- nest_if_class(rows, "RowData") |>
     check_if_all_class("RowData")

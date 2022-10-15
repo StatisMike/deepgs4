@@ -7,6 +7,10 @@
 #' cells.
 #' @param conditionalFormat object of class [ConditionalFormatRule] or list of such.
 #' Describe conditional format rules applied to the cells in the sheet
+#' @param charts object of class [EmbeddedChart] or list of such. Charts embedded
+#' on a sheet
+#' @param rowGroups,columnGroups objects of class [DimensionGroup] or list
+#' of such, describing grouped rows and columns
 #' @export
 
 Sheet <- function(
@@ -32,6 +36,9 @@ Sheet <- function(
 
   merges <- nest_if_class(merges, "GridRange") |>
     check_if_all_class("GridRange")
+
+  conditionalFormats <- nest_if_class(conditionalFormats, "ConditionalFormatRule") |>
+    check_if_all_class("ConditionalFormatRule")
 
   conditionalFormats <- nest_if_class(conditionalFormats,
                                       "ConditionalFormatRule") |>

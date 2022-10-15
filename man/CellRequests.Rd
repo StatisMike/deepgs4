@@ -6,7 +6,7 @@
 \alias{AppendCellsRequest}
 \title{Requests to update or append cells in the grid}
 \usage{
-UpdateCellsRequest(rows, fields, start = NULL, range = NULL)
+UpdateCellsRequest(rows, fields = NULL, start = NULL, range = NULL)
 
 AppendCellsRequest(sheetId, rows, fields)
 }

@@ -220,7 +220,11 @@ gen_Sheet <- function(obj) {
     try_to_gen_inplace("properties", "SheetProperties") |>
     try_to_gen_inplace("charts", "EmbeddedChart", TRUE, sheetId = sheetId) |>
     try_to_gen_inplace("conditionalFormats", "ConditionalFormatRule", TRUE,
-                       sheetId = sheetId)
+                       sheetId = sheetId) |>
+    try_to_gen_inplace("merges", "GridRange", TRUE, sheetId = sheetId) |>
+    try_to_gen_inplace("rowGroups", "DimensionGroup", TRUE, sheetId = sheetId) |>
+    try_to_gen_inplace("columnGroups", "DimensionGroup", TRUE, sheetId = sheetId)
+
 
   do.call(Sheet, args = obj)
 
@@ -547,10 +551,10 @@ gen_DimensionProperties <- function(obj) {
 
 #' @rdname gen_deepgsheets4Obj
 #' @export
-gen_DimensionGroup <- function(obj) {
+gen_DimensionGroup <- function(obj, sheetId = NULL) {
 
   obj <- obj |>
-    try_to_gen_inplace("range", "DimensionRange")
+    try_to_gen_inplace("range", "DimensionRange", sheetId = sheetId)
 
   do.call(DimensionGroup, args = obj)
 

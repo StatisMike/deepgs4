@@ -6,7 +6,8 @@ pkg_env <- new.env()
 # valid `FieldMask` values for specific `Update*Request` need to be generated
 # there
 pkg_env$valid_update_fields <- list(
-  "Cells" = c(
+  ##### UpdatCells ####
+  "UpdateCells" = c(
     "userEnteredValue",
     "userEnteredFormat",
     paste(sep = ".", "userEnteredFormat",
@@ -37,7 +38,22 @@ pkg_env$valid_update_fields <- list(
           c("condition",
           "inputMessage",
           "strict",
-          "showCustomUi")))
+          "showCustomUi"))),
+  ##### UpdateSheetProperties ####
+  "UpdateSheetProperties" <- c(
+    "title",
+    "index",
+    "gridProperties",
+    paste(sep = ".", "gridProperties",
+          c("rowCount",
+            "columnCount",
+            "frozenColumnCount",
+            "hideGridlines",
+            "rowGroupControlAfter",
+            "columnGroupControlAfter")),
+    "hidden",
+    "tabColorStyle"
+  )
 )
 
 #### Valid Chart Specs ####

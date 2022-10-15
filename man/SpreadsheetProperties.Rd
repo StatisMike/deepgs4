@@ -6,7 +6,7 @@
 \title{SpreadsheetProperties}
 \usage{
 SpreadsheetProperties(
-  title,
+  title = NULL,
   locale = NULL,
   timeZone = NULL,
   defaultFormat = NULL,
