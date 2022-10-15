@@ -9,21 +9,21 @@
 #' `2.5`, `2` because it's 2 days after December 30th 1899, and `.5` because
 #' noon is half a day. February 1st 1900 at 3pm would be `33.625`.
 #' @export
-deepgs_serial_number <- function(date) {
+dgs4_serial_number <- function(date) {
 
   diff <- lubridate::as_datetime(date) - lubridate::as_datetime("1899-12-30")
   diff_days <- as.numeric(diff, unit = "days")
-  class(diff_days) <- "deepgs_serial_number"
+  class(diff_days) <- "dgs4_serial_number"
 
   return(diff_days)
 
 }
 
-#' @rdname deepgs_serial_number
-#' @param x object of class `deepgs_serial_number` to coerce
+#' @rdname dgs4_serial_number
+#' @param x object of class `dgs4_serial_number` to coerce
 #' @inheritParams base::strptime
 #' @export
-as.character.deepgs_serial_number <- function(
+as.character.dgs4_serial_number <- function(
     x,
     format = "",
     ...) {
@@ -36,9 +36,9 @@ as.character.deepgs_serial_number <- function(
 
 }
 
-#' @rdname deepgs_serial_number
+#' @rdname dgs4_serial_number
 #' @export
-as.POSIXct.deepgs_serial_number <- function(
+as.POSIXct.dgs4_serial_number <- function(
     x,
     tz = "",
     ...) {
@@ -48,9 +48,9 @@ as.POSIXct.deepgs_serial_number <- function(
 
 }
 
-#' @rdname deepgs_serial_number
+#' @rdname dgs4_serial_number
 #' @export
-as.POSIXlt.deepgs_serial_number <- function(
+as.POSIXlt.dgs4_serial_number <- function(
     x,
     tz = "",
     ...) {
@@ -60,9 +60,9 @@ as.POSIXlt.deepgs_serial_number <- function(
 
 }
 
-#' @rdname deepgs_serial_number
+#' @rdname dgs4_serial_number
 #' @export
-as.Date.deepgs_serial_number <- function(
+as.Date.dgs4_serial_number <- function(
     x,
     ...) {
 
@@ -71,8 +71,8 @@ as.Date.deepgs_serial_number <- function(
 
 }
 
-#' @rdname deepgs_serial_number
+#' @rdname dgs4_serial_number
 #' @export
-is.deepgs_serial_number <- function(x) {
-  inherits(x, "deepgs_serial_number")
+is.dgs4_serial_number <- function(x) {
+  inherits(x, "dgs4_serial_number")
 }

@@ -251,7 +251,7 @@ SpreadSheetData <- R6::R6Class(
         nm = vapply(self$sheetProperties, \(x) x$title, character(1)),
         object = vapply(self$sheetProperties, \(x) as.integer(x$sheetId), double(1))
       ) |>
-        deepgs_class("sheetVec", "Data")
+        dgs4_class("sheetVec", "Data")
 
       return(sheets_vec)
 

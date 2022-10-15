@@ -16,8 +16,8 @@ is.deepgsheets4Obj <- function(x) {
 
 #### default listinizers ####
 
-#' @name deepgs_listinize
-#' @rdname deepgs_listinize
+#' @name dgs4_listinize
+#' @rdname dgs4_listinize
 #' @title Transform `deepgsheets4` object to list
 #' @param x object to coerce
 #' @param ... further arguments passed to or from other methods.
@@ -28,54 +28,54 @@ is.deepgsheets4Obj <- function(x) {
 #' lists are deeply nested, and as such are not very `R` friendly - to skim
 #' through them, modify them etc.
 #'
-#' Methods to [deepgs_listinize()] provided within the package are called just before
+#' Methods to `dgs4_listinize` provided within the package are called just before
 #' sending request, allowing more user-friendly representation in `R` and
 #' readibility on GoogleSheets end.
 #'
 #' Listinized objects can then be parsed back into its source object using
-#' correct `gen_ObjectClass()` constructor, which are used mainly for
+#' [gen_deepgsheets4Obj()] constructor, which are used mainly for
 #' interpreting reads from GoogleSheets API, but are also exported.
 #' @export
-deepgs_listinize <- function(x, ...)
-  UseMethod("deepgs_listinize", x)
+dgs4_listinize <- function(x, ...)
+  UseMethod("dgs4_listinize", x)
 
-#' @rdname deepgs_listinize
+#' @rdname dgs4_listinize
 #' @export
-deepgs_listinize.default <- function(x, ...) {
+dgs4_listinize.default <- function(x, ...) {
 
   if (!is.list(x))
     return(x)
   else
-    lapply(x, deepgs_listinize, ... = ...) |>
+    lapply(x, dgs4_listinize, ... = ...) |>
     lapply(unclass_obj)
 
 }
 
-#' @rdname deepgs_listinize
+#' @rdname dgs4_listinize
 #' @export
-deepgs_listinize.deepgsheets4Req <- function(x, ...) {
+dgs4_listinize.deepgsheets4Req <- function(x, ...) {
 
-  x <- lapply(x, deepgs_listinize, ... = ...)
+  x <- lapply(x, dgs4_listinize, ... = ...)
   return(x)
 
 }
 
-#' @rdname deepgs_listinize
+#' @rdname dgs4_listinize
 #' @export
-deepgs_listinize.deepgsheets4Obj <- function(x, ...) {
+dgs4_listinize.deepgsheets4Obj <- function(x, ...) {
 
-  x <- lapply(x, deepgs_listinize, ... = ...)
+  x <- lapply(x, dgs4_listinize, ... = ...)
   return(x)
 
 }
 
 #### specific listinizers ####
 
-#' @rdname deepgs_listinize
+#' @rdname dgs4_listinize
 #' @export
-deepgs_listinize.TextFormat <- function(x, ...) {
+dgs4_listinize.TextFormat <- function(x, ...) {
 
-  x <- lapply(x, deepgs_listinize, ... = ...)
+  x <- lapply(x, dgs4_listinize, ... = ...)
 
   x <- nest_cond(x, "link", "uri") |>
     unclass_obj()
@@ -84,11 +84,11 @@ deepgs_listinize.TextFormat <- function(x, ...) {
 
 }
 
-#' @rdname deepgs_listinize
+#' @rdname dgs4_listinize
 #' @export
-deepgs_listinize.ColorStyle <- function(x, ...) {
+dgs4_listinize.ColorStyle <- function(x, ...) {
 
-  x <- lapply(x, deepgs_listinize, ... = ...)
+  x <- lapply(x, dgs4_listinize, ... = ...)
 
   if (!any(vapply(list(x$red, x$blue, x$green), is.null, logical(1)))) {
     out <- list(rgbColor = list(red = x$red,
@@ -104,12 +104,12 @@ deepgs_listinize.ColorStyle <- function(x, ...) {
 
 }
 
-#' @rdname deepgs_listinize
-#' @aliases deepgs_listinize
+#' @rdname dgs4_listinize
+#' @aliases dgs4_listinize
 #' @export
-deepgs_listinize.ChartData <- function(x, ...) {
+dgs4_listinize.ChartData <- function(x, ...) {
 
-  x <- lapply(x, deepgs_listinize, ... = ...)
+  x <- lapply(x, dgs4_listinize, ... = ...)
 
   x <- x |>
     nest_cond(name = "sourceRange", nests = "sources") |>
@@ -119,11 +119,11 @@ deepgs_listinize.ChartData <- function(x, ...) {
 
 }
 
-#' @rdname deepgs_listinize
+#' @rdname dgs4_listinize
 #' @export
-deepgs_listinize.BasicChartAxis <- function(x, ...) {
+dgs4_listinize.BasicChartAxis <- function(x, ...) {
 
-  x <- lapply(x, deepgs_listinize, ... = ...)
+  x <- lapply(x, dgs4_listinize, ... = ...)
 
   if (!is.null(x$titleTextPosition))
     x$titleTextPosition <- list(horizontalAlignment = x$titleTextPosition)
@@ -134,11 +134,11 @@ deepgs_listinize.BasicChartAxis <- function(x, ...) {
 
 }
 
-#' @rdname deepgs_listinize
+#' @rdname dgs4_listinize
 #' @export
-deepgs_listinize.ChartSpec <- function(x, ...) {
+dgs4_listinize.ChartSpec <- function(x, ...) {
 
-  x <- lapply(x, deepgs_listinize, ... = ...)
+  x <- lapply(x, dgs4_listinize, ... = ...)
 
   x <- x |>
     nest_cond("titleTextPosition", "horizontalAlignment") |>
@@ -149,11 +149,11 @@ deepgs_listinize.ChartSpec <- function(x, ...) {
 
 }
 
-#' @rdname deepgs_listinize
+#' @rdname dgs4_listinize
 #' @export
-deepgs_listinize.CellFormat <- function(x, ...) {
+dgs4_listinize.CellFormat <- function(x, ...) {
 
-  x <- lapply(x, deepgs_listinize, ... = ...)
+  x <- lapply(x, dgs4_listinize, ... = ...)
 
   if (is.null(x$textRotation))
     return(unclass_obj(x))
@@ -167,9 +167,9 @@ deepgs_listinize.CellFormat <- function(x, ...) {
   return(x)
 }
 
-#' @rdname deepgs_listinize
+#' @rdname dgs4_listinize
 #' @export
-deepgs_listinize.ExtendedValue <- function(x, ...) {
+dgs4_listinize.ExtendedValue <- function(x, ...) {
 
   value <- switch(
     attr(x, "type"),
@@ -186,11 +186,11 @@ deepgs_listinize.ExtendedValue <- function(x, ...) {
 
 }
 
-#' @rdname deepgs_listinize
+#' @rdname dgs4_listinize
 #' @export
-deepgs_listinize.EmbeddedChart <- function(x, ...) {
+dgs4_listinize.EmbeddedChart <- function(x, ...) {
 
-  x <- lapply(x, deepgs_listinize, ... = ...)
+  x <- lapply(x, dgs4_listinize, ... = ...)
 
   obj <- list(
     spec = x$spec,
@@ -205,22 +205,22 @@ deepgs_listinize.EmbeddedChart <- function(x, ...) {
 
 }
 
-#' @rdname deepgs_listinize
+#' @rdname dgs4_listinize
 #' @export
-deepgs_listinize.DimensionProperties <- function(x, ...) {
+dgs4_listinize.DimensionProperties <- function(x, ...) {
 
-  x <- lapply(x, deepgs_listinize, ... = ...) |>
+  x <- lapply(x, dgs4_listinize, ... = ...) |>
     nest_cond("dataSourceColumnReference", nests = "name")
 
   return(x)
 
 }
 
-#' @rdname deepgs_listinize
+#' @rdname dgs4_listinize
 #' @export
-deepgs_listinize.RowData <- function(x, ...) {
+dgs4_listinize.RowData <- function(x, ...) {
 
-  x <- lapply(x, deepgs_listinize, ... = ...)
+  x <- lapply(x, dgs4_listinize, ... = ...)
   out <- list(values = x)
   return(out)
 
@@ -228,9 +228,9 @@ deepgs_listinize.RowData <- function(x, ...) {
 
 #### Conditions.R listinizers ####
 
-#' @rdname deepgs_listinize
+#' @rdname dgs4_listinize
 #' @export
-deepgs_listinize.ConditionValue <- function(x, ...) {
+dgs4_listinize.ConditionValue <- function(x, ...) {
 
   if (isTRUE(attr(x, "relativeDate")))
     out <- list(relativeDate = as.character(x))

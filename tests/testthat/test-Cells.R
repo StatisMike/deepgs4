@@ -168,7 +168,7 @@ test_that("ExtendedValue can be created, listinized and generated from list", {
 
   expect_failure(
     expect_error(
-      date_as_num <- ExtendedValue(numberValue = deepgs_serial_number("2022-01-12"))
+      date_as_num <- ExtendedValue(numberValue = dgs4_serial_number("2022-01-12"))
     )
   )
   expect_true(is.ExtendedValue(date_as_num))

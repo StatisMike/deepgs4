@@ -4,7 +4,7 @@
 \alias{request_generate}
 \title{Generate deepgsheets4 request}
 \usage{
-request_generate(endpoint, params, token = deepgs_token())
+request_generate(endpoint, params, token = dgs4_token())
 }
 \arguments{
 \item{endpoint}{request endpoint}

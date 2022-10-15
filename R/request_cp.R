@@ -56,7 +56,7 @@ CutPasteRequest <- function(
     append_cond(pasteType)
 
   out <- list(cutPaste = req) |>
-    deepgs_class(object_type = "Req")
+    dgs4_class(object_type = "Req")
 
   return(out)
 
@@ -88,7 +88,7 @@ CopyPasteRequest <- function(
     append_cond(pasteOrientation)
 
   out <- list(copyPaste = req) |>
-    deepgs_class(object_type = "Req")
+    dgs4_class(object_type = "Req")
 
   return(out)
 
@@ -114,7 +114,7 @@ PasteDataRequest <- function(
   null_fields <- vapply(list(delimiter, html), is.null, logical(1))
 
   if (sum(null_fields) != 1)
-    deepgs_error("Exactly one of {.arg delimiter} or {.arg html} needs to be provided.")
+    dgs4_error("Exactly one of {.arg delimiter} or {.arg html} needs to be provided.")
 
   req <- list() |>
     append_cond(coordinate, class = "GridCoordinate", skip_null = F) |>
@@ -124,7 +124,7 @@ PasteDataRequest <- function(
     append_cond(html, type = "logical")
 
   out <- list(pasteData = req) |>
-    deepgs_class(object_type = "Req")
+    dgs4_class(object_type = "Req")
 
   return(out)
 

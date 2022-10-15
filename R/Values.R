@@ -20,7 +20,7 @@ ValueRange <- function(
     majorDimension = majorDimension,
     values = values
   ) |>
-    deepgs_class("ValueRange")
+    dgs4_class("ValueRange")
 
   return(out)
 
@@ -54,7 +54,7 @@ UpdateValuesResponse <- function(
     append_cond(updatedColumns, type = "integer", skip_null = FALSE) |>
     append_cond(updatedCells, type = "integer", skip_null = FALSE) |>
     append_cond(updatedData, class = "ValueRange") |>
-    deepgs_class("UpdateValuesResponse")
+    dgs4_class("UpdateValuesResponse")
 
   return(out)
 

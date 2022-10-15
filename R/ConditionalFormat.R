@@ -23,7 +23,7 @@ InterpolationPoint <- function(
     append_cond(colorStyle, class = "ColorStyle", skip_null = FALSE) |>
     append_cond(type) |>
     append_cond(value, skip_null = skip_value) |>
-    deepgs_class("InterpolationPoint")
+    dgs4_class("InterpolationPoint")
 
   return(out)
 
@@ -52,7 +52,7 @@ BooleanRule <- function(
   out <- list() |>
     append_cond(condition, class = "BooleanCondition", skip_null = FALSE) |>
     append_cond(format, class = "CellFormat", skip_null = FALSE) |>
-    deepgs_class("BooleanRule")
+    dgs4_class("BooleanRule")
 
   return(out)
 
@@ -82,7 +82,7 @@ GradientRule <- function(
     append_cond(minpoint, class = "InterpolationPoint", skip_null = FALSE) |>
     append_cond(maxpoint, class = "InterpolationPoint", skip_null = FALSE) |>
     append_cond(midpoint, class = "InterpolationPoint") |>
-    deepgs_class("GradientRule")
+    dgs4_class("GradientRule")
 
   return(out)
 
@@ -116,13 +116,13 @@ ConditionalFormatRule <- function(
 
   null_rules <- vapply(list(booleanRule, gradientRule), is.null, logical(1))
   if (sum(null_rules) != 1)
-    deepgs_error("Exactly one of {.arg booleanRule} or {.arg gradientRule} needs to be provided.")
+    dgs4_error("Exactly one of {.arg booleanRule} or {.arg gradientRule} needs to be provided.")
 
   out <- list() |>
     append_cond(ranges) |>
     append_cond(booleanRule, class = "BooleanRule") |>
     append_cond(gradientRule, class = "GradientRule") |>
-    deepgs_class("ConditionalFormatRule")
+    dgs4_class("ConditionalFormatRule")
 
   return(out)
 }

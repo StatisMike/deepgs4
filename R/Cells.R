@@ -80,11 +80,11 @@ CellFormat <- function(
     append_cond(textFormat, class = "TextFormat") |>
     append_cond(hyperlinkDisplayType) |>
     append_cond(textRotation) |>
-    deepgs_class("CellFormat")
+    dgs4_class("CellFormat")
 
   if (length(out) == 0)
-    deepgs_error("No arguments specified",
-                 class = "NoArgsError")
+    dgs4_error("No arguments specified",
+               class = "NoArgsError")
 
   return(out)
 
@@ -126,7 +126,7 @@ NumberFormat <- function(
 
   out <- list(type = type) |>
     append_cond(pattern, type = "character") |>
-    deepgs_class("NumberFormat")
+    dgs4_class("NumberFormat")
 
   return(out)
 
@@ -161,7 +161,7 @@ Border <- function(style = c("SOLID", "SOLID_MEDIUM", "SOLID_THICK", "DOTTED", "
   out <- list() |>
     append_cond(style) |>
     append_cond(colorStyle, class = "ColorStyle") |>
-    deepgs_class("Border")
+    dgs4_class("Border")
 
 
   return(out)
@@ -183,7 +183,7 @@ Borders <- function(
     append_cond(bottom, class = "Border") |>
     append_cond(left, class = "Border") |>
     append_cond(right, class = "Border") |>
-    deepgs_class("Borders")
+    dgs4_class("Borders")
 
   return(out)
 
@@ -219,7 +219,7 @@ Padding <- function(
     append_cond(bottom, type = "integer", skip_null = FALSE) |>
     append_cond(left, type = "integer", skip_null = FALSE) |>
     append_cond(right, type = "integer", skip_null = FALSE) |>
-    deepgs_class("Padding")
+    dgs4_class("Padding")
 
   return(out)
 
@@ -261,7 +261,7 @@ ErrorValue <- function(
   out <- list() |>
     append_cond(type) |>
     append_cond(message, skip_null = FALSE, type = "character") |>
-    deepgs_class("ErrorValue")
+    dgs4_class("ErrorValue")
 
   return(out)
 
@@ -278,7 +278,7 @@ is.ErrorValue <- function(x) {
 #' @description Object holding specification of cell value in [CellData]. Only
 #' one of the parameters can be specified.
 #' @param numberValue Represents a double value. Date, Times and DateTimes
-#' need to be coerced first to [deepgs_serial_number()]
+#' need to be coerced first to [dgs4_serial_number()]
 #' @param stringValue String value. Leading single quotes with numbers aren't
 #' included
 #' @param boolValue Logical value.
@@ -298,9 +298,9 @@ ExtendedValue <- function(
     logical(1))
 
   if (sum(null_args) != 4)
-    deepgs_error("Only one argument can be specified.")
+    dgs4_error("Only one argument can be specified.")
 
-  if (is.deepgs_serial_number(numberValue))
+  if (is.dgs4_serial_number(numberValue))
     numberValue <- as.numeric(numberValue)
 
   out <- list() |>
@@ -313,7 +313,7 @@ ExtendedValue <- function(
   value_type <- gsub(names(out), pattern = "Value", replacement = "")
 
   out <- out[[1]] |>
-    deepgs_class("ExtendedValue")
+    dgs4_class("ExtendedValue")
 
   attr(out, "type") <- value_type
 
@@ -387,7 +387,7 @@ CellData <- function(
     append_cond(formattedValue, type = "character") |>
     append_cond(effectiveFormat, class = "CellFormat") |>
     append_cond(hyperlink, type = "class") |>
-    deepgs_class("CellData")
+    dgs4_class("CellData")
 
   return(out)
 
@@ -411,7 +411,7 @@ RowData <- function(values) {
     values <- list(values)
 
   out <- check_if_all_class(values, "CellData", skip_null = F) |>
-    deepgs_class("RowData")
+    dgs4_class("RowData")
 
   return(out)
 
@@ -457,7 +457,7 @@ GridData <- function(
     append_cond(rowData) |>
     append_cond(rowMetadata) |>
     append_cond(columnMetadata) |>
-    deepgs_class("GridData")
+    dgs4_class("GridData")
 
   return(out)
 

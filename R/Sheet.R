@@ -43,7 +43,7 @@ Sheet <- function(
     append_cond(merges) |>
     append_cond(charts) |>
     append_cond(conditionalFormats) |>
-    deepgs_class("Sheet")
+    dgs4_class("Sheet")
 
   return(out)
 
@@ -162,7 +162,7 @@ SheetProperties <- function(
     append_cond(rightToLeft, type = "logical") |>
     append_cond(dataSourceSheetProperties,
                 class = "DataSourceSheetProperties") |>
-    deepgs_class("SheetProperties")
+    dgs4_class("SheetProperties")
 
   return(out)
 

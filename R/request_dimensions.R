@@ -48,7 +48,7 @@ InsertDimensionRequest <- function(range, inheritFromBefore = NULL) {
   obj <- list(
     insertDimension = req
   ) |>
-    deepgs_class(object_type = "Req")
+    dgs4_class(object_type = "Req")
 
   return(obj)
 
@@ -71,7 +71,7 @@ AppendDimensionRequest <- function(
     append_cond(dimension)
 
   obj <- list(appendDimension = req) |>
-    deepgs_class(object_type = "Req")
+    dgs4_class(object_type = "Req")
 
   return(obj)
 
@@ -96,7 +96,7 @@ UpdateDimensionPropertiesRequest <- function(
                             logical(1))
 
   if (sum(ranges_provided) != 1)
-    deepgs_error("Exactly one of {.arg range} or {.arg dataSourceSheetRange} need to be provided")
+    dgs4_error("Exactly one of {.arg range} or {.arg dataSourceSheetRange} need to be provided")
 
   fields <- rlang::arg_match(fields, multiple = TRUE)
   fields <- paste(fields, collapse = ",")
@@ -108,7 +108,7 @@ UpdateDimensionPropertiesRequest <- function(
     append_cond(dataSourceSheetRange, class = "DataSourceSheetDimensionRange")
 
   out <- list(updateDimensionProperties = req) |>
-    deepgs_class(object_type = "Req")
+    dgs4_class(object_type = "Req")
 
   return(out)
 
@@ -127,14 +127,14 @@ AutoResizeDimensionsRequest <- function(dimensions = NULL,
                             logical(1))
 
   if (sum(ranges_provided) != 1)
-    deepgs_error("Exactly one of {.arg dimensions} or {.arg dataSourceSheetDimensions} need to be provided")
+    dgs4_error("Exactly one of {.arg dimensions} or {.arg dataSourceSheetDimensions} need to be provided")
 
   req <- list() |>
     append_cond(dimensions, class = "DimensionRange") |>
     append_cond(dataSourceSheetDimensions, "DataSourceDimensionRange")
 
   obj <- list(autoResizeDimensions = req) |>
-    deepgs_class(object_type = "Req")
+    dgs4_class(object_type = "Req")
 
   return(obj)
 
@@ -152,7 +152,7 @@ MoveDimensionRequest <- function(source, destinationIndex) {
     append_cond(destinationIndex, type = "integer", skip_null = FALSE)
 
   obj <- list(moveDimension = req) |>
-    deepgs_class(object_type = "Req")
+    dgs4_class(object_type = "Req")
 
   return(obj)
 
@@ -171,7 +171,7 @@ DeleteDimensionRequest <- function(range) {
   obj <- list(
     deleteDimension = req
   ) |>
-    deepgs_class(object_type = "Req")
+    dgs4_class(object_type = "Req")
 
   return(obj)
 
@@ -226,7 +226,7 @@ AddDimensionGroupRequest <- function(range) {
     append_cond(range, class = "DimensionRange", skip_null = F)
 
   obj <- list(addDimensionGroup = req) |>
-    deepgs_class(object_type = "Req")
+    dgs4_class(object_type = "Req")
 
   return(obj)
 
@@ -248,7 +248,7 @@ DeleteDimensionGroupRequest <- function(range) {
     append_cond(range, class = "DimensionRange", skip_null = F)
 
   obj <- list(deleteDimensionGroup = req) |>
-    deepgs_class(object_type = "Req")
+    dgs4_class(object_type = "Req")
 
   return(obj)
 
@@ -270,7 +270,7 @@ UpdateDimensionGroupRequest <- function(dimensionGroup,
     append_cond(fields)
 
   obj <- list(updateDimensionGroup = req) |>
-    deepgs_class(object_type = "Req")
+    dgs4_class(object_type = "Req")
 
   return(obj)
 

@@ -23,7 +23,7 @@ BasicChartAxis <- function(
     append_cond(format, class = "TextFormat") |>
     append_cond(viewWindowOptions, class = "ChartAxisViewWindowOptions") |>
     append_cond(titleTextPosition) |>
-    deepgs_class("BasicChartAxis")
+    dgs4_class("BasicChartAxis")
 
   return(out)
 
@@ -49,7 +49,7 @@ BasicChartDomain <- function(
   out <- list() |>
     append_cond(domain, class = "ChartData") |>
     append_cond(reversed, type = "logical") |>
-    deepgs_class("BasicChartDomain")
+    dgs4_class("BasicChartDomain")
 
   return(out)
 
@@ -80,7 +80,7 @@ BasicSeriesDataPointStyleOverride <- function(
     append_cond(index, type = "integer", skip_null = FALSE) |>
     append_cond(colorStyle, class = "ColorStyle") |>
     append_cond(pointStyle, class = "PointStyle") |>
-    deepgs_class("BasicSeriesDataPointStyleOverride")
+    dgs4_class("BasicSeriesDataPointStyleOverride")
 
 }
 
@@ -143,7 +143,7 @@ BasicChartSeries <- function(
     append_cond(colorStyle, class = "ColorStyle") |>
     append_cond(pointStyle, class = "PointStyle") |>
     append_cond(styleOverrides) |>
-    deepgs_class("BasicChartSeries")
+    dgs4_class("BasicChartSeries")
 
   return(out)
 
@@ -231,7 +231,7 @@ BasicChartSpec <- function(
     append_cond(headerCount, class = c("integer", "numeric")) |>
     append_cond(threeDimensional, class = "logical") |>
     append_cond(check_if_options(compareMode, "DATUM", "CATEGORY"), "compareMode") |>
-    deepgs_class("BasicChartSpec")
+    dgs4_class("BasicChartSpec")
 
   if (chartType == "LINE")
     out <- append_cond(out, lineSmoothing, class = "logical")
@@ -242,8 +242,8 @@ BasicChartSpec <- function(
   if (!is.null(totalDataLabel) && isTRUE(stackedType %in% c("STACKED", "PERCENT_STACKED"))) {
     totalDataLabel <- check_if_class(totalDataLabel, "DataLabel")
     if (totalDataLabel$type == "CUSTOM" || !is.null(totalDataLabel$customDataLabel))
-      deepgs_error("{.cls DataLabel} provided to {.arg totalDataLabel} cannot be of {.val CUSTOM} type nor contain {.val customDataLabel}.",
-                   class = "totalDataLabelError")
+      dgs4_error("{.cls DataLabel} provided to {.arg totalDataLabel} cannot be of {.val CUSTOM} type nor contain {.val customDataLabel}.",
+                 class = "totalDataLabelError")
     out[["totalDataLabel"]] <- totalDataLabel
   }
 

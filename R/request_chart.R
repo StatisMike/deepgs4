@@ -12,7 +12,7 @@ AddChartRequest <- function(
   out <- list(
     addChart = list(chart = chart)
   ) |>
-    deepgs_class(object_type = "Req")
+    dgs4_class(object_type = "Req")
 
   return(out)
 
@@ -35,7 +35,7 @@ UpdateChartSpecRequest <- function(
     updateChartSpec = list(spec = spec) |>
       append_cond(chartId, type = "integer")
   ) |>
-    deepgs_class(object_type = "Req")
+    dgs4_class(object_type = "Req")
 
   return(out)
 

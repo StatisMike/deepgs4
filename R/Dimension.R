@@ -25,7 +25,7 @@ DimensionProperties <- function(
     append_cond(hiddenByUser, type = "logical") |>
     append_cond(hiddenByFilter, type = "logical") |>
     append_cond(dataSourceColumnReference, type = "character") |>
-    deepgs_class("DimensionProperties")
+    dgs4_class("DimensionProperties")
 
   return(out)
 
@@ -61,7 +61,7 @@ DimensionRange <- function(
     append_cond(dimension) |>
     append_cond(startIndex, type = "integer") |>
     append_cond(startIndex, type = "integer") |>
-    deepgs_class("DimensionRange")
+    dgs4_class("DimensionRange")
 
   return(out)
 
@@ -96,7 +96,7 @@ DimensionGroup <- function(range, depth = NULL, collapsed = NULL) {
     append_cond(range, class = "DimensionRange", skip_null = FALSE) |>
     append_cond(depth, type = "integer") |>
     append_cond(collapsed, type = "logical") |>
-    deepgs_class("DimensionGroup")
+    dgs4_class("DimensionGroup")
 
   return(out)
 

@@ -26,7 +26,7 @@ AddSheetRequest <- function(properties) {
     append_cond(properties, class = "SheetProperties", skip_null = FALSE)
 
   obj <- list(addSheet = req) |>
-    deepgs_class(object_type = "Req")
+    dgs4_class(object_type = "Req")
 
   return(obj)
 
@@ -52,7 +52,7 @@ UpdateSheetPropertiesRequest <- function(
     append_cond(fields)
 
   obj <- list(updateSheetProperties = req) |>
-    deepgs_class(object_type = "Req")
+    dgs4_class(object_type = "Req")
 
   return(obj)
 
@@ -70,7 +70,7 @@ DeleteSheetRequest <- function(sheetId) {
     append_cond(sheetId, type = "integer", skip_null = FALSE)
 
   obj <- list(deleteSheet = req) |>
-    deepgs_class(object_type = "Req")
+    dgs4_class(object_type = "Req")
 
   return(obj)
 

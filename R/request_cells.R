@@ -36,7 +36,7 @@ UpdateCellsRequest <- function(
   arg_check <- vapply(list(start, range), is.null, logical(1))
 
   if (sum(arg_check) != 1)
-    deepgs_error("Exactly one of {.arg start} and {.arg range} need to be provided for {.emph UpdateCellsRequest}.")
+    dgs4_error("Exactly one of {.arg start} and {.arg range} need to be provided for {.emph UpdateCellsRequest}.")
 
   fields <- check_valid_update_fields(fields, "Cells")
   fields <- paste(fields, collapse = ",")
@@ -51,7 +51,7 @@ UpdateCellsRequest <- function(
     append_cond(range, class = "GridRange")
 
   out <- list(updateCells = req) |>
-    deepgs_class(object_type = "Req")
+    dgs4_class(object_type = "Req")
 
   return(out)
 
@@ -80,7 +80,7 @@ AppendCellsRequest <- function(
     append_cond(fields)
 
   out <- list(appendCells = req) |>
-    deepgs_class(object_type = "Req")
+    dgs4_class(object_type = "Req")
 
   return(out)
 
@@ -118,7 +118,7 @@ MergeCellsRequest <- function(
     append_cond(mergeType)
 
   out <- list(mergeCells = req) |>
-    deepgs_class(object_type = "Req")
+    dgs4_class(object_type = "Req")
 
   return(out)
 
@@ -136,7 +136,7 @@ UnmergeCellsRequest <- function(
     append_cond(range, class = "GridRange", skip_null = F)
 
   out <- list(unmergeCells = req) |>
-    deepgs_class(object_type = "Req")
+    dgs4_class(object_type = "Req")
 
   return(out)
 
@@ -174,7 +174,7 @@ UpdateBordersRequest <- function(range,
     append_cond(innerVertical, class = "Border")
 
   obj <- list(updateBorders = req) |>
-    deepgs_class(object_type = "Req")
+    dgs4_class(object_type = "Req")
 
   return(obj)
 

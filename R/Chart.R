@@ -52,7 +52,7 @@ ChartAxisViewWindowOptions <- function(
     append_cond(viewWindowMode, "viewWindowMode") |>
     append_cond(viewWindowMin, "viewWindowMin") |>
     append_cond(viewWindowMax, "viewWindowMax") |>
-    deepgs_class("ChartAxisViewWindowOptions")
+    dgs4_class("ChartAxisViewWindowOptions")
 
   return(out)
 
@@ -83,7 +83,7 @@ ChartData <- function(
     groupRule = NULL) {
 
   if (is.null(sourceRange) && is.null(columnReference))
-    deepgs_error("One of the {.arg sourceRange} or {.arg columnReference}
+    dgs4_error("One of the {.arg sourceRange} or {.arg columnReference}
                  needs to be specified")
 
   out <- list()
@@ -102,7 +102,7 @@ ChartData <- function(
                               check_chartGridRange,
                               arg = "sourceRange",
                               call = rlang::current_call())
-    out <- deepgs_class(out, "ChartData")
+    out <- dgs4_class(out, "ChartData")
 
     return(out)
   }
@@ -114,7 +114,7 @@ ChartData <- function(
     append_cond(columnReference, class = "character", nests = "name") |>
     append_cond(aggregateType) |>
     append_cond(groupRule) |>
-    deepgs_class(out, "ChartData")
+    dgs4_class(out, "ChartData")
 
   return(out)
 
@@ -190,7 +190,7 @@ ChartSpec <- function(
     append_cond(filterSpecs, class = "FilterSpec") |>
     append_cond(sortSpecs, class = "SortSpec") |>
     append_cond(hiddenDimensionStrategy) |>
-    deepgs_class("ChartSpec")
+    dgs4_class("ChartSpec")
 
   return(out)
 
@@ -251,7 +251,7 @@ DataLabel <- function(
     append_cond(customLabelData, class = "ChartData") |>
     append_cond(textFormat, class = "TextFormat") |>
     append_cond(type) |>
-    deepgs_class("DataLabel")
+    dgs4_class("DataLabel")
 
   return(out)
 
@@ -285,7 +285,7 @@ EmbeddedChart <- function(
     append_cond(position, class = "EmbeddedObjectPosition", skip_null = FALSE) |>
     append_cond(borderColor, class = "ColorStyle") |>
     append_cond(chartId, type = "integer") |>
-    deepgs_class("EmbeddedChart")
+    dgs4_class("EmbeddedChart")
 
   return(out)
 

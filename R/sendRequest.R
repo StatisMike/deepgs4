@@ -6,12 +6,12 @@
 request_generate <- function(
     endpoint,
     params,
-    token = deepgs_token()) {
+    token = dgs4_token()) {
 
   force(params)
   params <- append_cond(params, params$key, "key") |>
-    append_cond(deepgs_api_key(), "key") |>
-    append_cond(deepgs_default_api_key(), "key")
+    append_cond(dgs4_api_key(), "key") |>
+    append_cond(dgs4_default_api_key(), "key")
 
   req <- gargle::request_develop(
     endpoint = .endpoints[[endpoint]],
@@ -36,11 +36,11 @@ request_generate <- function(
 #' @export
 request_make <- function(x, ..., encode = "json") {
 
-  gargle::request_retry(x, ..., encode = "json", user_agent = deepgs_user_agent())
+  gargle::request_retry(x, ..., encode = "json", user_agent = dgs4_user_agent())
 
 }
 
-deepgs_user_agent <- function() {
+dgs4_user_agent <- function() {
 
   httr::user_agent(paste0("deepgsheets4/", utils::packageVersion("deepgsheets4"),
                           " ", "gargle/", utils::packageVersion("gargle"),
@@ -59,7 +59,7 @@ send_create_req <- function(
 ) {
 
   spreadsheet <- check_if_class(spreadsheet, "Spreadsheet", skip_null = FALSE) |>
-    deepgs_listinize()
+    dgs4_listinize()
 
   req <- request_generate(
     endpoint = "sheets.spreadsheets.create",

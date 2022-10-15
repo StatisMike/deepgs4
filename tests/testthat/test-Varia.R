@@ -33,7 +33,7 @@ test_that("ColorStyle can be created, listinized and generated from list", {
 
     expect_failure(
       expect_error(
-        listinized <- deepgs_listinize(constructed)
+        listinized <- dgs4_listinize(constructed)
       )
     )
 
@@ -84,7 +84,7 @@ test_that("TextFormat can be created, listinized and generated from list", {
 
     expect_failure(
       expect_error(
-        listinized <- deepgs_listinize(constructed)
+        listinized <- dgs4_listinize(constructed)
       )
     )
 

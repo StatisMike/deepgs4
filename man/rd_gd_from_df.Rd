@@ -80,7 +80,7 @@ automatically. Guessing is done on basis of vector type in following order:
 \item \code{numeric} vectors will be given \code{n} type (entered as \emph{numberValue})
 \item \code{factor} vectors will be given \code{c} type (entered as \emph{stringValue})
 \item vectors will be tested if they can be processed with \code{lubridate::as_date_time()}
-or if they consists of \link{deepgs_serial_number}.
+or if they consists of \link{dgs4_serial_number}.
 4a. First 20 values will be tested if they are dates or NAs. If so,
 they will be given \code{d} type (entered as \emph{numberValue} with \code{DATE} \link{NumberFormat})
 4b. If not, they will be given \code{dt} type (entered as \emph{numberValue} with

@@ -22,7 +22,7 @@ GridProperties <- function(
     append_cond(hideGridlines, type = "logical") |>
     append_cond(rowGroupControlAfter, type = "logical") |>
     append_cond(columnGroupControlAfter, type = "logical") |>
-    deepgs_class("GridProperties")
+    dgs4_class("GridProperties")
 
   return(out)
 
@@ -54,7 +54,7 @@ GridCoordinate <- function(
     append_cond(sheetId, type = "integer", skip_null = F) |>
     append_cond(rowIndex, type = "integer", skip_null = F) |>
     append_cond(columnIndex, type = "integer", skip_null = F) |>
-    deepgs_class("GridCoordinate")
+    dgs4_class("GridCoordinate")
 
   return(out)
 
@@ -93,12 +93,12 @@ GridRange <- function(
     startColumnIndex <- 0
 
   if (isTRUE(endRowIndex <= startRowIndex))
-    deepgs_error("{.arg endRowIndex} needs to be greater than {.arg startRowIndex}",
-                 class = "WrongIndexError")
+    dgs4_error("{.arg endRowIndex} needs to be greater than {.arg startRowIndex}",
+               class = "WrongIndexError")
 
   if (isTRUE(endColumnIndex <= startColumnIndex))
-    deepgs_error("{.arg endColumnIndex} needs to be greater than {.arg startColumnIndex}",
-                 class = "WrongIndexError")
+    dgs4_error("{.arg endColumnIndex} needs to be greater than {.arg startColumnIndex}",
+               class = "WrongIndexError")
 
   out <- list() |>
     append_cond(sheetId, type = "integer", skip_null = F) |>
@@ -106,7 +106,7 @@ GridRange <- function(
     append_cond(endRowIndex, type = "integer") |>
     append_cond(startColumnIndex, type = "integer") |>
     append_cond(endColumnIndex, type = "integer") |>
-    deepgs_class("GridRange")
+    dgs4_class("GridRange")
 
   return(out)
 
@@ -159,16 +159,16 @@ split_GridRange <- function(gr, split = c("row", "col")) {
   split <- rlang::arg_match(split)
 
   if (is.null(gr$endRowIndex) && split == "row")
-    deepgs_error("Cannot split by {.val row}: {.cls GridRange} spans unbinded rows")
+    dgs4_error("Cannot split by {.val row}: {.cls GridRange} spans unbinded rows")
 
   if (gr$endRowIndex - gr$startRowIndex == 1 && split == "row")
-    deepgs_error("Cannot split by {.val row}: {.cls GridRange} specifies an one-row range")
+    dgs4_error("Cannot split by {.val row}: {.cls GridRange} specifies an one-row range")
 
   if (is.null(gr$endColumnIndex) && split == "col")
-    deepgs_error("Cannot split by {.val col}: {.cls GridRange} spans unbinded columns")
+    dgs4_error("Cannot split by {.val col}: {.cls GridRange} spans unbinded columns")
 
   if (gr$endColumnIndex - gr$startColumnIndex == 1 && split == "col")
-    deepgs_error("Cannot split by {.val col}: {.cls GridRange} specifies an one-column range")
+    dgs4_error("Cannot split by {.val col}: {.cls GridRange} specifies an one-column range")
 
   switch(split,
          row = lapply(seq(gr$startRowIndex,
@@ -190,7 +190,7 @@ split_GridRange <- function(gr, split = c("row", "col")) {
 extract_GridCoordinates <- function(gr) {
 
   if (is.null(gr$endRowIndex) || is.null(gr$endColumnIndex))
-    deepgs_error("Cannot extract from unbounded {.cls GridRange)")
+    dgs4_error("Cannot extract from unbounded {.cls GridRange)")
 
   row_indices <- seq(gr$startRowIndex, gr$endRowIndex - 1, by = 1)
   col_indices <- seq(gr$startColumnIndex, gr$endColumnIndex - 1, by = 1)

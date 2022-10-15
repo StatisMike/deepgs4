@@ -19,7 +19,7 @@ OverlayPosition <- function(
     append_cond(offsetYPixels, type = "integer") |>
     append_cond(widthPixels, type = "integer") |>
     append_cond(heightPixels, type = "integer") |>
-    deepgs_class("OverlayPosition")
+    dgs4_class("OverlayPosition")
 
   return(out)
 
@@ -53,7 +53,7 @@ EmbeddedObjectPosition <- function(
   if (!is.null(overlayPosition)) {
     out <- list() |>
       append_cond(overlayPosition, class = "OverlayPosition", skip_null = FALSE) |>
-      deepgs_class("EmbeddedObjectPosition")
+      dgs4_class("EmbeddedObjectPosition")
 
     return(out)
   }
@@ -61,18 +61,18 @@ EmbeddedObjectPosition <- function(
   if (!is.null(sheetId)) {
     out <- list() |>
       append_cond(sheetId, type = "integer", skip_null = FALSE) |>
-      deepgs_class("EmbeddedObjectPosition")
+      dgs4_class("EmbeddedObjectPosition")
 
     return(out)
   }
 
   out <- list() |>
     append_cond(newSheet, type = "logical", skip_null = FALSE) |>
-    deepgs_class("EmbeddedObjectPosition")
+    dgs4_class("EmbeddedObjectPosition")
 
   if (!isTRUE(out$newSheet))
-    deepgs_error("{.arg newSheet} needs to be {.val TRUE}.",
-                 class = "WrongArgError")
+    dgs4_error("{.arg newSheet} needs to be {.val TRUE}.",
+               class = "WrongArgError")
 
   return(out)
 

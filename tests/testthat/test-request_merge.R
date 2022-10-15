@@ -1,6 +1,6 @@
 # initialization
 
-deepgs_auth(path = Sys.getenv("G_SERVICE_ACCOUNT"),
+dgs4_auth(path = Sys.getenv("G_SERVICE_ACCOUNT"),
             cache = F)
 googledrive::drive_auth(path = Sys.getenv("G_SERVICE_ACCOUNT"),
                         cache = F)

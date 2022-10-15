@@ -34,8 +34,8 @@ check_valid_update_fields <- function(
     return(fields)
   }
 
-  deepgs_error(class = "NonValidField",
-               call = call,
-               "Fields: {.val {non_valid}} aren't valid fieds for this request. Check valid fields with `valid_update_fields('{updateRequest}')`.")
+  dgs4_error(class = "NonValidField",
+             call = call,
+             "Fields: {.val {non_valid}} aren't valid fieds for this request. Check valid fields with `valid_update_fields('{updateRequest}')`.")
 
 }

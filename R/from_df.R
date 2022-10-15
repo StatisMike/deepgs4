@@ -12,11 +12,11 @@ guess_data_types <- function(x) {
       return("n")
     if (is.factor(col))
       return("c")
-    if (is.coercible.dt(col) || is.deepgs_serial_number(col)) {
-      if (is.deepgs_serial_number(col))
+    if (is.coercible.dt(col) || is.dgs4_serial_number(col)) {
+      if (is.dgs4_serial_number(col))
         as_sn <- head(col, 20)
       else
-        as_sn <- deepgs_serial_number(head(col, 20))
+        as_sn <- dgs4_serial_number(head(col, 20))
       if (all(vapply(as_sn, \(x) is.na(x) || x %% 1 == 0, logical(1))))
         return("d")
       else
@@ -48,8 +48,8 @@ handle_val_types <- function(x, df, which = c("names", "values")) {
   }
 
   if (length(x) != ncol(df))
-    deepgs_error("Either {.val NULL}, {.val 1} or as many types as columns or names need to provided to {.arg value_types} or {.arg names_types} arguments.",
-                 call = rlang::caller_env(2))
+    dgs4_error("Either {.val NULL}, {.val 1} or as many types as columns or names need to provided to {.arg value_types} or {.arg names_types} arguments.",
+               call = rlang::caller_env(2))
 
   return(x)
 
@@ -75,8 +75,8 @@ construct_CellData_from_types <- function(
                  userEnteredFormat = if (!is.null(format)) format),
     d = {
 
-      if (!is.deepgs_serial_number(value) && !is.na(value))
-        value <- deepgs_serial_number(value)
+      if (!is.dgs4_serial_number(value) && !is.na(value))
+        value <- dgs4_serial_number(value)
 
       if (is.null(format))
         format <- CellFormat(numberFormat = NumberFormat("DATE"))
@@ -94,8 +94,8 @@ construct_CellData_from_types <- function(
 
     dt = {
 
-      if (!is.deepgs_serial_number(value) && !is.na(value))
-        value <- deepgs_serial_number(value)
+      if (!is.dgs4_serial_number(value) && !is.na(value))
+        value <- dgs4_serial_number(value)
 
       if (is.null(format))
         format <- CellFormat(numberFormat = NumberFormat("DATE_TIME"))
@@ -152,7 +152,7 @@ construct_CellData_from_types <- function(
 #' 2. `numeric` vectors will be given `n` type (entered as *numberValue*)
 #' 3. `factor` vectors will be given `c` type (entered as *stringValue*)
 #' 4. vectors will be tested if they can be processed with `lubridate::as_date_time()`
-#' or if they consists of [deepgs_serial_number].
+#' or if they consists of [dgs4_serial_number].
 #'   4a. First 20 values will be tested if they are dates or NAs. If so,
 #'   they will be given `d` type (entered as *numberValue* with `DATE` [NumberFormat])
 #'   4b. If not, they will be given `dt` type (entered as *numberValue* with
@@ -174,7 +174,7 @@ to_RowData_from_df <- function(
     transpose = FALSE) {
 
   if (!is.data.frame(df))
-    deepgsheets4:::deepgs_error("Object provided to {.arg df} needs to be a {.cls data.frame}.")
+    dgs4_error("Object provided to {.arg df} needs to be a {.cls data.frame}.")
 
   df <- as.data.frame(df)
 
