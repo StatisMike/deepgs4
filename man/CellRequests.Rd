@@ -8,7 +8,7 @@
 \usage{
 UpdateCellsRequest(rows, fields = NULL, start = NULL, range = NULL)
 
-AppendCellsRequest(sheetId, rows, fields)
+AppendCellsRequest(sheetId, rows, fields = NULL)
 }
 \arguments{
 \item{rows}{object of class \link{RowData} or list of multiple such objects}

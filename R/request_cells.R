@@ -65,9 +65,9 @@ UpdateCellsRequest <- function(
 AppendCellsRequest <- function(
     sheetId,
     rows,
-    fields) {
+    fields = NULL) {
 
-  fields <- check_valid_update_fields(fields, "Cells")
+  fields <- check_valid_update_fields(fields, "UpdateCells")
   fields <- paste(fields, collapse = ",")
 
   rows <- nest_if_class(rows, "RowData") |>

@@ -4,11 +4,11 @@ dgs4_auth(path = Sys.getenv("G_SERVICE_ACCOUNT"),
           cache = F)
 
 # create test spreadsheet
-cars_spreadsheet <- Spreadsheet(
+test_spreadsheet <- Spreadsheet(
   properties = SpreadsheetProperties()
 )
 
-created <- send_create_req(cars_spreadsheet)
+created <- send_create_req(test_spreadsheet)
 ss_id <- googledrive::as_id(created$spreadsheetId)
 on.exit(googledrive::drive_trash(ss_id))
 

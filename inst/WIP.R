@@ -1,107 +1,3 @@
-cars_gd <- to_GridData_from_df(cars, 0, 0)
-
-test_spreadsheet <- Spreadsheet(
-  properties = SpreadsheetProperties("gridProperties test"),
-  sheets = list(
-    Sheet(
-      properties = SheetProperties(
-        sheetId = 0,
-        title = "First cars",
-        gridProperties = GridProperties(51, 2)),
-      data = cars_gd),
-    Sheet(
-      properties = SheetProperties(
-        sheetId = 1,
-        title = "Second cars",
-        gridProperties = GridProperties(51, 2)
-      ),
-      data = cars_gd
-    )
-  )
-)
-
-created <- send_create_req(test_spreadsheet)
-
-newRule <- ConditionalFormatRule(
-  ranges = list(GridRange(0, 0, 52, 0, 1),
-                GridRange(0, 0, 52, 1, 2)),
-  gradientRule = GradientRule(
-    InterpolationPoint(colorStyle = ColorStyle(themeColorType = "ACCENT1"), type = "MIN"),
-    InterpolationPoint(colorStyle = ColorStyle(themeColorType = "ACCENT6"), type = "MAX")
-  )
-)
-
-addReq <- AddConditionalFormatRule(
-  0, rule
-)
-
-resp <- send_batchUpdate_req(
-  created$spreadsheetId,
-  addReq
-)
-
-updateRule <- ConditionalFormatRule(
-  ranges = GridRange(0, 0, 52, 1, 2),
-  gradientRule = GradientRule(
-    InterpolationPoint(colorStyle = ColorStyle(themeColorType = "ACCENT1"), type = "MIN"),
-    InterpolationPoint(colorStyle = ColorStyle(themeColorType = "ACCENT3"), type = "MAX")
-  )
-)
-
-updateReq <- UpdateConditionalFormatRule(
-  0, rule = updateRule
-)
-
-resp <- send_batchUpdate_req(
-  created$spreadsheetId,
-  updateReq
-)
-
-nextRule <- ConditionalFormatRule(
-  ranges = GridRange(0, 0, 52, 0, 1),
-  booleanRule = BooleanRule(
-    condition = BooleanCondition("NUMBER_GREATER",
-                                 values = ConditionValue("10")),
-    CellFormat(backgroundColorStyle = ColorStyle(theme = "ACCENT4"))
-  )
-)
-
-nextAddReq <- AddConditionalFormatRule(
-  index = 1,
-  rule = nextRule
-)
-
-resp <- send_batchUpdate_req(
-  created$spreadsheetId,
-  nextAddReq
-)
-
-moveReq <- UpdateConditionalFormatRule(
-  index = 0,
-  newIndex = 1,
-  sheetId = 0
-)
-
-resp <- send_batchUpdate_req(
-  created$spreadsheetId,
-  moveReq
-)
-
-check <- send_get_req(created$spreadsheetId,
-             fields = "sheets.conditionalFormats")
-
-
-
-# ss_id <- googledrive::as_id(created$spreadsheetId)
-# on.exit(googledrive::drive_trash(ss_id))
-# googledrive::drive_share(ss_id,
-#                          role = "writer",
-#                          type = "user",
-#                          "emailAddress" = "statismike@gmail.com")
-
-
-
-
 googledrive::drive_auth(path = Sys.getenv("G_SERVICE_ACCOUNT"),
                         cache = F)
 dgs4_auth(path = Sys.getenv("G_SERVICE_ACCOUNT"),
@@ -109,73 +5,93 @@ dgs4_auth(path = Sys.getenv("G_SERVICE_ACCOUNT"),
 
 # create test spreadsheet
 test_spreadsheet <- Spreadsheet(
-  properties = SpreadsheetProperties()
+  properties = SpreadsheetProperties(),
+  sheets = Sheet(SheetProperties(sheetId = 0,
+                                 gridProperties = GridProperties(10,10)))
 )
 
 created <- send_create_req(test_spreadsheet)
 ss_id <- googledrive::as_id(created$spreadsheetId)
 
+req_min <- UpdateBordersRequest(
+        range = GridRange(0, 1, 10, 2, 9),
+        top = Border("DOTTED")
+      )
 
-min_req <- AddSheetRequest(
-  SheetProperties()
+resp_min <- send_batchUpdate_req(
+  created$spreadsheetId,
+  req_min
 )
-
-max_req <- AddSheetRequest(
-  SheetProperties(sheetId = 2137,
-                  title = "Test of sheet",
-                  index = 1,
-                  sheetType = "GRID",
-                  gridProperties = GridProperties(10, 10, 1, 2, TRUE, TRUE, TRUE),
-                  hidden = TRUE,
-                  tabColorStyle = ColorStyle(0.5, 0.4, 0.6),
-                  rightToLeft = TRUE)
-)
-
-resp_min <- send_batchUpdate_req(created$spreadsheetId,
-                                 min_req)
-
-resp_max <- send_batchUpdate_req(created$spreadsheetId,
-                                 max_req)
-
-comparison <-
-  compare_objects(max_req, resp_max$replies[[1]],
-                  skip_compare = c("red", "green", "blue"))
-
-update_req <- UpdateSheetPropertiesRequest(
-  SheetProperties(sheetId = 2137,
-                  title = "Test of sheetUpdate",
-                  index = 0,
-                  sheetType = "GRID",
-                  gridProperties = GridProperties(15, 20, 3, 1, FALSE, FALSE, FALSE),
-                  hidden = FALSE,
-                  tabColorStyle = ColorStyle(0.6, 0.3, 0.2),
-                  rightToLeft = FALSE)
-)
-
-resp_update <- send_batchUpdate_req(created$spreadsheetId,
-                                    update_req)
 
 confirm <- send_get_req(created$spreadsheetId,
-                        fields = "sheets.properties",
-                        range = paste0("'", update_req$updateSheetProperties$properties$title, "'"))
+                        fields = "sheets.data.rowData.values.userEnteredFormat.borders")
 
-# for now, as get req don't return spreadsheet
-confirm <- gen_Spreadsheet(confirm)
+top_borders_row_1 <- sapply(
+  confirm$sheets[[1]]$data[[1]]$rowData[[1]]$values,
+  \(x) if (!is.null(x$userEnteredFormat$borders))
+    x$userEnteredFormat$borders$top$style
+  else NA)
 
-comparison_update <- compare_objects(
-  update_req$updateSheetProperties$properties,
-  confirm$sheets[[1]]$properties,
-  skip_compare = c("red", "blue", "green"))
+top_borders_row_2 <- sapply(
+  confirm$sheets[[1]]$data[[1]]$rowData[[2]]$values,
+  \(x) if (!is.null(x$userEnteredFormat$borders))
+    x$userEnteredFormat$borders$top$style
+  else NA)
 
-na_compare <- vapply(comparison_update, is.na, logical(1))
+expect_true(length(top_borders_row_1) == 0)
+expect_equal(top_borders_row_2,
+             c(rep(NA, 2), rep("DOTTED", 7)))
 
-expect_true(all(comparison_update[!na_compare]))
-
-expect_equal(
-  names(comparison_update[na_compare]),
-  c("gridProperties.hideGridlines", "gridProperties.rowGroupControlAfter",
-    "gridProperties.columnGroupControlAfter",
-    "hidden", "rightToLeft")
+req_max <- UpdateBordersRequest(
+  range = GridRange(0, 1, 10, 2, 9),
+  top = Border("NONE"),
+  bottom = Border("DOUBLE"),
+  left = Border("SOLID_MEDIUM"),
+  right = Border("SOLID_THICK"),
+  innerHorizontal = Border("DASHED"),
+  innerVertical = Border(colorStyle = ColorStyle("ACCENT3"))
 )
+
+resp_max <- send_batchUpdate_req(
+  created$spreadsheetId,
+  req_max
+)
+
+confirm <- send_get_req(created$spreadsheetId,
+                        fields = "sheets.data.rowData.values.userEnteredFormat.borders")
+
+top_borders_row_2 <- sapply(
+  confirm$sheets[[1]]$data[[1]]$rowData[[2]]$values,
+  \(x) if (!is.null(x$userEnteredFormat$borders$top$style))
+    x$userEnteredFormat$borders$top$style
+  else NA)
+
+top_borders_row_3 <- sapply(
+  confirm$sheets[[1]]$data[[1]]$rowData[[3]]$values,
+  \(x) if (!is.null(x$userEnteredFormat$borders))
+    x$userEnteredFormat$borders$top$style
+  else NA)
+
+left_borders_row_3 <- sapply(
+  confirm$sheets[[1]]$data[[1]]$rowData[[3]]$values,
+  \(x) if (!is.null(x$userEnteredFormat$borders))
+    x$userEnteredFormat$borders$left$style
+  else NA)
+
+bottom_borders_row_10 <- sapply(
+  confirm$sheets[[1]]$data[[1]]$rowData[[10]]$values,
+  \(x) if (!is.null(x$userEnteredFormat$borders))
+    x$userEnteredFormat$borders$bottom$style
+  else NA)
+
+expect_true(all(vapply(top_borders_row_2, is.na, logical(1))))
+expect_equal(top_borders_row_3,
+             c(rep(NA, 2), rep("DASHED", 7)))
+expect_equal(left_borders_row_3,
+             c(rep(NA, 2), "SOLID_MEDIUM", rep("SOLID", 6)))
+expect_equal(bottom_borders_row_10,
+             c(rep(NA, 2), rep("DOUBLE", 7)))
+
+
 
 googledrive::drive_trash(ss_id)
