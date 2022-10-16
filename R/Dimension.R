@@ -51,16 +51,13 @@ DimensionRange <- function(
     startIndex = NULL,
     endIndex = NULL) {
 
-  if (is.null(startIndex))
-    startIndex <- 0
-
   dimension <- rlang::arg_match(dimension)
 
   out <- list() |>
     append_cond(sheetId, type = "integer", skip_null = FALSE) |>
     append_cond(dimension) |>
     append_cond(startIndex, type = "integer") |>
-    append_cond(startIndex, type = "integer") |>
+    append_cond(endIndex, type = "integer") |>
     dgs4_class("DimensionRange")
 
   return(out)

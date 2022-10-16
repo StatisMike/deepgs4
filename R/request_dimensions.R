@@ -61,7 +61,7 @@ InsertDimensionRequest <- function(range, inheritFromBefore = NULL) {
 AppendDimensionRequest <- function(
     sheetId,
     length,
-    dimension = c("ROWS", "DIMENSIONS")) {
+    dimension = c("ROWS", "COLUMNS")) {
 
   dimension <- rlang::arg_match(dimension)
 

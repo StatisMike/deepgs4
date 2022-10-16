@@ -12,7 +12,7 @@
 \usage{
 InsertDimensionRequest(range, inheritFromBefore = NULL)
 
-AppendDimensionRequest(sheetId, length, dimension = c("ROWS", "DIMENSIONS"))
+AppendDimensionRequest(sheetId, length, dimension = c("ROWS", "COLUMNS"))
 
 UpdateDimensionPropertiesRequest(
   properties,
