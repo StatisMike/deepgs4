@@ -74,7 +74,7 @@ send_get_values_req <- function(
   resp <- request_make(req)
 
   gargle::response_process(resp) |>
-    gen_deepgsheets4Obj("ValueRange")
+    gen_dgs4Obj("ValueRange")
 
 }
 
@@ -188,6 +188,6 @@ send_update_values_req <- function(
   resp <- request_make(req)
 
   gargle::response_process(resp) |>
-    gen_deepgsheets4Obj("UpdateValuesResponse")
+    gen_UpdateValuesResponse()
 
 }

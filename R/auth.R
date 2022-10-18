@@ -1,4 +1,4 @@
-## This file is the interface between deepgsheets4 and the
+## This file is the interface between deepgs4 and the
 ## auth functionality in gargle.
 
 # Initialization happens in .onLoad
@@ -7,14 +7,14 @@
 ## The roxygen comments for these functions are mostly generated from data
 ## in this list and template text maintained in gargle.
 gargle_lookup_table <- list(
-  PACKAGE     = "deepgsheets4",
+  PACKAGE     = "deepgs4",
   YOUR_STUFF  = "your Google Sheets",
   PRODUCT     = "Google Sheets",
   API         = "Sheets API",
   PREFIX      = "dgs4"
 )
 
-#' Authorize deepgsheets4
+#' Authorize deepgs4
 #'
 #' @eval gargle:::PREFIX_auth_description(gargle_lookup_table)
 #' @eval gargle:::PREFIX_auth_details(gargle_lookup_table)
@@ -55,7 +55,7 @@ dgs4_auth <- function(email = gargle::gargle_oauth_email(),
     app = if (!is.null(dgs4_oauth_app())) dgs4_oauth_app() else dgs4_default_app(),
     email = email,
     path = path,
-    package = "deepgsheets4",
+    package = "deepgs4",
     cache = cache,
     use_oob = use_oob,
     token = token
@@ -63,7 +63,7 @@ dgs4_auth <- function(email = gargle::gargle_oauth_email(),
   if (!inherits(cred, "Token2.0")) {
     cli::cli_abort(c(
       "Can't get Google credentials.",
-      "i" = "Are you running {.pkg deepgsheets4} in a non-interactive \\
+      "i" = "Are you running {.pkg deepgs4} in a non-interactive \\
              session? Consider:",
       "*" = "Call {.fun dgs4_deauth} to prevent the attempt to get credentials.",
       "*" = "Call {.fun dgs4_auth} directly with all necessary specifics.",
@@ -167,7 +167,7 @@ dgs4_has_token <- function() {
 #'   # this file has the same structure as the JSON from Google
 #'   app_path <- system.file(
 #'     "extdata", "fake-oauth-client-id-and-secret.json",
-#'     package = "deepgsheets4"
+#'     package = "deepgs4"
 #'   )
 #'   dgs4_auth_configure(path = app_path)
 #'
@@ -224,7 +224,7 @@ dgs4_user <- function() {
   }
 
   email <- gargle::token_email(dgs4_token())
-  cli::cli_bullets(c(i = "Logged in to {.pkg deepgsheets4} as {.email {email}}."))
+  cli::cli_bullets(c(i = "Logged in to {.pkg deepgs4} as {.email {email}}."))
   invisible(email)
 }
 
@@ -247,7 +247,7 @@ dgs4_default_api_key <- function() {
 dgs4_auth_internal <- function(account = c("docs", "testing"),
                                  scopes = NULL) {
   account <- match.arg(account)
-  can_decrypt <- gargle:::secret_can_decrypt("deepgsheets4")
+  can_decrypt <- gargle:::secret_can_decrypt("deepgs4")
   online <- !is.null(curl::nslookup("sheets.googleapis.com", error = FALSE))
   if (!can_decrypt || !online) {
     cli::cli_abort(
@@ -260,17 +260,17 @@ dgs4_auth_internal <- function(account = c("docs", "testing"),
           c("x" = "We don't appear to be online. Or maybe the Sheets API is down?")
         }
       ),
-      class = "deepgsheets4_auth_internal_error",
+      class = "deepgs4_auth_internal_error",
       can_decrypt = can_decrypt, online = online
     )
   }
 
   if (!is_interactive()) local_dgs4_quiet()
-  filename <- glue("deepgsheets4-{account}.json")
+  filename <- glue("deepgs4-{account}.json")
   # TODO: revisit when I do PKG_scopes()
   # https://github.com/r-lib/gargle/issues/103
   scopes <- scopes %||% "https://www.googleapis.com/auth/drive"
-  json <- gargle:::secret_read("deepgsheets4", filename)
+  json <- gargle:::secret_read("deepgs4", filename)
   dgs4_auth(scopes = scopes, path = rawToChar(json))
   dgs4_user()
   invisible(TRUE)

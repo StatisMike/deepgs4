@@ -10,15 +10,15 @@ unclass_obj <- function(x, ...) {
 #' @title Is an object
 #' @param x object
 #' @export
-is.deepgsheets4Obj <- function(x) {
-  inherits(x, "deepgsheets4Obj")
+is.dgs4Obj <- function(x) {
+  is.dgs4_class(x)
 }
 
 #### default listinizers ####
 
 #' @name dgs4_listinize
 #' @rdname dgs4_listinize
-#' @title Transform `deepgsheets4` object to list
+#' @title Transform `deepgs4` object to list
 #' @param x object to coerce
 #' @param ... further arguments passed to or from other methods.
 #' @return `list`
@@ -33,7 +33,7 @@ is.deepgsheets4Obj <- function(x) {
 #' readibility on GoogleSheets end.
 #'
 #' Listinized objects can then be parsed back into its source object using
-#' [gen_deepgsheets4Obj()] constructor, which are used mainly for
+#' [gen_dgs4Obj()] constructor, which are used mainly for
 #' interpreting reads from GoogleSheets API, but are also exported.
 #' @export
 dgs4_listinize <- function(x, ...)
@@ -53,7 +53,7 @@ dgs4_listinize.default <- function(x, ...) {
 
 #' @rdname dgs4_listinize
 #' @export
-dgs4_listinize.deepgsheets4Req <- function(x, ...) {
+dgs4_listinize.dgs4Req <- function(x, ...) {
 
   x <- lapply(x, dgs4_listinize, ... = ...)
   return(x)
@@ -62,7 +62,7 @@ dgs4_listinize.deepgsheets4Req <- function(x, ...) {
 
 #' @rdname dgs4_listinize
 #' @export
-dgs4_listinize.deepgsheets4Obj <- function(x, ...) {
+dgs4_listinize.dgs4Obj <- function(x, ...) {
 
   x <- lapply(x, dgs4_listinize, ... = ...)
   return(x)

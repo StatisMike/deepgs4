@@ -22,7 +22,7 @@ test_that("AddSheetRequest can be created and send", {
     )
   )
 
-  expect_true(is.deepgsheets4Req(min_req))
+  expect_true(is.dgs4Req(min_req))
 
   expect_failure(
     expect_error(
@@ -39,7 +39,7 @@ test_that("AddSheetRequest can be created and send", {
     )
   )
 
-  expect_true(is.deepgsheets4Req(min_req))
+  expect_true(is.dgs4Req(min_req))
 
   expect_failure(
     expect_error(
@@ -80,7 +80,7 @@ test_that("UpdateSheetRequest can be created and send", {
     )
   )
 
-  expect_true(is.deepgsheets4Req(update_req))
+  expect_true(is.dgs4Req(update_req))
 
   expect_failure(
     expect_error(
@@ -122,7 +122,7 @@ test_that("DeleteSheetRequest can be created and send", {
     )
   )
 
-  expect_true(is.deepgsheets4Req(delete_req))
+  expect_true(is.dgs4Req(delete_req))
 
   expect_failure(
     expect_error(

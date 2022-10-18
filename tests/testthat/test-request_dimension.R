@@ -34,7 +34,7 @@ test_that("UpdateDimensionPropertiesRequest can be created and send", {
     )
   )
 
-  expect_true(is.deepgsheets4Req(columnReq))
+  expect_true(is.dgs4Req(columnReq))
 
   expect_failure(
     expect_error(
@@ -51,7 +51,7 @@ test_that("UpdateDimensionPropertiesRequest can be created and send", {
     )
   )
 
-  expect_true(is.deepgsheets4Req(rowReq))
+  expect_true(is.dgs4Req(rowReq))
 
   expect_failure(
     expect_error(
@@ -126,7 +126,7 @@ test_that("InserDimensionRequest can be created and send", {
     )
   )
 
-  expect_true(is.deepgsheets4Req(columnReq))
+  expect_true(is.dgs4Req(columnReq))
 
   expect_failure(
     expect_error(
@@ -139,7 +139,7 @@ test_that("InserDimensionRequest can be created and send", {
     )
   )
 
-  expect_true(is.deepgsheets4Req(rowReq))
+  expect_true(is.dgs4Req(rowReq))
 
   expect_failure(
     expect_error(
@@ -197,7 +197,7 @@ test_that("AppendDimensionRequest can be created and send", {
     )
   )
 
-  expect_true(is.deepgsheets4Req(columnReq))
+  expect_true(is.dgs4Req(columnReq))
 
   expect_failure(
     expect_error(
@@ -209,7 +209,7 @@ test_that("AppendDimensionRequest can be created and send", {
     )
   )
 
-  expect_true(is.deepgsheets4Req(rowReq))
+  expect_true(is.dgs4Req(rowReq))
 
   expect_failure(
     expect_error(
@@ -252,7 +252,7 @@ test_that("AutoResizeDimensionRequest can be created and send", {
     )
   )
 
-  expect_true(is.deepgsheets4Req(columnReq))
+  expect_true(is.dgs4Req(columnReq))
 
   expect_failure(
     expect_error(
@@ -264,7 +264,7 @@ test_that("AutoResizeDimensionRequest can be created and send", {
     )
   )
 
-  expect_true(is.deepgsheets4Req(rowReq))
+  expect_true(is.dgs4Req(rowReq))
 
   expect_failure(
     expect_error(

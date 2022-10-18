@@ -3,8 +3,8 @@
 \name{dgs4_listinize}
 \alias{dgs4_listinize}
 \alias{dgs4_listinize.default}
-\alias{dgs4_listinize.deepgsheets4Req}
-\alias{dgs4_listinize.deepgsheets4Obj}
+\alias{dgs4_listinize.dgs4Req}
+\alias{dgs4_listinize.dgs4Obj}
 \alias{dgs4_listinize.TextFormat}
 \alias{dgs4_listinize.ColorStyle}
 \alias{dgs4_listinize.ChartData}
@@ -22,9 +22,9 @@ dgs4_listinize(x, ...)
 
 \method{dgs4_listinize}{default}(x, ...)
 
-\method{dgs4_listinize}{deepgsheets4Req}(x, ...)
+\method{dgs4_listinize}{dgs4Req}(x, ...)
 
-\method{dgs4_listinize}{deepgsheets4Obj}(x, ...)
+\method{dgs4_listinize}{dgs4Obj}(x, ...)
 
 \method{dgs4_listinize}{TextFormat}(x, ...)
 
@@ -69,6 +69,6 @@ sending request, allowing more user-friendly representation in \code{R} and
 readibility on GoogleSheets end.
 
 Listinized objects can then be parsed back into its source object using
-\code{\link[=gen_deepgsheets4Obj]{gen_deepgsheets4Obj()}} constructor, which are used mainly for
+\code{\link[=gen_dgs4Obj]{gen_dgs4Obj()}} constructor, which are used mainly for
 interpreting reads from GoogleSheets API, but are also exported.
 }

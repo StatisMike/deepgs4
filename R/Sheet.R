@@ -164,7 +164,7 @@ SheetProperties <- function(
     append_cond(sheetType) |>
     append_cond(index, type = "integer") |>
     append_cond(gridProperties, class = "GridProperties") |>
-    append_cond(hidden, class = "logical") |>
+    append_cond(hidden, type = "logical") |>
     append_cond(tabColorStyle, class = "ColorStyle") |>
     append_cond(rightToLeft, type = "logical") |>
     append_cond(dataSourceSheetProperties,

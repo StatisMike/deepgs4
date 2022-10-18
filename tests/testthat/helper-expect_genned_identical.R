@@ -20,7 +20,7 @@ expect_genned_identical <- function(object,
       args$sheetId <- sheetId
 
     args$class <- constructed_class
-    do.call(gen_deepgsheets4Obj,
+    do.call(gen_dgs4Obj,
             args = args)
   }, error = function(e) FALSE
   )

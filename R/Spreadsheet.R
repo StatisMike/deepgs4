@@ -77,7 +77,7 @@ SpreadsheetProperties <- function(
     append_cond(title, type = "character") |>
     append_cond(locale, type = "character") |>
     append_cond(autoRecalc) |>
-    append_cond(timeZone, class = "character") |>
+    append_cond(timeZone, type = "character") |>
     append_cond(defaultFormat, class = "CellFormat") |>
     append_cond(iterativeCalculationSettings,
                 class = "iterativeCalculationSettings") |>
