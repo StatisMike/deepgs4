@@ -10,7 +10,7 @@
 [![Lifecycle:
 experimental](https://img.shields.io/badge/lifecycle-experimental-orange.svg)](https://lifecycle.r-lib.org/articles/stages.html#experimental)
 [![Codecov test
-coverage](https://codecov.io/gh/StatisMike/deepgsheets4/branch/main/graph/badge.svg)](https://app.codecov.io/gh/StatisMike/deepgs4?branch=main)
+coverage](https://codecov.io/gh/StatisMike/deepgs4/branch/main/graph/badge.svg)](https://app.codecov.io/gh/StatisMike/deepgs4?branch=main)
 <!-- badges: end -->
 
 The goal of `deepgs4` is to provide a low-level access to Google Sheets

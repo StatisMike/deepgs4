@@ -16,7 +16,7 @@
 \alias{dgs4_listinize.DimensionProperties}
 \alias{dgs4_listinize.RowData}
 \alias{dgs4_listinize.ConditionValue}
-\title{Transform \code{deepgsheets4} object to list}
+\title{Transform \code{deepgs4} object to list}
 \usage{
 dgs4_listinize(x, ...)
 
