@@ -1,4 +1,4 @@
 library(testthat)
-library(deepgsheets4)
+library(deepgs4)
 
-test_check("deepgsheets4")
+test_check("deepgs4")

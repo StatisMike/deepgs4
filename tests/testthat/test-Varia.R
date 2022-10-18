@@ -39,7 +39,7 @@ test_that("ColorStyle can be created, listinized and generated from list", {
 
     expect_failure(
       expect_error(
-        genned <- deepgsheets4:::gen_ColorStyle(
+        genned <- gen_ColorStyle(
           obj = listinized
         )
       )
@@ -90,7 +90,7 @@ test_that("TextFormat can be created, listinized and generated from list", {
 
     expect_failure(
       expect_error(
-        genned <- deepgsheets4:::gen_TextFormat(
+        genned <- gen_TextFormat(
           obj = listinized
         )
       )

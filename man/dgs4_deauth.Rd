@@ -7,10 +7,10 @@
 dgs4_deauth()
 }
 \description{
-Put deepgsheets4 into a de-authorized state. Instead of sending a token,
-deepgsheets4 will send an API key. This can be used to access public
+Put deepgs4 into a de-authorized state. Instead of sending a token,
+deepgs4 will send an API key. This can be used to access public
 resources for which no Google sign-in is required. This is handy for using
-deepgsheets4 in a non-interactive setting to make requests that do not
+deepgs4 in a non-interactive setting to make requests that do not
 require a token. It will prevent the attempt to obtain a token
 interactively in the browser. The user can configure their own API key
 via \code{\link[=dgs4_auth_configure]{dgs4_auth_configure()}} and retrieve that key via

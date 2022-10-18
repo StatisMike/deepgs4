@@ -1,13 +1,13 @@
-Package: deepgsheets4
-Title: Lower-level access to GoogleSheets REST API v4
-Version: 0.1.6
+Package: deepgs4
+Title: Low-level access to Google Sheets REST API v4
+Version: 0.2.0
 Authors@R: 
     person(given = "Michal",
            family = "Kosinski",
            role = c("aut", "cre"),
            email = "kosinski.mich@gmail.com",
            comment = c(ORCID = "https://orcid.org/0000-0002-8426-3654"))
-Description: Interface for REST API communication between GoogleSheets and R. 
+Description: Interface for REST API communication between Google Sheets and R. 
     Allows manipulation of Sheets objects on very low level: manipulating
     values of single cells, formats, formulas. Objects on R side are mostly
     mirroring objects in the Sheets API to provide greatest versality in

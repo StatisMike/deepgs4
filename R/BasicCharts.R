@@ -33,7 +33,7 @@ BasicChartAxis <- function(
 #' @param x any R object
 #' @export
 is.BasicChartAxis <- function(x) {
-  inherits(x, "BasicChartAxis")
+  is.dgs4_class(x, "BasicChartAxis")
 }
 
 #' @title BasicChartDomain
@@ -59,7 +59,7 @@ BasicChartDomain <- function(
 #' @param x any R object
 #' @export
 is.BasicChartDomain <- function(x) {
-  inherits(x, "BasicChartDomain")
+  is.dgs4_class(x, "BasicChartDomain")
 }
 
 #' @title Style override for BasicChartSeries
@@ -88,7 +88,7 @@ BasicSeriesDataPointStyleOverride <- function(
 #' @param x any R object
 #' @export
 is.BasicSeriesDataPointStyleOverride <- function(x) {
-  inherits(x, "BasicSeriesDataPointStyleOverride")
+  is.dgs4_class(x, "BasicSeriesDataPointStyleOverride")
 }
 
 #' @title BasicChartSeries
@@ -153,7 +153,7 @@ BasicChartSeries <- function(
 #' @param x any R object
 #' @export
 is.BasicChartSeries <- function(x) {
-  inherits(x, "BasicChartSeries")
+  is.dgs4_class(x, "BasicChartSeries")
 }
 
 #' @title BasicChartSpec
@@ -228,13 +228,13 @@ BasicChartSpec <- function(
     domains = domains,
     series = series
   ) |>
-    append_cond(headerCount, class = c("integer", "numeric")) |>
-    append_cond(threeDimensional, class = "logical") |>
+    append_cond(headerCount, type = "integer") |>
+    append_cond(threeDimensional, type = "logical") |>
     append_cond(check_if_options(compareMode, "DATUM", "CATEGORY"), "compareMode") |>
     dgs4_class("BasicChartSpec")
 
   if (chartType == "LINE")
-    out <- append_cond(out, lineSmoothing, class = "logical")
+    out <- append_cond(out, lineSmoothing, type = "logical")
 
   if (chartType %in% c("AREA", "BAR", "COLUMN", "COMBO", "STEPPED_AREA"))
     out <- append_cond(out, check_if_options(stackedType, "NOT_STACKED", "STACKED", "PERCENT_STACKED"), "stackedType")
@@ -255,5 +255,5 @@ BasicChartSpec <- function(
 #' @param x any R object
 #' @export
 is.BasicChartSpec <- function(x) {
-  inherits(x, "BasicChartSpec")
+  is.dgs4_class(x, "BasicChartSpec")
 }

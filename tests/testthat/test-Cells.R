@@ -45,7 +45,7 @@ test_that("Border can be created, listinized and generated from list", {
     expect_error(
       els$border2 <- border_max <- Border(
         "DASHED",
-        ColorStyle("ACCENT1")
+        ColorStyle(themeColorType = "ACCENT1")
       )
     )
   )

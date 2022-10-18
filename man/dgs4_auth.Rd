@@ -2,7 +2,7 @@
 % Please edit documentation in R/auth.R
 \name{dgs4_auth}
 \alias{dgs4_auth}
-\title{Authorize deepgsheets4}
+\title{Authorize deepgs4}
 \usage{
 dgs4_auth(
   email = gargle::gargle_oauth_email(),
@@ -54,11 +54,11 @@ httr's class \code{request}, i.e. a token that has been prepared with
 \code{auth_token} component.}
 }
 \description{
-Authorize deepgsheets4 to view and manage your Google Sheets. This function is a
+Authorize deepgs4 to view and manage your Google Sheets. This function is a
 wrapper around \code{\link[gargle:token_fetch]{gargle::token_fetch()}}.
 
 By default, you are directed to a web browser, asked to sign in to your
-Google account, and to grant deepgsheets4 permission to operate on your
+Google account, and to grant deepgs4 permission to operate on your
 behalf with Google Sheets. By default, with your permission, these user
 credentials are cached in a folder below your home directory, from where
 they can be automatically refreshed, as necessary. Storage at the user
@@ -80,7 +80,7 @@ However, when necessary, this function allows the user to explicitly:
 \itemize{
 \item Declare which Google identity to use, via an email address. If there
 are multiple cached tokens, this can clarify which one to use. It can
-also force deepgsheets4 to switch from one identity to another. If
+also force deepgs4 to switch from one identity to another. If
 there's no cached token for the email, this triggers a return to the
 browser to choose the identity and give consent. You can specify just
 the domain by using a glob pattern. This means that a script

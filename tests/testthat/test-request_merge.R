@@ -71,7 +71,7 @@ test_that("Merge request can be constructed and sent", {
     )
   )
 
-  invisible(lapply(requests, expect_s3_class, class = "deepgsheets4Req"))
+  invisible(lapply(requests, expect_s3_class, class = "dgs4Req"))
 
   expect_failure(
     expect_error(
@@ -162,7 +162,7 @@ test_that("Created merges can be unmerged with UnmergeCellRequest", {
                                        startColumnIndex = min(col_indices),
                                        endColumnIndex = max(col_indices)))
 
-  expect_s3_class(req, "deepgsheets4Req")
+  expect_s3_class(req, "dgs4Req")
 
   expect_failure(
     expect_error(

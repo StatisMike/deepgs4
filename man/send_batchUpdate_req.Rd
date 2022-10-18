@@ -2,15 +2,15 @@
 % Please edit documentation in R/req_batchUpdate.R
 \name{send_batchUpdate_req}
 \alias{send_batchUpdate_req}
-\alias{is.deepgsheets4Req}
-\alias{is.deepgsheets4Response}
+\alias{is.dgs4Req}
+\alias{is.dgs4Response}
 \title{Send \emph{batchUpdate} request to googlesheets API}
 \usage{
 send_batchUpdate_req(spreadsheetId, ..., .dots = list())
 
-is.deepgsheets4Req(x)
+is.dgs4Req(x)
 
-is.deepgsheets4Response(x)
+is.dgs4Response(x)
 }
 \arguments{
 \item{spreadsheetId}{ID of the spreadsheet to apply the changes}

@@ -10,7 +10,7 @@ dgs4_has_token()
 Logical.
 }
 \description{
-Reports whether deepgsheets4 has stored a token, ready for use in downstream
+Reports whether deepgs4 has stored a token, ready for use in downstream
 requests.
 }
 \examples{

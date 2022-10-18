@@ -199,7 +199,7 @@ SpreadSheetData <- R6::R6Class(
 
       switch(fieldNm,
 
-             spreadsheetProperties = gen_deepgsheets4Obj(obj = fieldData,
+             spreadsheetProperties = gen_dgs4Obj(obj = fieldData,
                                                          class = "SpreadsheetProperties"),
 
              fieldData)
@@ -212,10 +212,10 @@ SpreadSheetData <- R6::R6Class(
                                    sheetId) {
 
       switch(fieldNm,
-             sheetProperties = gen_deepgsheets4Obj(obj = fieldData,
+             sheetProperties = gen_dgs4Obj(obj = fieldData,
                                                    class = "SheetProperties"),
              merges = lapply(fieldData,
-                             gen_deepgsheets4Obj,
+                             gen_dgs4Obj,
                              class = "GridRange",
                              sheetId = sheetId),
              fieldData)

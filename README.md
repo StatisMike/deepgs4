@@ -1,7 +1,7 @@
 
 <!-- README.md is generated from README.Rmd. Please edit that file -->
 
-# deepgsheets4
+# deepgs4
 
 ## Overview
 
@@ -10,14 +10,14 @@
 [![Lifecycle:
 experimental](https://img.shields.io/badge/lifecycle-experimental-orange.svg)](https://lifecycle.r-lib.org/articles/stages.html#experimental)
 [![Codecov test
-coverage](https://codecov.io/gh/StatisMike/deepgsheets4/branch/main/graph/badge.svg)](https://app.codecov.io/gh/StatisMike/deepgsheets4?branch=main)
+coverage](https://codecov.io/gh/StatisMike/deepgs4/branch/main/graph/badge.svg)](https://app.codecov.io/gh/StatisMike/deepgs4?branch=main)
 <!-- badges: end -->
 
-The goal of `deepgsheets4` is to provide a low-level access to Google
-Sheets API, in opposition to
+The goal of `deepgs4` is to provide a low-level access to Google Sheets
+API, in opposition to
 <a href="https://github.com/tidyverse/googlesheets4"
 target="_blank">googlesheets4</a> package, which provides high-level
-access. It basically means that `deepgsheets4` allows operations on
+access. It basically means that `deepgs4` allows operations on
 *cell-level*, and `googlesheets4` on *sheet-level*.
 
 If you want to create great looking report in Google Sheet - and produce
@@ -34,7 +34,7 @@ You can install the development version of deepgsheets4 from
 
 ``` r
 # install.packages("devtools")
-devtools::install_github("StatisMike/deepgsheets4")
+devtools::install_github("StatisMike/deepgs4")
 ```
 
 ## Currently available functionalities
@@ -47,7 +47,7 @@ provided:
 -   `send_create_req()` allowing Spreadsheet creation
 -   `send_get_req()` allowing retrieval of data by Sheets API
 -   `send_batchUpdate_req()` allowing updating spreadsheets with
-    lower-level `deepgsheets4Req` objects:
+    lower-level `dgs4Req` objects:
     -   Sheet creation, update and deletion
     -   CellData creation allowing:
         -   entering numeric (and date/datetime with the help of

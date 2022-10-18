@@ -36,7 +36,7 @@ configuration than \code{\link[=dgs4_auth]{dgs4_auth()}} does. \code{dgs4_auth_c
 lets the user specify their own:
 \itemize{
 \item OAuth app, which is used when obtaining a user token.
-\item API key. If deepgsheets4 is de-authorized via \code{\link[=dgs4_deauth]{dgs4_deauth()}}, all
+\item API key. If deepgs4 is de-authorized via \code{\link[=dgs4_deauth]{dgs4_deauth()}}, all
 requests are sent with an API key in lieu of a token.
 See the vignette
 \href{https://gargle.r-lib.org/articles/get-api-credentials.html}{How to get your own API credentials}
@@ -72,7 +72,7 @@ if (require(httr)) {
   # this file has the same structure as the JSON from Google
   app_path <- system.file(
     "extdata", "fake-oauth-client-id-and-secret.json",
-    package = "deepgsheets4"
+    package = "deepgs4"
   )
   dgs4_auth_configure(path = app_path)
 

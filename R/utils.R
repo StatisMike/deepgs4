@@ -33,11 +33,11 @@ first_to_upper <- function(x) {
 #' @noRd
 dgs4_class <- function(x,
                        class = NULL,
-                       object_type = c("Obj", "Req", "Data")) {
+                       object_type = pkg_env$object_types) {
 
   object_type <- rlang::arg_match(object_type)
 
-  class(x) <- c(class, paste0("deepgsheets4", object_type))
+  class(x) <- c(class, paste0(pkg_env$cls_prfx, object_type))
 
   return(x)
 
@@ -57,12 +57,24 @@ check_if_class <- function(x,
                            class,
                            call = rlang::caller_call(),
                            arg = rlang::caller_arg(x),
-                           skip_null = TRUE) {
+                           skip_null = TRUE,
+                           dgs4_class = TRUE,
+                           object_type = pkg_env$object_types) {
+
+  object_type <- rlang::arg_match(object_type)
 
   if (skip_null && (is.null(x) || length(x) == 0))
     return(x)
 
-  if (!inherits(x, what = class))
+  if (isTRUE(dgs4_class) && !is.dgs4_class(x, class, object_type = object_type))
+    dgs4_error(
+      message = "Object provided to {.arg {arg}} should be of {.cls {c(class, paste0(pkg_env$cls_prfx, object_type))}} class.",
+      .envir = rlang::current_env(),
+      call = call,
+      class = "WrongClassError"
+    )
+
+  if (isFALSE(dgs4_class) && !inherits(x, what = class))
     dgs4_error(
       message = "Object provided to {.arg {arg}} should be of {.cls {class}} class.",
       .envir = rlang::current_env(),
@@ -106,12 +118,17 @@ check_if_type <- function(x,
 #' @param x object to nest
 #' @param class name of class to check for
 #' @noRd
-nest_if_class <- function(x, class) {
+nest_if_class <- function(x, class, dgs4_class = TRUE, object_type = pkg_env$object_types ) {
 
-  if (!inherits(x, class))
-    return(x)
+  object_type <- rlang::arg_match(object_type)
 
-  return(list(x))
+  if (isTRUE(dgs4_class) && is.dgs4_class(x, class, object_type = object_type))
+    return(list(x))
+
+  if (inherits(x, class))
+    return(list(x))
+
+  return(x)
 
 }
 
@@ -121,16 +138,29 @@ nest_if_class <- function(x, class) {
 #' @noRd
 check_if_all_class <- function(
     l,
-    class,
+    class = NULL,
     call = rlang::caller_call(),
     arg = rlang::caller_arg(l),
-    skip_null = TRUE) {
+    skip_null = TRUE,
+    dgs4_class = TRUE,
+    object_type = pkg_env$object_types) {
 
   if (skip_null && is.null(l))
     return(NULL)
 
   if (skip_null && all(vapply(l, is.null, logical(1))))
     return(NULL)
+
+  if (isTRUE(dgs4_class) && !all(vapply(l, is.dgs4_class,
+                                        class = class,
+                                        object_type = object_type,
+                                        FUN.VALUE = logical(1))))
+  dgs4_error(
+    message = "All objects in a list provided to {.arg {arg}} should be of {.cls {c(class, paste0(pkg_env$cls_prfx, object_type))}} class.",
+    .envir = rlang::current_env(),
+    call = call,
+    class = "WrongClassError"
+  )
 
   if (!all(vapply(l, inherits, what = class, FUN.VALUE = logical(1))))
     dgs4_error(
@@ -244,16 +274,20 @@ append_cond <- function(
     class = NULL,
     type = NULL,
     nests = NULL,
-    skip_null = TRUE) {
+    skip_null = TRUE,
+    dgs4_class = TRUE,
+    object_type = pkg_env$object_types) {
 
   if (skip_null && (is.null(x) || length(x) == 0))
     return(l)
 
   force(name)
 
-  if (!is.null(class))
+  if (!is.null(class)) {
+    object_type <- rlang::arg_match(object_type)
     x <- check_if_class(x, class, rlang::caller_call() ,rlang::caller_arg(x),
-                        skip_null = FALSE)
+                        skip_null = FALSE, dgs4_class = dgs4_class, object_type = object_type)
+  }
 
   if (!is.null(type))
     x <- check_if_type(x, type, rlang::caller_call(), rlang::caller_arg(x))
@@ -314,7 +348,7 @@ try_to_gen <- function(x, class, sheetId = NULL) {
                class = class) |>
     append_cond(sheetId)
 
-  do.call(gen_deepgsheets4Obj,
+  do.call(gen_dgs4Obj,
           args = args)
 
 }
@@ -384,4 +418,17 @@ dgs4_error <- function(message,
                  class = c(class, "deepgsheets4_error"),
                  .envir = .envir,
                  call = call)
+}
+
+#' @title Check for class
+#' @param x R object
+#' @param class dgs4 class
+#' @param object_type object type
+#' @noRd
+is.dgs4_class <- function(x, class = NULL, object_type = c("Obj", "Req", "Data", "Response")) {
+
+  object_type <- rlang::arg_match(object_type)
+
+  !any(inherits(x, c(class, paste0(pkg_env$cls_prfx, object_type)), which = TRUE) == 0)
+
 }

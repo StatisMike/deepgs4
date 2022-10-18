@@ -23,7 +23,7 @@ dgs4_batchUpdate_process <- function(
     if (length(input_Id) > 1)
       stop("More IDS than 1!")
 
-    return(deepgsheets4Response(resp$replies[[n]], sheetId = input_Id))
+    return(dgs4Response(resp$replies[[n]], sheetId = input_Id))
 
 
   })
@@ -52,7 +52,7 @@ send_batchUpdate_req <- function(
   else
     requests <- list(...)
 
-  if (!all(vapply(requests, is.deepgsheets4Req, logical(1))))
+  if (!all(vapply(requests, is.dgs4Req, logical(1))))
     dgs4_error("All objects provided to {.arg ...} or {.arg .dots} argument need to be of {.cls deepgsheets4Req} class",
                  class = "WrongReqClass")
 
@@ -80,7 +80,7 @@ send_batchUpdate_req <- function(
 #' @param reply list containing response from googlesheets4 API
 #' @param sheetId optional sheetId to input
 #' @noRd
-deepgsheets4Response <- function(reply, sheetId = NULL) {
+dgs4Response <- function(reply, sheetId = NULL) {
 
   req_type <- names(reply)
 
@@ -93,14 +93,12 @@ deepgsheets4Response <- function(reply, sheetId = NULL) {
           sheetId = sheetId))),
     addSheet = list(
       addSheet = list(
-        properties = gen_deepgsheets4Obj(
-          reply$addSheet$properties,
-          "SheetProperties"
+        properties = gen_SheetProperties(
+          reply$addSheet$properties
         ))),
     reply
-  )
-
-  class(created) <- "deepgsheets4Response"
+  ) |>
+    dgs4_class(object_type = "Response")
 
   return(created)
 
@@ -109,14 +107,14 @@ deepgsheets4Response <- function(reply, sheetId = NULL) {
 #' @rdname send_batchUpdate_req
 #' @param x any R object
 #' @export
-is.deepgsheets4Req <- function(x) {
-  inherits(x, "deepgsheets4Req")
+is.dgs4Req <- function(x) {
+  is.dgs4_class(x, object_type = "Req")
 }
 
 #' @rdname send_batchUpdate_req
 #' @param x any R object
 #' @export
-is.deepgsheets4Response <- function(x) {
-  inherits(x, "deepgsheets4Response")
+is.dgs4Response <- function(x) {
+  is.dgs4_class(x, object_type = "Response")
 }
 
