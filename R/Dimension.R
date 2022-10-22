@@ -40,16 +40,16 @@ is.DimensionProperties <- function(x) {
 #' @title Dimension Range
 #' @description Object representing range alongside one of the dimensions.
 #' @param sheetId ID of the sheet this range is on
-#' @param dimension type of the dimension
 #' @param startIndex,endIndex zero-based indices bounding the range. `startIndex`
 #' is inclusive, `endIndex` is exclusive. Missing indices indicate the range is
 #' unbounded on that side.
+#' @param dimension type of the dimension
 #' @export
 DimensionRange <- function(
     sheetId,
-    dimension = c("ROWS", "COLUMNS"),
     startIndex = NULL,
-    endIndex = NULL) {
+    endIndex = NULL,
+    dimension = c("ROWS", "COLUMNS")) {
 
   dimension <- rlang::arg_match(dimension)
 

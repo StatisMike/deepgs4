@@ -47,9 +47,9 @@ test_that("DimensionRange can be created, listinized and generated from list", {
     expect_error(
       dim_max <- DimensionRange(
         sheetId = sheetId,
-        "COLUMNS",
         2,
-        5
+        5,
+        "COLUMNS"
       )
     )
   )
@@ -68,7 +68,7 @@ test_that("DimensionGroup can be created, listinized and generated from list", {
   expect_failure(
     expect_error(
       dim_min <- DimensionGroup(
-        range = DimensionRange(sheetId, "ROWS", 1, 4)
+        range = DimensionRange(sheetId, 1, 4)
       )
     )
   )
@@ -78,7 +78,7 @@ test_that("DimensionGroup can be created, listinized and generated from list", {
   expect_failure(
     expect_error(
       dim_max <- DimensionGroup(
-        range = DimensionRange(sheetId, "ROWS", 1, 4),
+        range = DimensionRange(sheetId, 1, 4),
         collapsed = TRUE,
         depth = 2
       )

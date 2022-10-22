@@ -25,6 +25,7 @@ is_specific_gen <- function(gen_name) {
 #' @param sheetId optional sheetId to paste into the constructor. Necessary for
 #' some objects returned from googlesheets API
 #' @export
+#' @aliases @eval pkg_env$generators
 #' @return deepgs4Obj of given class
 
 gen_dgs4Obj <- function(obj, class, sheetId = NULL) {
@@ -91,6 +92,11 @@ pkg_env$generators <- c(
   "gen_BooleanRule",
   "gen_GradientRule",
   "gen_ConditionalFormatRule",
+  "gen_DeveloperMetadata",
+  "gen_DeveloperMetadataLocation",
+  "gen_DeveloperMetadataLookup",
+  "gen_MatchedDeveloperMetadata",
+  "gen_DataFilter",
   "gen_TextFormat",
   "gen_ColorStyle",
   "gen_TextFormatRun",
@@ -628,6 +634,17 @@ gen_ConditionalFormatRule <- function(obj, sheetId = NULL) {
 }
 
 #### DeveloperMetadata.R Generators ####
+#' @rdname gen_dgs4Obj
+#' @export
+gen_DeveloperMetadata <- function(obj, sheetId = NULL) {
+
+  obj <- try_to_gen_inplace(obj, "location",
+                            "DeveloperMetadataLocation",
+                            sheetId = sheetId)
+
+  do.call(DeveloperMetadata, args = obj)
+
+}
 
 #' @rdname gen_dgs4Obj
 #' @export
@@ -639,15 +656,49 @@ gen_DeveloperMetadataLocation <- function(obj, sheetId = NULL) {
   do.call(DeveloperMetadataLocation, args = obj)
 
 }
+
 #' @rdname gen_dgs4Obj
 #' @export
-gen_DeveloperMetadata <- function(obj, sheetId = NULL) {
+gen_DeveloperMetadataLookup <- function(obj, sheetId = NULL) {
 
-  obj <- try_to_gen_inplace(obj, "location",
+  obj <- try_to_gen_inplace(obj,
+                            "metadataLocation",
                             "DeveloperMetadataLocation",
                             sheetId = sheetId)
 
-  do.call(DeveloperMetadata, args = obj)
+  do.call(DeveloperMetadataLookup, args = obj)
+
+}
+
+#' @rdname gen_dgs4Obj
+#' @export
+gen_DataFilter <- function(obj, sheetId = NULL) {
+
+  obj <- obj |>
+    try_to_gen_inplace("developerMetadataLookup",
+                       "DeveloperMetadataLookup",
+                       sheetId = sheetId) |>
+    try_to_gen_inplace("gridRange",
+                       "GridRange",
+                       sheetId = sheetId)
+
+  do.call(DataFilter, args = obj)
+
+}
+
+#' @rdname gen_dgs4Obj
+#' @export
+gen_MatchedDeveloperMetadata <- function(obj, sheetId = NULL) {
+
+  obj <- obj |>
+    try_to_gen_inplace("developerMetadata", "DeveloperMetadata",
+                       sheetId = sheetId) |>
+    try_to_gen_inplace("dataFilters", "DataFilter", use_lapply = TRUE,
+                       sheetId = sheetId) |>
+    dgs4_class("MatchedDeveloperMetadata",
+               object_type = "Response")
+
+  return(obj)
 
 }
 

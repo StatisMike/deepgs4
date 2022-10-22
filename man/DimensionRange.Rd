@@ -7,9 +7,9 @@
 \usage{
 DimensionRange(
   sheetId,
-  dimension = c("ROWS", "COLUMNS"),
   startIndex = NULL,
-  endIndex = NULL
+  endIndex = NULL,
+  dimension = c("ROWS", "COLUMNS")
 )
 
 is.DimensionRange(x)
@@ -17,11 +17,11 @@ is.DimensionRange(x)
 \arguments{
 \item{sheetId}{ID of the sheet this range is on}
 
-\item{dimension}{type of the dimension}
-
 \item{startIndex, endIndex}{zero-based indices bounding the range. \code{startIndex}
 is inclusive, \code{endIndex} is exclusive. Missing indices indicate the range is
 unbounded on that side.}
+
+\item{dimension}{type of the dimension}
 
 \item{x}{any R object}
 }

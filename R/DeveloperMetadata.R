@@ -23,7 +23,6 @@ check_dimensionRange_for_DeveloperMetadataLocation <- function(
 
 }
 
-
 #' @title Developer Metadata Location
 #' @description Object that represents the location of given [DeveloperMetadata]
 #' on the spreadsheet. Only one of `dimensionRange`, `sheetId` or `spreadsheet`
@@ -43,15 +42,14 @@ DeveloperMetadataLocation <- function(
     spreadsheet = NULL,
     locationType = NULL) {
 
-  args_specified <- vapply(list(dimensionRange, sheetId, spreadsheet),
+  args_null <- vapply(list(dimensionRange, sheetId, spreadsheet),
                            is.null,
                            logical(1))
 
-  if (sum(args_specified) != 1)
-    dgs4_error("Exactly one of {.arg dimensionRange}, {.arg sheetId} or {.spreadsheet} needs to be specified")
+  if (sum(args_null) != 2)
+    dgs4_error("Exactly one of {.arg dimensionRange}, {.arg sheetId} or {.arg spreadsheet} needs to be specified")
 
   dimensionRange <- check_dimensionRange_for_DeveloperMetadataLocation(dimensionRange)
-
 
   locationType <- check_if_options(locationType, "ROW", "COLUMN", "SHEET", "SPREADSHEET")
 
@@ -62,7 +60,7 @@ DeveloperMetadataLocation <- function(
     append_cond(locationType) |>
     dgs4_class("DeveloperMetadataLocation")
 
-  return(obj)
+  return(out)
 
 }
 
@@ -81,12 +79,14 @@ is.DeveloperMetadataLocation <- function(x) {
 #' around and the spreadsheet is edited.
 #'
 #' If the associated object is deleted its metadata is deleted too.
-#' @param metadataId positive, unique integer that identifies this metadata.
-#' If not provided during creation, random number will be created
-#' @param metadataKey string used for identification. It doesn't have to be unique
-#' @param metadataValue Data associated with the metadata's key.
 #' @param location object of class [DeveloperMetadataLocation]. Binds a metadata
 #' to element in the spreadsheet
+#' @param metadataKey string used for identification. It doesn't have to be unique.
+#' Every created `DeveloperMetadata` during writes to Sheets API need to have a
+#' key.
+#' @param metadataId positive, unique integer that identifies this metadata.
+#' If not provided during creation, random number will be created
+#' @param metadataValue Data associated with the metadata's key.
 #' @param visibility The metadata visibility.
 #' @details
 #' ## Metadata visibility:
@@ -97,22 +97,22 @@ is.DeveloperMetadataLocation <- function(x) {
 #' @export
 DeveloperMetadata <- function(
     location,
-    metadataKey,
+    metadataKey = NULL,
     metadataId = NULL,
     metadataValue = NULL,
     visibility = c("DOCUMENT", "PROJECT")) {
 
   visibility <- rlang::arg_match(visibility)
 
-  obj <- list() |>
-    append_cond(location, class = "DeveloperMetadataLocation", skip_null = F) |>
-    append_cond(metadataKey, type = "character", skip_null = F) |>
+  out <- list() |>
+    append_cond(location, class = "DeveloperMetadataLocation") |>
+    append_cond(metadataKey, type = "character") |>
     append_cond(metadataId, type = "integer") |>
     append_cond(metadataValue, type = "character") |>
     append_cond(visibility) |>
     dgs4_class("DeveloperMetadata")
 
-  return(obj)
+  return(out)
 
 }
 
@@ -159,6 +159,7 @@ DeveloperMetadataLookup <- function(
   locationMatchingStrategy <- check_if_options(locationMatchingStrategy,
                                                "EXACT_LOCATION",
                                                "INTERSECTING_LOCATION")
+
   visibility <- check_if_options(visibility, "DOCUMENT", "PROJECT")
 
   obj <- list() |>
@@ -182,16 +183,113 @@ is.DeveloperMetadataLookup <- function(x) {
   inherits(x, "DeveloperMetadataLookup")
 }
 
+#' @title Data Filter
+#' @description Filter that describes what data should be selected or returned
+#' from a request. Only one of following arguments can be specified.
+#' @param developerMetadataLookup object of class [DeveloperMetadataLookup].
+#' Selects data associated with the developer metadata matching the criteria.
+#' @param a1Range Selects data that matches the specified A1 range. Needs
+#' to be a valid *A1 range*
+#' @param gridRange object of class [GridRange]
+#' Selects data that matches the specified grid range.
+#' @return object of class `DataFilter`
+#' @export
+DataFilter <- function(
+    developerMetadataLookup = NULL,
+    a1Range = NULL,
+    gridRange = NULL) {
 
-request_metadata_search <- function() {
+  null_args <- vapply(
+    list(developerMetadataLookup, a1Range, gridRange),
+    is.null, logical(1)
+  )
 
+  if (sum(null_args) != 2) {
+    dgs4_error("Exacly one of {.arg developerMetadataLookup}, {.arg a1Range} or {.arg gridRange} needs to be specified.")
+  }
 
+  obj <- list() |>
+    append_cond(developerMetadataLookup, class = "DeveloperMetadataLookup") |>
+    append_cond(a1Range, type = "character") |>
+    append_cond(gridRange, class = "GridRange") |>
+    dgs4_class("DataFilter")
+
+  return(obj)
 
 }
 
-request_metadata_get <- function() {
+#' @rdname DataFilter
+#' @param x any R object
+#' @export
+is.DataFilter <- function(x) {
+  is.dgs4_class(x, "DataFilter")
+}
 
+#' @title Search for metadata in spreadsheet
+#' @description Sends a request to search for [DeveloperMetadata] objects
+#' matching the specified `dataFilters` in given spreadsheet
+#' @param spreadsheetId ID of the spreadsheet
+#' @param dataFilters object of class [DataFilter] or list of such objects
+#' @export
+#' @return list of `dgs4Response` objects of class `MatchedDeveloperMetadata`
+#' or `NULL` if nothing is found
 
+request_metadata_search <- function(
+    spreadsheetId,
+    dataFilters) {
+
+  spreadsheetId <- check_if_type(spreadsheetId, type = "character")
+  dataFilters <- nest_if_class(dataFilters, "DataFilter") |>
+    check_if_all_class("DataFilter")
+  dataFilters <- lapply(dataFilters, dgs4_listinize)
+  names(dataFilters) <- NULL
+
+  req <- gargle::request_build(
+    path = paste0("v4/spreadsheets/", spreadsheetId, "/developerMetadata:search"),
+    method = "POST",
+    token = dgs4_token(),
+    body = list(dataFilters = dataFilters),
+    key = dgs4_api_key(),
+    base_url = "https://sheets.googleapis.com"
+  )
+
+  resp <- request_make(req) |>
+    gargle::response_process() |>
+    try_to_gen_inplace("matchedDeveloperMetadata",
+                       "MatchedDeveloperMetadata",
+                       use_lapply = TRUE,
+                       sheetId = 0)
+
+  return(resp$matchedDeveloperMetadata)
+
+}
+
+#' @title Get specific metadata from spreadsheet
+#' @description Sends a request to receive [DeveloperMetadata] object
+#' of specific `metadataId`
+#' @param spreadsheetId ID of the spreadsheet
+#' @param metadataId unique developer metadata ID
+#' @export
+#' @return `DeveloperMetadata` object
+
+request_metadata_get <- function(
+    spreadsheetId,
+    metadataId) {
+
+  spreadsheetId <- check_if_type(spreadsheetId, type = "character")
+  metadataId <- check_if_type(metadataId, type = "character")
+
+  req <- gargle::request_build(
+    path = paste0("v4/spreadsheets/", spreadsheetId, "/developerMetadata/", metadataId),
+    token = dgs4_token(),
+    key = dgs4_api_key(),
+    base_url = "https://sheets.googleapis.com"
+  )
+
+  resp <- request_make(req)
+
+  gargle::response_process(resp) |>
+    gen_DeveloperMetadata(sheetId = 0)
 
 }
 

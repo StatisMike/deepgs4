@@ -2,6 +2,8 @@
 % Please edit documentation in R/generators.R
 \name{gen_dgs4Obj}
 \alias{gen_dgs4Obj}
+\alias{@eval}
+\alias{pkg_env$generators}
 \alias{gen_CellFormat}
 \alias{gen_Border}
 \alias{gen_Borders}
@@ -33,8 +35,11 @@
 \alias{gen_BooleanRule}
 \alias{gen_GradientRule}
 \alias{gen_ConditionalFormatRule}
-\alias{gen_DeveloperMetadataLocation}
 \alias{gen_DeveloperMetadata}
+\alias{gen_DeveloperMetadataLocation}
+\alias{gen_DeveloperMetadataLookup}
+\alias{gen_DataFilter}
+\alias{gen_MatchedDeveloperMetadata}
 \alias{gen_TextFormat}
 \alias{gen_ColorStyle}
 \alias{gen_TextFormatRun}
@@ -105,9 +110,15 @@ gen_GradientRule(obj)
 
 gen_ConditionalFormatRule(obj, sheetId = NULL)
 
+gen_DeveloperMetadata(obj, sheetId = NULL)
+
 gen_DeveloperMetadataLocation(obj, sheetId = NULL)
 
-gen_DeveloperMetadata(obj, sheetId = NULL)
+gen_DeveloperMetadataLookup(obj, sheetId = NULL)
+
+gen_DataFilter(obj, sheetId = NULL)
+
+gen_MatchedDeveloperMetadata(obj, sheetId = NULL)
 
 gen_TextFormat(obj)
 

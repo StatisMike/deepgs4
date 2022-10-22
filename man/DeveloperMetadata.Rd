@@ -7,7 +7,7 @@
 \usage{
 DeveloperMetadata(
   location,
-  metadataKey,
+  metadataKey = NULL,
   metadataId = NULL,
   metadataValue = NULL,
   visibility = c("DOCUMENT", "PROJECT")
@@ -19,7 +19,9 @@ is.DeveloperMetadata(x)
 \item{location}{object of class \link{DeveloperMetadataLocation}. Binds a metadata
 to element in the spreadsheet}
 
-\item{metadataKey}{string used for identification. It doesn't have to be unique}
+\item{metadataKey}{string used for identification. It doesn't have to be unique.
+Every created \code{DeveloperMetadata} during writes to Sheets API need to have a
+key.}
 
 \item{metadataId}{positive, unique integer that identifies this metadata.
 If not provided during creation, random number will be created}
