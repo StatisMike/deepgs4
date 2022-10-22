@@ -86,12 +86,6 @@ GridRange <- function(
     startColumnIndex = NULL,
     endColumnIndex = NULL) {
 
-  if (is.null(startRowIndex))
-    startRowIndex <- 0
-
-  if (is.null(startColumnIndex))
-    startColumnIndex <- 0
-
   if (isTRUE(endRowIndex <= startRowIndex))
     dgs4_error("{.arg endRowIndex} needs to be greater than {.arg startRowIndex}",
                class = "WrongIndexError")

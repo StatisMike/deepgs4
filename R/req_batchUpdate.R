@@ -6,6 +6,7 @@
 #' the sheetId from the request
 #' @param resp whole response
 #' @param reqs requests
+#' @seealso dgs4_matchedmetadata_process
 #' @noRd
 dgs4_batchUpdate_process <- function(
     resp,

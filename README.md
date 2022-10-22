@@ -29,7 +29,7 @@ would be enough.
 
 ## Installation
 
-You can install the development version of deepgsheets4 from
+You can install the development version of deepgs4 from
 [GitHub](https://github.com/) with:
 
 ``` r
@@ -51,7 +51,7 @@ provided:
     -   Sheet creation, update and deletion
     -   CellData creation allowing:
         -   entering numeric (and date/datetime with the help of
-            `deepgs_serial_number()`), character, boolean and formula
+            `dgs4_serial_number()`), character, boolean and formula
             values
         -   formatting individual cells (or parts of the cells)
         -   coercing into *RowData* and *GridData*
@@ -65,12 +65,11 @@ provided:
     -   Creation, modification and deletion of BasicCharts
     -   Pasting data into sheets: either by cut-paste or copy-paste from
         the same spreadsheet or by providing delimited text or html
--   package oauth client available in `deepgs_auth()` is currently
-    running in development mode, so getting your own token through
-    `deepgsheets4` alone is not currently available. If you plan on
-    contributing, contact me to add your google account into allowed
-    emails.
+-   package oauth client available in `dgs4_auth()` is currently running
+    in development mode, so getting your own token through `deepgs4`
+    alone is not currently available. If you plan on contributing,
+    contact me to add your google account into allowed emails.
     -   it is possible to use `googlesheets4` token with
-        `deepgs_auth(token = googlesheets4::gs4_token())`
+        `dgs4_auth(token = googlesheets4::gs4_token())`
     -   or provide a service account with
-        `deepgs_auth(path = "path_to_service_account_json.json")`
+        `dgs4_auth(path = "path_to_service_account_json.json")`

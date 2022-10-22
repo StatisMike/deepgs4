@@ -155,12 +155,12 @@ check_if_all_class <- function(
                                         class = class,
                                         object_type = object_type,
                                         FUN.VALUE = logical(1))))
-  dgs4_error(
-    message = "All objects in a list provided to {.arg {arg}} should be of {.cls {c(class, paste0(pkg_env$cls_prfx, object_type))}} class.",
-    .envir = rlang::current_env(),
-    call = call,
-    class = "WrongClassError"
-  )
+    dgs4_error(
+      message = "All objects in a list provided to {.arg {arg}} should be of {.cls {c(class, paste0(pkg_env$cls_prfx, object_type))}} class.",
+      .envir = rlang::current_env(),
+      call = call,
+      class = "WrongClassError"
+    )
 
   if (!all(vapply(l, inherits, what = class, FUN.VALUE = logical(1))))
     dgs4_error(

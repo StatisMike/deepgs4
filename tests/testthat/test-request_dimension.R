@@ -245,9 +245,7 @@ test_that("AutoResizeDimensionRequest can be created and send", {
   expect_failure(
     expect_error(
       columnReq <- AutoResizeDimensionsRequest(
-        dimensions = DimensionRange(0,
-                                    "COLUMNS",
-                                    3, 8)
+        dimensions = DimensionRange(0, 3, 8, "COLUMNS")
       )
     )
   )
@@ -257,9 +255,7 @@ test_that("AutoResizeDimensionRequest can be created and send", {
   expect_failure(
     expect_error(
       rowReq <- AutoResizeDimensionsRequest(
-        dimensions = DimensionRange(0,
-                                    "ROWS",
-                                    17, 20)
+        dimensions = DimensionRange(0, 17, 20)
       )
     )
   )
