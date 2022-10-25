@@ -40,7 +40,7 @@ pkg_env$valid_update_fields <- list(
           "strict",
           "showCustomUi"))),
   ##### UpdateSheetProperties ####
-  "UpdateSheetProperties" <- c(
+  "UpdateSheetProperties" = c(
     "title",
     "index",
     "gridProperties",
