@@ -40,7 +40,7 @@ pkg_env$valid_update_fields <- list(
           "strict",
           "showCustomUi"))),
   ##### UpdateSheetProperties ####
-  "UpdateSheetProperties" <- c(
+  "UpdateSheetProperties" = c(
     "title",
     "index",
     "gridProperties",
@@ -65,4 +65,4 @@ pkg_env$valid_chart_specs <- c(
 
 #### deeps classes prefic ####
 pkg_env$cls_prfx <- "dgs4"
-pkg_env$object_types <- c("Obj", "Req", "Response", "Data")
+pkg_env$object_types <- c("Obj", "Req", "Resp", "Data")

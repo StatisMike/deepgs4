@@ -27,10 +27,10 @@ cars_spreadsheet <- Spreadsheet(
 created <- send_create_req(cars_spreadsheet)
 ss_id <- googledrive::as_id(created$spreadsheetId)
 on.exit(googledrive::drive_trash(ss_id))
-# googledrive::drive_share(ss_id,
-#                          role = "writer",
-#                          type = "user",
-#                          "emailAddress" = "statismike@gmail.com")
+googledrive::drive_share(ss_id,
+                         role = "writer",
+                         type = "user",
+                         "emailAddress" = "statismike@gmail.com")
 
 chartReqs <- list()
 
@@ -74,7 +74,7 @@ test_that("Add chart request can be constructed", {
           chartId = 2137,
           position = EmbeddedObjectPosition(
             overlayPosition = OverlayPosition(
-              anchorCell = GridCoordinate(1,
+              anchorCell = GridCoordinate(0,
                                           rowIndex = 1,
                                           columnIndex = 1)
             )
@@ -167,6 +167,8 @@ test_that("UpdateChartSpecRequest can be constructed, send and reply received", 
 
   modified_chart_req <- chartReqs$new_sheet$addChart$chart$spec
   modified_chart_req$basicChart$chartType <- "LINE"
+  # can't still add title to right axis :<
+  # modified_chart_req$basicChart$axis[[2]]$position <- "RIGHT_AXIS"
 
   expect_failure(
     expect_error(

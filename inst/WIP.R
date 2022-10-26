@@ -1,3 +1,34 @@
+# create spreadsheet
+
+cars_rd <- to_RowData_from_df(
+  cars,
+  names_format = CellFormat(
+    backgroundColorStyle = ColorStyle(themeColorType = "ACCENT2"),
+    textFormat = TextFormat(fontFamily = "Exo",
+                            bold = TRUE)
+  ),
+  values_format = CellFormat(
+    backgroundColorStyle = ColorStyle(0.9, 0.9, 0.9),
+    textFormat = TextFormat(fontFamily = "Roboto",
+                            italic = TRUE)
+  ))
+
+resp_create <- request_ss_create(
+  spreadsheet = Spreadsheet(
+    sheets = list(Sheet(
+      data = GridData(0,0, rowData = cars_rd)
+        ),
+      Sheet(
+      data = GridData(0, 0, cars_rd)
+      )
+    )
+  )
+)
+
+resp_get <- request_ss_get(resp_create$spreadsheetId,
+               includeGridData = T)
+
+
 googledrive::drive_auth(path = Sys.getenv("G_SERVICE_ACCOUNT"),
                         cache = F)
 dgs4_auth(path = Sys.getenv("G_SERVICE_ACCOUNT"),

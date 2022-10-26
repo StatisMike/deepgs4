@@ -423,9 +423,9 @@ dgs4_error <- function(message,
 #' @title Check for class
 #' @param x R object
 #' @param class dgs4 class
-#' @param object_type object type
+#' @param object_type object type. One of @eval pkg_env$object_types
 #' @noRd
-is.dgs4_class <- function(x, class = NULL, object_type = c("Obj", "Req", "Data", "Response")) {
+is.dgs4_class <- function(x, class = NULL, object_type = pkg_env$object_types) {
 
   object_type <- rlang::arg_match(object_type)
 

@@ -3,7 +3,7 @@
 \name{gen_dgs4Obj}
 \alias{gen_dgs4Obj}
 \alias{@eval}
-\alias{pkg_env$generators}
+\alias{pkg_env$obj_generators}
 \alias{gen_CellFormat}
 \alias{gen_Border}
 \alias{gen_Borders}
@@ -44,7 +44,7 @@
 \alias{gen_ColorStyle}
 \alias{gen_TextFormatRun}
 \alias{gen_UpdateValuesResponse}
-\title{Generate deepgs4 object}
+\title{Generate dgs4sObj}
 \usage{
 gen_dgs4Obj(obj, class, sheetId = NULL)
 

@@ -69,7 +69,41 @@ dgs4_listinize.dgs4Obj <- function(x, ...) {
 
 }
 
-#### specific listinizers ####
+#### Spreadsheet.R listinizers ####
+
+#' @rdname dgs4_listinize
+#' @export
+dgs4_listinize.SpreadsheetTheme <- function(x, ...) {
+
+  x <- lapply(x, dgs4_listinize, ... = ...)
+
+  themes <- c("TEXT", "BACKGROND", paste0("ACCENT", 1:6), "LINK")
+
+  themes_included <- themes[themes %in% names(x)]
+
+  if (length(themes_included) > 0) {
+
+    x$themeColors <- list()
+
+    for (theme in themes_included) {
+
+      x$themeColors <- x$themeColors |>
+        append(list(list(colorType = theme,
+                         color = x[[theme]])))
+
+      x[[theme]] <- NULL
+
+    }
+
+  }
+
+  x <- unclass_obj(x)
+
+  return(x)
+
+}
+
+#### Varia.R listinizers ####
 
 #' @rdname dgs4_listinize
 #' @export
@@ -104,50 +138,7 @@ dgs4_listinize.ColorStyle <- function(x, ...) {
 
 }
 
-#' @rdname dgs4_listinize
-#' @aliases dgs4_listinize
-#' @export
-dgs4_listinize.ChartData <- function(x, ...) {
-
-  x <- lapply(x, dgs4_listinize, ... = ...)
-
-  x <- x |>
-    nest_cond(name = "sourceRange", nests = "sources") |>
-    unclass_obj()
-
-  return(x)
-
-}
-
-#' @rdname dgs4_listinize
-#' @export
-dgs4_listinize.BasicChartAxis <- function(x, ...) {
-
-  x <- lapply(x, dgs4_listinize, ... = ...)
-
-  if (!is.null(x$titleTextPosition))
-    x$titleTextPosition <- list(horizontalAlignment = x$titleTextPosition)
-
-  x <- unclass_obj(x)
-
-  return(x)
-
-}
-
-#' @rdname dgs4_listinize
-#' @export
-dgs4_listinize.ChartSpec <- function(x, ...) {
-
-  x <- lapply(x, dgs4_listinize, ... = ...)
-
-  x <- x |>
-    nest_cond("titleTextPosition", "horizontalAlignment") |>
-    nest_cond("subtitleTextPosition", "horizontalAlignment") |>
-    unclass_obj()
-
-  return(x)
-
-}
+#### Cells.R listinizers ####
 
 #' @rdname dgs4_listinize
 #' @export
@@ -188,6 +179,67 @@ dgs4_listinize.ExtendedValue <- function(x, ...) {
 
 #' @rdname dgs4_listinize
 #' @export
+dgs4_listinize.RowData <- function(x, ...) {
+
+  x <- lapply(x, dgs4_listinize, ... = ...)
+  out <- list(values = x)
+  return(out)
+
+}
+
+#### BasicCharts.R listinizers ####
+
+#' @rdname dgs4_listinize
+#' @export
+dgs4_listinize.BasicChartAxis <- function(x, ...) {
+
+  x <- lapply(x, dgs4_listinize, ... = ...)
+
+  if (!is.null(x$titleTextPosition))
+    x$titleTextPosition <- list(horizontalAlignment = x$titleTextPosition)
+
+  x <- unclass_obj(x)
+
+  return(x)
+
+}
+
+#### Charts.R listinizers ####
+
+#' @rdname dgs4_listinize
+#' @export
+dgs4_listinize.ChartSpec <- function(x, ...) {
+
+  x <- lapply(x, dgs4_listinize, ... = ...)
+
+  x <- x |>
+    nest_cond("titleTextPosition", "horizontalAlignment") |>
+    nest_cond("subtitleTextPosition", "horizontalAlignment") |>
+    unclass_obj()
+
+  return(x)
+
+}
+
+#' @rdname dgs4_listinize
+#' @aliases dgs4_listinize
+#' @export
+dgs4_listinize.ChartData <- function(x, ...) {
+
+  x <- lapply(x, dgs4_listinize, ... = ...)
+
+  x <- x |>
+    nest_cond(name = "sourceRange", nests = "sources") |>
+    unclass_obj()
+
+  return(x)
+
+}
+
+#### EmbeddedObject.R listinizers ####
+
+#' @rdname dgs4_listinize
+#' @export
 dgs4_listinize.EmbeddedChart <- function(x, ...) {
 
   x <- lapply(x, dgs4_listinize, ... = ...)
@@ -205,6 +257,8 @@ dgs4_listinize.EmbeddedChart <- function(x, ...) {
 
 }
 
+#### Dimension.R listinizers ####
+
 #' @rdname dgs4_listinize
 #' @export
 dgs4_listinize.DimensionProperties <- function(x, ...) {
@@ -213,16 +267,6 @@ dgs4_listinize.DimensionProperties <- function(x, ...) {
     nest_cond("dataSourceColumnReference", nests = "name")
 
   return(x)
-
-}
-
-#' @rdname dgs4_listinize
-#' @export
-dgs4_listinize.RowData <- function(x, ...) {
-
-  x <- lapply(x, dgs4_listinize, ... = ...)
-  out <- list(values = x)
-  return(out)
 
 }
 
