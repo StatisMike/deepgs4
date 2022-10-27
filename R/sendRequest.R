@@ -42,7 +42,7 @@ request_make <- function(x, ..., encode = "json") {
 
 dgs4_user_agent <- function() {
 
-  httr::user_agent(paste0("deepgsheets4/", utils::packageVersion("deepgsheets4"),
+  httr::user_agent(paste0("deepgs4/", utils::packageVersion("deepgs4"),
                           " ", "gargle/", utils::packageVersion("gargle"),
                           " ", "httr", utils::packageVersion("httr")))
 
