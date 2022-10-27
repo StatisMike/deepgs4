@@ -5,7 +5,7 @@
   # current, locally installed version of gargle
   utils::assignInMyNamespace(
     ".auth",
-    gargle::init_AuthState(package = "deepgsheets4", auth_active = TRUE)
+    gargle::init_AuthState(package = "deepgs4", auth_active = TRUE)
   )
 
   invisible()
