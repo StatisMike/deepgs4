@@ -26,6 +26,19 @@ first_to_upper <- function(x) {
 
 }
 
+#' @title First character to lower case
+#' @param x string
+#' @noRd
+first_to_lower <- function(x) {
+
+  x <- unlist(strsplit(x, split = ""))
+  x[1] <- tolower(x[1])
+  x <- paste(x, collapse = "")
+
+  return(x)
+
+}
+
 #' @title Add deepgsheets4 class
 #' @param x object to add the class
 #' @param class name of the child class

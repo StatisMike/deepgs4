@@ -29,12 +29,12 @@ for addition or update}
 \item{sheetId}{ID of the sheet the rule is located in}
 }
 \value{
-deepgsheets4Req object
+deepgs4Req object
 }
 \description{
-Create \code{deepgsheets4Req} objects that allow for addition, modification
+Create \code{deepgs4Req} objects that allow for addition, modification
 and deletion of conditional formatting from given sheet. Send created
-requests with \code{\link[=send_batchUpdate_req]{send_batchUpdate_req()}}
+requests with \code{\link[=request_ss_batchUpdate]{request_ss_batchUpdate()}}
 }
 \section{Add}{
 
@@ -53,14 +53,4 @@ Conditional format rule at given \code{index} from specified \code{sheetId} is
 deleted, and all subsequent rules' indices are decremented.
 }
 
-\seealso{
-Other deepgsheets4Req constructors: 
-\code{\link{CellRequests}},
-\code{\link{DimensionGroupRequests}},
-\code{\link{DimensionRequests}},
-\code{\link{MergeRequests}},
-\code{\link{PasteRequests}},
-\code{\link{SheetRequests}},
-\code{\link{UpdateBordersRequest}()}
-}
-\concept{deepgsheets4Req constructors}
+\concept{deepgs4Req constructors}

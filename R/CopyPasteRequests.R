@@ -1,7 +1,7 @@
 #' @title Requests to paste data into a sheet
 #' @description
-#' Create `deepgsheets4Req` objects that allow for pasting data in various way
-#' into the sheet. Send created requests with [send_batchUpdate_req()]
+#' Create `dgs4Req` objects that allow for pasting data in various way
+#' into the sheet. Send created requests with [request_ss_batchUpdate()]
 #' @param source object of class [GridRange] specifying the location in the grid
 #' where the source data is located
 #' @param destination object of class [GridCoordinate] (for `CutPaste`)
@@ -30,9 +30,9 @@
 #' - **TRANSPOSE**: Paste transposed, where all rows become columns and vice versa.
 #' @name PasteRequests
 #' @rdname PasteRequests
-#' @family deepgsheets4Req constructors
+#' @family dgs4Req constructors
 #' @aliases CutPasteRequest CopyPasteRequest PasteDataRequest
-#' @return deepgsheets4Req object
+#' @return dgs4Req object
 NULL
 
 #' @rdname PasteRequests
@@ -50,15 +50,13 @@ CutPasteRequest <- function(
 
   pasteType <- rlang::arg_match(pasteType)
 
-  req <- list() |>
+  obj <- list() |>
     append_cond(source, class = "GridRange", skip_null = FALSE) |>
     append_cond(destination, class = "GridCoordinate", skip_null = FALSE) |>
-    append_cond(pasteType)
+    append_cond(pasteType) |>
+    dgs4_class("CutPaste", "Req")
 
-  out <- list(cutPaste = req) |>
-    dgs4_class(object_type = "Req")
-
-  return(out)
+  return(obj)
 
 }
 
@@ -81,16 +79,14 @@ CopyPasteRequest <- function(
   pasteType <- rlang::arg_match(pasteType)
   pasteOrientation <- rlang::arg_match(pasteOrientation)
 
-  req <- list() |>
+  obj <- list() |>
     append_cond(source, class = "GridRange", skip_null = FALSE) |>
     append_cond(destination, class = "GridRange", skip_null = FALSE) |>
     append_cond(pasteType) |>
-    append_cond(pasteOrientation)
+    append_cond(pasteOrientation) |>
+    dgs4_class("CopyPaste", "Req")
 
-  out <- list(copyPaste = req) |>
-    dgs4_class(object_type = "Req")
-
-  return(out)
+  return(obj)
 
 }
 
@@ -116,16 +112,14 @@ PasteDataRequest <- function(
   if (sum(null_fields) != 1)
     dgs4_error("Exactly one of {.arg delimiter} or {.arg html} needs to be provided.")
 
-  req <- list() |>
+  obj <- list() |>
     append_cond(coordinate, class = "GridCoordinate", skip_null = F) |>
     append_cond(data, type = "character", skip_null = F) |>
     append_cond(type) |>
     append_cond(delimiter, type = "character") |>
-    append_cond(html, type = "logical")
+    append_cond(html, type = "logical") |>
+    dgs4_class("PasteData", "Req")
 
-  out <- list(pasteData = req) |>
-    dgs4_class(object_type = "Req")
-
-  return(out)
+  return(obj)
 
 }

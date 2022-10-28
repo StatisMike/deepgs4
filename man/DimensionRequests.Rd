@@ -64,12 +64,12 @@ for move}
 should be moved. Provide the index as in \strong{before} the move.}
 }
 \value{
-deepgsheets4Req object
+dgs4Req object
 }
 \description{
-Create \code{deepgsheets4Req} objects that allows inserting, appending, deletion
+Create \code{dgs4Req} objects that allows inserting, appending, deletion
 or updating a dimension in a sheet. Send created requests with
-\code{\link[=send_batchUpdate_req]{send_batchUpdate_req()}}
+\code{\link[=request_ss_batchUpdate]{request_ss_batchUpdate()}}
 }
 \section{Insert}{
 
@@ -109,13 +109,9 @@ will be shifted in their place.
 }
 
 \seealso{
-Other deepgsheets4Req constructors: 
-\code{\link{CellRequests}},
-\code{\link{ConditionalFormatRequests}},
-\code{\link{DimensionGroupRequests}},
-\code{\link{MergeRequests}},
+Other dgs4Req constructors: 
+\code{\link{ChartRequests}},
 \code{\link{PasteRequests}},
-\code{\link{SheetRequests}},
-\code{\link{UpdateBordersRequest}()}
+\code{\link{SheetRequests}}
 }
-\concept{deepgsheets4Req constructors}
+\concept{dgs4Req constructors}

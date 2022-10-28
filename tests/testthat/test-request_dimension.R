@@ -3,7 +3,7 @@ dgs4_auth(path = Sys.getenv("G_SERVICE_ACCOUNT"),
 googledrive::drive_auth(path = Sys.getenv("G_SERVICE_ACCOUNT"),
                         cache = F)
 
-created <- send_create_req(
+created <- request_ss_create(
   spreadsheet = Spreadsheet(
     sheets = Sheet(
       properties = SheetProperties(
@@ -55,7 +55,7 @@ test_that("UpdateDimensionPropertiesRequest can be created and send", {
 
   expect_failure(
     expect_error(
-      update_col_resp <- send_batchUpdate_req(
+      update_col_resp <- request_ss_batchUpdate(
         created$spreadsheetId,
         columnReq
       )
@@ -64,14 +64,14 @@ test_that("UpdateDimensionPropertiesRequest can be created and send", {
 
   expect_failure(
     expect_error(
-      update_row_resp <- send_batchUpdate_req(
+      update_row_resp <- request_ss_batchUpdate(
         created$spreadsheetId,
         rowReq
       )
     )
   )
 
-  confirm <- send_get_req(
+  confirm <- request_ss_get(
     created$spreadsheetId,
     fields = c("sheets.data.columnMetadata,sheets.data.rowMetadata"))
 
@@ -143,7 +143,7 @@ test_that("InserDimensionRequest can be created and send", {
 
   expect_failure(
     expect_error(
-      insert_col_resp <- send_batchUpdate_req(
+      insert_col_resp <- request_ss_batchUpdate(
         created$spreadsheetId,
         columnReq
       )
@@ -152,14 +152,14 @@ test_that("InserDimensionRequest can be created and send", {
 
   expect_failure(
     expect_error(
-      insert_row_resp <- send_batchUpdate_req(
+      insert_row_resp <- request_ss_batchUpdate(
         created$spreadsheetId,
         rowReq
       )
     )
   )
 
-  confirm <- send_get_req(
+  confirm <- request_ss_get(
     created$spreadsheetId,
     fields = c("sheets.data.columnMetadata,sheets.data.rowMetadata"))
 
@@ -213,7 +213,7 @@ test_that("AppendDimensionRequest can be created and send", {
 
   expect_failure(
     expect_error(
-      append_col_resp <- send_batchUpdate_req(
+      append_col_resp <- request_ss_batchUpdate(
         created$spreadsheetId,
         columnReq
       )
@@ -222,14 +222,14 @@ test_that("AppendDimensionRequest can be created and send", {
 
   expect_failure(
     expect_error(
-      append_row_resp <- send_batchUpdate_req(
+      append_row_resp <- request_ss_batchUpdate(
         created$spreadsheetId,
         rowReq
       )
     )
   )
 
-  confirm <- send_get_req(
+  confirm <- request_ss_get(
     created$spreadsheetId,
     fields = c("sheets.properties.gridProperties"))
 
@@ -264,7 +264,7 @@ test_that("AutoResizeDimensionRequest can be created and send", {
 
   expect_failure(
     expect_error(
-      autoresize_col_resp <- send_batchUpdate_req(
+      autoresize_col_resp <- request_ss_batchUpdate(
         created$spreadsheetId,
         columnReq
       )
@@ -273,7 +273,7 @@ test_that("AutoResizeDimensionRequest can be created and send", {
 
   expect_failure(
     expect_error(
-      autoresize_row_resp <- send_batchUpdate_req(
+      autoresize_row_resp <- request_ss_batchUpdate(
         created$spreadsheetId,
         rowReq
       )

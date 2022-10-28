@@ -43,14 +43,12 @@ UpdateCellsRequest <- function(
   rows <- nest_if_class(rows, "RowData") |>
     check_if_all_class("RowData")
 
-  req <- list() |>
+  out <- list() |>
     append_cond(fields, skip_null = FALSE) |>
     append_cond(rows, skip_null = FALSE) |>
     append_cond(start, class = "GridCoordinate") |>
-    append_cond(range, class = "GridRange")
-
-  out <- list(updateCells = req) |>
-    dgs4_class(object_type = "Req")
+    append_cond(range, class = "GridRange") |>
+    dgs4_class("UpdateCells", "Req")
 
   return(out)
 
@@ -73,13 +71,11 @@ AppendCellsRequest <- function(
   rows <- nest_if_class(rows, "RowData") |>
     check_if_all_class("RowData")
 
-  req <- list() |>
+  out <- list() |>
     append_cond(sheetId, type = "integer", skip_null = F) |>
     append_cond(rows) |>
-    append_cond(fields)
-
-  out <- list(appendCells = req) |>
-    dgs4_class(object_type = "Req")
+    append_cond(fields) |>
+    dgs4_class("AppendCells", "Req")
 
   return(out)
 
@@ -112,12 +108,10 @@ MergeCellsRequest <- function(
 
   mergeType <- rlang::arg_match(mergeType)
 
-  req <- list() |>
+  out <- list() |>
     append_cond(range, class = "GridRange", skip_null = F) |>
-    append_cond(mergeType)
-
-  out <- list(mergeCells = req) |>
-    dgs4_class(object_type = "Req")
+    append_cond(mergeType) |>
+    dgs4_class("MergeCells", "Req")
 
   return(out)
 
@@ -131,11 +125,9 @@ MergeCellsRequest <- function(
 UnmergeCellsRequest <- function(
     range) {
 
-  req <- list() |>
-    append_cond(range, class = "GridRange", skip_null = F)
-
-  out <- list(unmergeCells = req) |>
-    dgs4_class(object_type = "Req")
+  out <- list() |>
+    append_cond(range, class = "GridRange", skip_null = F) |>
+    dgs4_class("UnmergeCells", "Req")
 
   return(out)
 
@@ -163,17 +155,15 @@ UpdateBordersRequest <- function(range,
                                  innerHorizontal = NULL,
                                  innerVertical = NULL) {
 
-  req <- list() |>
+  obj <- list() |>
     append_cond(range, class = "GridRange", skip_null = FALSE) |>
     append_cond(top, class = "Border") |>
     append_cond(bottom, class = "Border") |>
     append_cond(left, class = "Border") |>
     append_cond(right, class = "Border") |>
     append_cond(innerHorizontal, class = "Border") |>
-    append_cond(innerVertical, class = "Border")
-
-  obj <- list(updateBorders = req) |>
-    dgs4_class(object_type = "Req")
+    append_cond(innerVertical, class = "Border") |>
+    dgs4_class("UpdateBorders", "Req")
 
   return(obj)
 

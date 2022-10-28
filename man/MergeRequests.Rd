@@ -45,11 +45,7 @@ all will be unmerged. It must not span any merge partially
 \seealso{
 Other deepgsheets4Req constructors: 
 \code{\link{CellRequests}},
-\code{\link{ConditionalFormatRequests}},
 \code{\link{DimensionGroupRequests}},
-\code{\link{DimensionRequests}},
-\code{\link{PasteRequests}},
-\code{\link{SheetRequests}},
 \code{\link{UpdateBordersRequest}()}
 }
 \concept{deepgsheets4Req constructors}

@@ -10,7 +10,7 @@ test_spreadsheet <- Spreadsheet(
                                  gridProperties = GridProperties(10,10)))
 )
 
-created <- send_create_req(test_spreadsheet)
+created <- request_ss_create(test_spreadsheet)
 ss_id <- googledrive::as_id(created$spreadsheetId)
 on.exit(googledrive::drive_trash(ss_id))
 
@@ -27,13 +27,13 @@ test_that("UpdateBordersRequest can be created and sent", {
 
   expect_failure(
     expect_error(
-      send_batchUpdate_req(created$spreadsheetId,
-                           req_min)
+      request_ss_batchUpdate(created$spreadsheetId,
+                             req_min)
     )
   )
 
-  confirm <- send_get_req(created$spreadsheetId,
-                          fields = "sheets.data.rowData.values.userEnteredFormat.borders")
+  confirm <- request_ss_get(created$spreadsheetId,
+                            fields = "sheets.data.rowData.values.userEnteredFormat.borders")
 
   top_borders_row_1 <- sapply(
     confirm$sheets[[1]]$data[[1]]$rowData[[1]]$values,
@@ -67,14 +67,14 @@ test_that("UpdateBordersRequest can be created and sent", {
 
   expect_failure(
     expect_error(
-      resp_max <- send_batchUpdate_req(
+      resp_max <- request_ss_batchUpdate(
         created$spreadsheetId,
         req_max
       )
     )
   )
 
-  confirm <- send_get_req(created$spreadsheetId,
+  confirm <- request_ss_get(created$spreadsheetId,
                           fields = "sheets.data.rowData.values.userEnteredFormat.borders")
 
   top_borders_row_2 <- sapply(
@@ -128,15 +128,15 @@ test_that("UpdateCellsRequest can be created and send", {
 
   expect_failure(
     expect_error(
-      update_resp <- send_batchUpdate_req(
+      update_resp <- request_ss_batchUpdate(
         created$spreadsheetId,
         update_req
       )
     )
   )
 
-  confirm <- send_get_values_req(created$spreadsheetId,
-                                 range = "Sheet1")
+  confirm <- request_ss_get_values(created$spreadsheetId,
+                                   range = "Sheet1")
 
   expect_equal(length(confirm$values), 10)
   expect_equal(length(confirm$values[[1]]), 5)
@@ -160,15 +160,15 @@ test_that("AppendCellsRequest can be created and send", {
 
   expect_failure(
     expect_error(
-      update_resp <- send_batchUpdate_req(
+      update_resp <- request_ss_batchUpdate(
         created$spreadsheetId,
         append_req
       )
     )
   )
 
-  confirm <- send_get_values_req(created$spreadsheetId,
-                                 range = "Sheet1")
+  confirm <- request_ss_get_values(created$spreadsheetId,
+                                  range = "Sheet1")
 
   expect_equal(length(confirm$values), 41)
   expect_equal(length(confirm$values[[1]]), 5)

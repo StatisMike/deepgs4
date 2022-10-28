@@ -8,7 +8,7 @@ test_spreadsheet <- Spreadsheet(
   properties = SpreadsheetProperties()
 )
 
-created <- send_create_req(test_spreadsheet)
+created <- request_ss_create(test_spreadsheet)
 ss_id <- googledrive::as_id(created$spreadsheetId)
 on.exit(googledrive::drive_trash(ss_id))
 
@@ -43,14 +43,14 @@ test_that("AddSheetRequest can be created and send", {
 
   expect_failure(
     expect_error(
-      resp_min <- send_batchUpdate_req(created$spreadsheetId,
+      resp_min <- request_ss_batchUpdate(created$spreadsheetId,
                                        min_req)
     )
   )
 
   expect_failure(
     expect_error(
-      resp_max <- send_batchUpdate_req(created$spreadsheetId,
+      resp_max <- request_ss_batchUpdate(created$spreadsheetId,
                                        max_req)
     )
   )
@@ -84,17 +84,17 @@ test_that("UpdateSheetRequest can be created and send", {
 
   expect_failure(
     expect_error(
-      resp_update <- send_batchUpdate_req(created$spreadsheetId,
+      resp_update <- request_ss_batchUpdate(created$spreadsheetId,
                                        update_req)
     )
   )
 
-  confirm <- send_get_req(created$spreadsheetId,
+  confirm <- request_ss_get(created$spreadsheetId,
                           fields = "sheets.properties",
-                          range = paste0("'", update_req$updateSheetProperties$properties$title, "'"))
+                          range = paste0("'", update_req$properties$title, "'"))
 
   comparison_update <- compare_objects(
-    update_req$updateSheetProperties$properties,
+    update_req$properties,
     confirm$sheets[[1]]$properties,
     skip_compare = c("red", "blue", "green"))
 
@@ -126,12 +126,12 @@ test_that("DeleteSheetRequest can be created and send", {
 
   expect_failure(
     expect_error(
-      resp_delete <- send_batchUpdate_req(created$spreadsheetId,
+      resp_delete <- request_ss_batchUpdate(created$spreadsheetId,
                                           delete_req)
     )
   )
 
-  confirm_delete <- send_get_req(spreadsheetId = created$spreadsheetId,
+  confirm_delete <- request_ss_get(spreadsheetId = created$spreadsheetId,
                                  fields = "sheets.properties.sheetId")
 
   expect_true(!2137 %in% vapply(confirm_delete$sheets, \(x) x$properties$sheetId, numeric(1)))

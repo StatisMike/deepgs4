@@ -23,11 +23,11 @@ be updated}
 \item{sheetId}{integer representing the sheet to delete}
 }
 \value{
-deepgsheets4Req object
+dgs4Req object
 }
 \description{
-Create \code{deepgsheets4Req} objects that allow for addition, modification
-and deletion of singular sheet. Send created requests with \code{\link[=send_batchUpdate_req]{send_batchUpdate_req()}}
+Create \code{dgs4Req} objects that allow for addition, modification
+and deletion of singular sheet. Send created requests with \code{\link[=request_ss_batchUpdate]{request_ss_batchUpdate()}}
 }
 \section{Add}{
 
@@ -50,13 +50,9 @@ type, the associated DataSource is also deleted.
 }
 
 \seealso{
-Other deepgsheets4Req constructors: 
-\code{\link{CellRequests}},
-\code{\link{ConditionalFormatRequests}},
-\code{\link{DimensionGroupRequests}},
+Other dgs4Req constructors: 
+\code{\link{ChartRequests}},
 \code{\link{DimensionRequests}},
-\code{\link{MergeRequests}},
-\code{\link{PasteRequests}},
-\code{\link{UpdateBordersRequest}()}
+\code{\link{PasteRequests}}
 }
-\concept{deepgsheets4Req constructors}
+\concept{dgs4Req constructors}

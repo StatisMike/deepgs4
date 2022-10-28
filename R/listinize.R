@@ -55,8 +55,12 @@ dgs4_listinize.default <- function(x, ...) {
 #' @export
 dgs4_listinize.dgs4Req <- function(x, ...) {
 
+  req_type <- first_to_lower(class(x)[1])
+
   x <- lapply(x, dgs4_listinize, ... = ...)
-  return(x)
+  req <- list()
+  req[[req_type]] <- unclass_obj(x)
+  return(req)
 
 }
 

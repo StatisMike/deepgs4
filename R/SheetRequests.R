@@ -1,16 +1,16 @@
 #' @title Requests to add, modify and delete Sheet
 #' @description
-#' Create `deepgsheets4Req` objects that allow for addition, modification
-#' and deletion of singular sheet. Send created requests with [send_batchUpdate_req()]
+#' Create `dgs4Req` objects that allow for addition, modification
+#' and deletion of singular sheet. Send created requests with [request_ss_batchUpdate()]
 #' @param properties object of class [SheetProperties]
 #' @param fields which of the properties specified within `properties` should
 #' be updated
 #' @param sheetId integer representing the sheet to delete
 #' @name SheetRequests
 #' @rdname SheetRequests
-#' @family deepgsheets4Req constructors
+#' @family dgs4Req constructors
 #' @aliases AddSheetRequest UpdateSheetPropertiesRequest DeleteSheet
-#' @return deepgsheets4Req object
+#' @return dgs4Req object
 NULL
 
 #' @rdname SheetRequests
@@ -22,11 +22,9 @@ NULL
 
 AddSheetRequest <- function(properties) {
 
-  req <- list() |>
-    append_cond(properties, class = "SheetProperties", skip_null = FALSE)
-
-  obj <- list(addSheet = req) |>
-    dgs4_class(object_type = "Req")
+  obj <- list() |>
+    append_cond(properties, class = "SheetProperties", skip_null = FALSE) |>
+    dgs4_class("AddSheet", object_type = "Req")
 
   return(obj)
 
@@ -45,12 +43,10 @@ UpdateSheetPropertiesRequest <- function(
 
   fields <- check_valid_update_fields(fields, "UpdateSheetProperties")
 
-  req <- list()  |>
+  obj <- list()  |>
     append_cond(properties, class = "SheetProperties", skip_null = FALSE) |>
-    append_cond(fields)
-
-  obj <- list(updateSheetProperties = req) |>
-    dgs4_class(object_type = "Req")
+    append_cond(fields) |>
+    dgs4_class("UpdateSheetProperties", "Req")
 
   return(obj)
 
@@ -64,11 +60,9 @@ UpdateSheetPropertiesRequest <- function(
 
 DeleteSheetRequest <- function(sheetId) {
 
-  req <- list() |>
-    append_cond(sheetId, type = "integer", skip_null = FALSE)
-
-  obj <- list(deleteSheet = req) |>
-    dgs4_class(object_type = "Req")
+  obj <- list() |>
+    append_cond(sheetId, type = "integer", skip_null = FALSE) |>
+    dgs4_class("DeleteSheet", "Req")
 
   return(obj)
 

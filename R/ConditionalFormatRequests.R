@@ -1,8 +1,8 @@
 #' @title Requests to add, modify and delete conditional formatting
 #' @description
-#' Create `deepgsheets4Req` objects that allow for addition, modification
+#' Create `deepgs4Req` objects that allow for addition, modification
 #' and deletion of conditional formatting from given sheet. Send created
-#' requests with [send_batchUpdate_req()]
+#' requests with [request_ss_batchUpdate()]
 #' @param index zero-based index identifying the rule
 #' @param rule object of class [ConditionalFormatRule] describing the rule
 #' for addition or update
@@ -12,8 +12,8 @@
 #' @rdname ConditionalFormatRequests
 #' @aliases AddConditionalFormatRule UpdateConditionalFormatRule
 #' DeleteConditionalFormatRule
-#' @family deepgsheets4Req constructors
-#' @return deepgsheets4Req object
+#' @family deepgs4Req constructors
+#' @return deepgs4Req object
 NULL
 
 #' @rdname ConditionalFormatRequests
@@ -24,12 +24,10 @@ NULL
 AddConditionalFormatRule <- function(index,
                                      rule) {
 
-  req <- list() |>
+  obj <- list() |>
     append_cond(index, type = "integer") |>
-    append_cond(rule, class = "ConditionalFormatRule", skip_null = FALSE)
-
-  obj <- list(addConditionalFormatRule = req) |>
-    dgs4_class(object_type = "Req")
+    append_cond(rule, class = "ConditionalFormatRule", skip_null = FALSE) |>
+    dgs4_class("AddContitionalFormatRule", "Req")
 
   return(obj)
 
@@ -47,25 +45,24 @@ UpdateConditionalFormatRule <- function(
     newIndex = NULL,
     sheetId = NULL) {
 
-  req <- list() |>
+  obj <- list() |>
     append_cond(index, type = "integer", skip_null = FALSE)
 
   if (!is.null(rule)) {
 
-    req <- req |>
+    obj <- obj |>
       append_cond(rule, class = "ConditionalFormatRule")
 
   } else if (!is.null(newIndex) && !is.null(sheetId)) {
 
-    req <- req |>
+    obj <- obj |>
       append_cond(newIndex, type = "integer") |>
       append_cond(sheetId, type = "integer")
 
   } else
     dgs4_error("Either specify {.arg rule} for rule replacement or {.arg newIndex} and {.arg sheetId} to move given rule.")
 
-  obj <- list(updateConditionalFormatRule = req) |>
-    dgs4_class(object_type = "Req")
+  obj <- dgs4_class("UpdateConditionalFormat", "Req")
 
   return(obj)
 
@@ -80,11 +77,9 @@ UpdateConditionalFormatRule <- function(
 DeleteConditionalFormatRule <- function(index,
                                         sheetId) {
 
-  req <- list() |>
-    append_cond(sheetId, type = "integer", skip_null = FALSE)
-
-  obj <- list(deleteConditionalFormatRule = req) |>
-    dgs4_class(object_type = "Req")
+  obj <- list() |>
+    append_cond(sheetId, type = "integer", skip_null = FALSE) |>
+    dgs4_class("DeleteConditionalFormat", "Req")
 
   return(obj)
 

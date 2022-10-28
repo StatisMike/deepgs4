@@ -764,7 +764,7 @@ gen_MatchedDeveloperMetadata <- function(obj, sheetId = NULL) {
     try_to_gen_inplace("dataFilters", "DataFilter", use_lapply = TRUE,
                        sheetId = sheetId) |>
     dgs4_class("MatchedDeveloperMetadata",
-               object_type = "Response")
+               object_type = "Resp")
 
   return(obj)
 

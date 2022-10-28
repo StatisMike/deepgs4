@@ -24,7 +24,7 @@ cars_spreadsheet <- Spreadsheet(
       data = to_GridData_from_df(cars, 0, 0))
   )
 )
-created <- send_create_req(cars_spreadsheet)
+created <- request_ss_create(cars_spreadsheet)
 ss_id <- googledrive::as_id(created$spreadsheetId)
 on.exit(googledrive::drive_trash(ss_id))
 googledrive::drive_share(ss_id,
@@ -127,7 +127,7 @@ test_that("AddChart Request can be send, and its response data received", {
 
   expect_failure(
     expect_error(
-      resp <- send_batchUpdate_req(
+      resp <- request_ss_batchUpdate(
         ss_id,
         .dots = chartReqs
       )
@@ -165,7 +165,7 @@ test_that("AddChart Request can be send, and its response data received", {
 
 test_that("UpdateChartSpecRequest can be constructed, send and reply received", {
 
-  modified_chart_req <- chartReqs$new_sheet$addChart$chart$spec
+  modified_chart_req <- chartReqs$new_sheet$chart$spec
   modified_chart_req$basicChart$chartType <- "LINE"
   # can't still add title to right axis :<
   # modified_chart_req$basicChart$axis[[2]]$position <- "RIGHT_AXIS"
@@ -173,7 +173,7 @@ test_that("UpdateChartSpecRequest can be constructed, send and reply received", 
   expect_failure(
     expect_error(
       req <- UpdateChartSpecRequest(
-        chartId = chartReqs$new_sheet$addChart$chart$chartId,
+        chartId = chartReqs$new_sheet$chart$chartId,
         spec = modified_chart_req
       )
     )
@@ -181,7 +181,7 @@ test_that("UpdateChartSpecRequest can be constructed, send and reply received", 
 
   expect_failure(
     expect_error(
-      resp <- send_batchUpdate_req(
+      resp <- request_ss_batchUpdate(
         spreadsheetId = ss_id,
         req
       )

@@ -1,8 +1,8 @@
 #' @title Requests related to dimensions (rows/columns) in a sheet
 #' @description
-#' Create `deepgsheets4Req` objects that allows inserting, appending, deletion
+#' Create `dgs4Req` objects that allows inserting, appending, deletion
 #' or updating a dimension in a sheet. Send created requests with
-#' [send_batchUpdate_req()]
+#' [request_ss_batchUpdate()]
 #' @param range object of class [DimensionRange] declaring range of dimension
 #' in `GRID` sheet
 #' @param inheritFromBefore boolean indicating if the dimension properties
@@ -29,8 +29,8 @@
 #' @rdname DimensionRequests
 #' @aliases InsertDimensionRequest AppendDimensionRequest UpdateDimensionPropertiesRequest
 #' AutoResizeDimensionsRequest DeleteDimensionRequest
-#' @family deepgsheets4Req constructors
-#' @return deepgsheets4Req object
+#' @family dgs4Req constructors
+#' @return dgs4Req object
 NULL
 
 #' @rdname DimensionRequests
@@ -41,14 +41,10 @@ NULL
 #' @export
 InsertDimensionRequest <- function(range, inheritFromBefore = NULL) {
 
-  req <- list() |>
+  obj <- list() |>
     append_cond(range, class = "DimensionRange", skip_null = FALSE) |>
-    append_cond(inheritFromBefore, type = "logical")
-
-  obj <- list(
-    insertDimension = req
-  ) |>
-    dgs4_class(object_type = "Req")
+    append_cond(inheritFromBefore, type = "logical") |>
+    dgs4_class("InsertDimension", "Req")
 
   return(obj)
 
@@ -65,13 +61,11 @@ AppendDimensionRequest <- function(
 
   dimension <- rlang::arg_match(dimension)
 
-  req <- list() |>
+  obj <- list() |>
     append_cond(sheetId, type = "integer", skip_null = FALSE) |>
     append_cond(length, type = "integer", skip_null = FALSE) |>
-    append_cond(dimension)
-
-  obj <- list(appendDimension = req) |>
-    dgs4_class(object_type = "Req")
+    append_cond(dimension) |>
+    dgs4_class("AppendDimension", "Req")
 
   return(obj)
 
@@ -101,14 +95,12 @@ UpdateDimensionPropertiesRequest <- function(
   fields <- rlang::arg_match(fields, multiple = TRUE)
   fields <- paste(fields, collapse = ",")
 
-  req <- list() |>
+  out <- list() |>
     append_cond(properties, class = "DimensionProperties", skip_null = FALSE) |>
     append_cond(fields) |>
     append_cond(range, class = "DimensionRange") |>
-    append_cond(dataSourceSheetRange, class = "DataSourceSheetDimensionRange")
-
-  out <- list(updateDimensionProperties = req) |>
-    dgs4_class(object_type = "Req")
+    append_cond(dataSourceSheetRange, class = "DataSourceSheetDimensionRange") |>
+    dgs4_class("UpdateDimensionProperties", "Req")
 
   return(out)
 
@@ -129,12 +121,10 @@ AutoResizeDimensionsRequest <- function(dimensions = NULL,
   if (sum(ranges_provided) != 1)
     dgs4_error("Exactly one of {.arg dimensions} or {.arg dataSourceSheetDimensions} need to be provided")
 
-  req <- list() |>
+  obj <- list() |>
     append_cond(dimensions, class = "DimensionRange") |>
-    append_cond(dataSourceSheetDimensions, "DataSourceDimensionRange")
-
-  obj <- list(autoResizeDimensions = req) |>
-    dgs4_class(object_type = "Req")
+    append_cond(dataSourceSheetDimensions, "DataSourceDimensionRange") |>
+    dgs4_class("AutoResizeDimensions", "Req")
 
   return(obj)
 
@@ -147,12 +137,10 @@ AutoResizeDimensionsRequest <- function(dimensions = NULL,
 #' @export
 MoveDimensionRequest <- function(source, destinationIndex) {
 
-  req <- list() |>
+  obj <- list() |>
     append_cond(source, class = "DimensionRange", skip_null = FALSE) |>
-    append_cond(destinationIndex, type = "integer", skip_null = FALSE)
-
-  obj <- list(moveDimension = req) |>
-    dgs4_class(object_type = "Req")
+    append_cond(destinationIndex, type = "integer", skip_null = FALSE) |>
+    dgs4_class("MoveDimension", "Req")
 
   return(obj)
 
@@ -166,12 +154,8 @@ MoveDimensionRequest <- function(source, destinationIndex) {
 DeleteDimensionRequest <- function(range) {
 
   req <- list() |>
-    append_cond(range, class = "DimensionRange", skip_null = FALSE)
-
-  obj <- list(
-    deleteDimension = req
-  ) |>
-    dgs4_class(object_type = "Req")
+    append_cond(range, class = "DimensionRange", skip_null = FALSE) |>
+    dgs4_class("DeleteDimension", "Req")
 
   return(obj)
 
@@ -222,11 +206,9 @@ NULL
 #' @export
 AddDimensionGroupRequest <- function(range) {
 
-  req <- list() |>
-    append_cond(range, class = "DimensionRange", skip_null = F)
-
-  obj <- list(addDimensionGroup = req) |>
-    dgs4_class(object_type = "Req")
+  obj <- list() |>
+    append_cond(range, class = "DimensionRange", skip_null = F) |>
+    dgs4_class("AddDimensionGroup", "Req")
 
   return(obj)
 
@@ -244,11 +226,9 @@ AddDimensionGroupRequest <- function(range) {
 #' @export
 DeleteDimensionGroupRequest <- function(range) {
 
-  req <- list() |>
-    append_cond(range, class = "DimensionRange", skip_null = F)
-
-  obj <- list(deleteDimensionGroup = req) |>
-    dgs4_class(object_type = "Req")
+  obj <- list() |>
+    append_cond(range, class = "DimensionRange", skip_null = F) |>
+    dgs4_class("DimensionRange", "Req")
 
   return(obj)
 
@@ -265,12 +245,10 @@ UpdateDimensionGroupRequest <- function(dimensionGroup,
 
   fields <- rlang::arg_match(fields)
 
-  req <- list() |>
+  obj <- list() |>
     append_cond(dimensionGroup, class = "DimensionGroup", skip_null = FALSE) |>
-    append_cond(fields)
-
-  obj <- list(updateDimensionGroup = req) |>
-    dgs4_class(object_type = "Req")
+    append_cond(fields) |>
+    dgs4_class("UpdateDimensionGroup", "Req")
 
   return(obj)
 

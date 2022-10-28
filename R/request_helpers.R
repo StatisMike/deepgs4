@@ -1,65 +1,50 @@
-#' @title Additional response processing
-#' @details Responses from googlesheets API detailing the positions in grid
-#' sheets are omitting `sheetId` field if referred objects are located
-#' on the same sheet. To remedy this problem and construct complete
-#' `deepgsheets4Obj`, I apply additional post-processing reapplying
-#' the sheetId from the request
-#' @param resp whole response
-#' @param reqs requests
-#' @seealso dgs4_matchedmetadata_process
-#' @noRd
-dgs4_batchUpdate_process <- function(
-    resp,
-    reqs) {
+#' @title Generate deepgsheets4 request
+#' @param endpoint request endpoint
+#' @param params list of params passed to the request
+#' @param token token to be included
+#' @export
+request_generate <- function(
+    endpoint,
+    params,
+    token = dgs4_token()) {
 
-  resp$replies <- lapply(seq_along(resp$replies), \(n) {
+  force(params)
+  params <- append_cond(params, params$key, "key") |>
+    append_cond(dgs4_api_key(), "key") |>
+    append_cond(dgs4_default_api_key(), "key")
 
-    if (length(resp$replies[[n]]) == 0)
-      return(NULL)
+  req <- gargle::request_develop(
+    endpoint = .endpoints[[endpoint]],
+    params = params,
+    base_url = "https://sheets.googleapis.com"
+  )
 
-    req_sheetIds <- unique(get_field_values(reqs[[n]], "sheetId"))
-    resp_sheetIds <- unique(get_field_values(resp$replies[[n]], "sheetId"))
+  gargle::request_build(
+    method = req$method,
+    path = req$path,
+    params = req$params,
+    body = req$body,
+    token = token,
+    base_url = req$base_url
+  )
+}
 
-    input_Id <- req_sheetIds[!req_sheetIds %in% resp_sheetIds]
-    if (length(input_Id) > 1)
-      stop("More IDS than 1!")
+#' @title Make request to googlesheets API
+#' @param x List holding components for HTTP request
+#' @param ... Optional arguments passed to the HTTP method
+#' @param encode how the body should be encoded
+#' @export
+request_make <- function(x, ..., encode = "json") {
 
-    return(dgs4Resp_batchUpdate(resp$replies[[n]], sheetId = input_Id))
-
-
-  })
-
-  return(resp)
+  gargle::request_retry(x, ..., encode = "json", user_agent = dgs4_user_agent())
 
 }
 
-#' @title Reply from googlesheets API
-#' @description Mostly internal post-processing function, applied after
-#' [deepgsheets4 Request sending] to construct complete [deepgsheets4Obj] objects
-#' @param reply list containing response from googlesheets4 API
-#' @param sheetId optional sheetId to input
-#' @noRd
-dgs4Resp_batchUpdate <- function(reply, sheetId = NULL) {
+dgs4_user_agent <- function() {
 
-  req_type <- names(reply)
-
-  created <- switch(
-    req_type,
-    addChart = list(
-      addChart = list(
-        chart = gen_EmbeddedChart(
-          reply$addChart$chart,
-          sheetId = sheetId))),
-    addSheet = list(
-      addSheet = list(
-        properties = gen_SheetProperties(
-          reply$addSheet$properties
-        ))),
-    reply
-  ) |>
-    dgs4_class(object_type = "Resp")
-
-  return(created)
+  httr::user_agent(paste0("deepgs4/", utils::packageVersion("deepgs4"),
+                          " ", "gargle/", utils::packageVersion("gargle"),
+                          " ", "httr/", utils::packageVersion("httr")))
 
 }
 

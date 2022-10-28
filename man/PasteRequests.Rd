@@ -55,11 +55,11 @@ cell of the \code{PasteData} destination}
 \item{html}{boolean - \code{"TRUE"} if \code{data} is an \emph{html}}
 }
 \value{
-deepgsheets4Req object
+dgs4Req object
 }
 \description{
-Create \code{deepgsheets4Req} objects that allow for pasting data in various way
-into the sheet. Send created requests with \code{\link[=send_batchUpdate_req]{send_batchUpdate_req()}}
+Create \code{dgs4Req} objects that allow for pasting data in various way
+into the sheet. Send created requests with \code{\link[=request_ss_batchUpdate]{request_ss_batchUpdate()}}
 }
 \section{pasteType options}{
 \itemize{
@@ -104,13 +104,9 @@ or an html source (in which case \code{html} needs to be specified and \code{TRU
 }
 
 \seealso{
-Other deepgsheets4Req constructors: 
-\code{\link{CellRequests}},
-\code{\link{ConditionalFormatRequests}},
-\code{\link{DimensionGroupRequests}},
+Other dgs4Req constructors: 
+\code{\link{ChartRequests}},
 \code{\link{DimensionRequests}},
-\code{\link{MergeRequests}},
-\code{\link{SheetRequests}},
-\code{\link{UpdateBordersRequest}()}
+\code{\link{SheetRequests}}
 }
-\concept{deepgsheets4Req constructors}
+\concept{dgs4Req constructors}

@@ -5,7 +5,7 @@ dgs4_auth(path = Sys.getenv("G_SERVICE_ACCOUNT"),
 googledrive::drive_auth(path = Sys.getenv("G_SERVICE_ACCOUNT"),
                         cache = F)
 
-spreadsheet <- send_create_req(
+spreadsheet <- request_ss_create(
   spreadsheet = Spreadsheet(
     sheets = Sheet(
       properties = SheetProperties(
@@ -75,7 +75,7 @@ test_that("Merge request can be constructed and sent", {
 
   expect_failure(
     expect_error(
-      resp <- send_batchUpdate_req(
+      resp <- request_ss_batchUpdate(
         spreadsheetId = ss_id,
         .dots = requests
       )
@@ -86,17 +86,18 @@ test_that("Merge request can be constructed and sent", {
 
 test_that("Created merges can be acquired from spreadsheet", {
 
-  spreadSheetData <- SpreadSheetData$new(ss_id)
+  confirm <- request_ss_get(ss_id,
+                            fields = "sheets.merges",
+                            ranges = "Test_Sheet")
 
-  merges <- spreadSheetData$get_data("merges")$merges[['0']]
+  # spreadSheetData <- SpreadSheetData$new(ss_id)
 
-  expect_true(all(vapply(merges, is.GridRange, logical(1))))
+  merges <- confirm$sheets[[1]]$merges
 
   columns_verification <- sapply(
     merges, \(merge) {
 
-      merge$sheetId == gridRanges$columns$sheetId &&
-        merge$startRowIndex == gridRanges$columns$startRowIndex &&
+      merge$startRowIndex == gridRanges$columns$startRowIndex &&
         merge$endRowIndex == gridRanges$columns$endRowIndex &&
         merge$startColumnIndex >= gridRanges$columns$startColumnIndex &&
         merge$endColumnIndex <= gridRanges$columns$endColumnIndex
@@ -110,8 +111,7 @@ test_that("Created merges can be acquired from spreadsheet", {
   rows_verification <- sapply(
     merges, \(merge) {
 
-      merge$sheetId == gridRanges$rows$sheetId &&
-        merge$startRowIndex >= gridRanges$rows$startRowIndex &&
+      merge$startRowIndex >= gridRanges$rows$startRowIndex &&
         merge$endRowIndex <= gridRanges$rows$endRowIndex &&
         merge$startColumnIndex == gridRanges$rows$startColumnIndex &&
         merge$endColumnIndex == gridRanges$rows$endColumnIndex
@@ -125,8 +125,7 @@ test_that("Created merges can be acquired from spreadsheet", {
   all_verification <- sapply(
     merges, \(merge) {
 
-      merge$sheetId == gridRanges$all$sheetId &&
-        merge$startRowIndex == gridRanges$all$startRowIndex &&
+      merge$startRowIndex == gridRanges$all$startRowIndex &&
         merge$endRowIndex == gridRanges$all$endRowIndex &&
         merge$startColumnIndex == gridRanges$all$startColumnIndex &&
         merge$endColumnIndex == gridRanges$all$endColumnIndex
@@ -162,22 +161,21 @@ test_that("Created merges can be unmerged with UnmergeCellRequest", {
                                        startColumnIndex = min(col_indices),
                                        endColumnIndex = max(col_indices)))
 
-  expect_s3_class(req, "dgs4Req")
+  expect_true(is.dgs4Req(req))
 
   expect_failure(
     expect_error(
-      resp <- send_batchUpdate_req(
+      resp <- request_ss_batchUpdate(
         spreadsheetId = ss_id,
         req
       )
     )
   )
 
-  spreadSheetData <- SpreadSheetData$new(ss_id)
+  confirm <- request_ss_get(ss_id,
+                            fields = "sheets.merges",
+                            ranges = "Test_Sheet")
 
-  merges <- spreadSheetData$get_data("merges")$merges[['0']]
-
-  expect_true(length(merges) == 0)
-
+  expect_true(is.null(confirm$sheets[[1]]$merges))
 
 })

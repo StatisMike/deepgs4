@@ -43,8 +43,4 @@ or \code{NULL} if nothing is found
 }
 }
 
-\seealso{
-Other Sheet API requests: 
-\code{\link{request_spreadsheet}}
-}
 \concept{Sheet API requests}

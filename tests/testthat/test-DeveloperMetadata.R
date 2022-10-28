@@ -194,28 +194,28 @@ test_spreadsheet <- Spreadsheet(
                                  gridProperties = GridProperties(10,10)))
 )
 
-created <- send_create_req(test_spreadsheet)
+created <- request_ss_create(test_spreadsheet)
 ss_id <- googledrive::as_id(created$spreadsheetId)
 on.exit(googledrive::drive_trash(ss_id))
 
-resp <- send_batchUpdate_req(
+resp <- request_ss_batchUpdate(
   created$spreadsheetId,
   .dots = lapply(els$data,
                  CreateDeveloperMetadataRequest)
 )
 
-test_that("request_metadata_search can be made", {
+test_that("request_ss_metadata_search can be made", {
 
   expect_failure(
     expect_error(
-      els$resp_search <- request_metadata_search(
+      els$resp_search <- request_ss_metadata_search(
         created$spreadsheetId,
         dataFilters = els$filter)
     )
   )
 
   expect_equal(
-    vapply(els$resp_search, is.dgs4Response, logical(1)),
+    vapply(els$resp_search, is.dgs4Resp, logical(1)),
     rep(TRUE, length(els$resp_search))
   )
 
@@ -226,14 +226,14 @@ test_that("request_metadata_search can be made", {
 
 })
 
-test_that("request_metadata_get can be made", {
+test_that("request_ss_metadata_get can be made", {
 
   metadataIds <- vapply(els$resp_search, \(x) x$developerMetadata$metadataId, numeric(1))
 
   expect_failure(
     expect_error(
       resps_get <- lapply(metadataIds,
-                          request_metadata_get,
+                          request_ss_metadata_get,
                           spreadsheetId = created$spreadsheetId)
     )
   )

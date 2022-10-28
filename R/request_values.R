@@ -5,8 +5,9 @@
 #' @param majorDimension The major dimension that results should use.
 #' @param valueRendeOption How values should be represented in the output.
 #' @param dateTimeRenderOption How values should be represented in the output.
+#' @param add_params named list of additional params to include in HTML request
 #' @description
-#' Request to the [spreadsheets.values.get](https://developers.google.com/sheets/api/reference/rest/v4/spreadsheets.values/get){target="_blank"}
+#' Sends request to the [spreadsheets.values.get](https://developers.google.com/sheets/api/reference/rest/v4/spreadsheets.values/get)
 #' method.
 #'
 #' @details
@@ -46,12 +47,13 @@
 #' @return [ValueRange] object
 #' @export
 
-send_get_values_req <- function(
+request_ss_get_values <- function(
     spreadsheetId,
     range,
     majorDimension = c("ROWS", "COLUMNS"),
     valueRenderOption = c("FORMATTED_VALUE", "UNFORMATTED_VALUE", "FORMULA"),
-    dateTimeRenderOption = c("SERIAL_NUMBER", "FORMATTED_STRING")) {
+    dateTimeRenderOption = c("SERIAL_NUMBER", "FORMATTED_STRING"),
+    add_params = list()) {
 
   majorDimension <- rlang::arg_match(majorDimension)
   valueRenderOption <- rlang::arg_match(valueRenderOption)
@@ -71,15 +73,17 @@ send_get_values_req <- function(
     base_url = "https://sheets.googleapis.com"
   )
 
-  resp <- request_make(req)
-
+  resp <- do.call(request_make, args = c(list(x = req),
+                                         add_params))
   gargle::response_process(resp) |>
     gen_dgs4Obj("ValueRange")
 
 }
 
 #' @title Clear values in a given range from sheet
-#' @description Send a request to clear values from cells at given range
+#' @description Send a request to clear values from cells at given range.
+#' Sends request to [spreadsheets.values.clear](https://developers.google.com/sheets/api/reference/rest/v4/spreadsheets.values/clear)
+#' method.
 #' @param spreadsheetId ID of the spreadsheet
 #' @param range specified range in *A1* or *R1C1* notation.
 #' See [get_A1_not()] for more info.
@@ -87,7 +91,7 @@ send_get_values_req <- function(
 #' @return a list containing `spreadsheetId` and `clearedRange`
 #' @export
 
-send_clear_values_req <- function(
+request_ss_clear_values <- function(
     spreadsheetId,
     range) {
 
@@ -108,7 +112,8 @@ send_clear_values_req <- function(
 
 #' @title Update values in a given range in a sheet
 #' @description Send a request to update given `range` of cells with values
-#' provided within provided `values`
+#' provided within provided `values`. Communicates with
+#' [spreadsheets.values.update](https://developers.google.com/sheets/api/reference/rest/v4/spreadsheets.values/update) method.
 #' @param spreadsheetId ID of the spreadsheet
 #' @param range specified range in *A1* or *R1C1* notation.
 #' See [get_A1_not()] for more info.
@@ -153,7 +158,7 @@ send_clear_values_req <- function(
 #' @family Sheets Values requests
 #' @returns [UpdateValuesResponse] object
 #' @export
-send_update_values_req <- function(
+request_ss_update_values <- function(
     spreadsheetId,
     range,
     valueInputOption = c("RAW", "USER_ENTERED"),

@@ -51,12 +51,8 @@ into the sheet if necessary. Properties of \code{CellData} specified in
 
 \seealso{
 Other deepgsheets4Req constructors: 
-\code{\link{ConditionalFormatRequests}},
 \code{\link{DimensionGroupRequests}},
-\code{\link{DimensionRequests}},
 \code{\link{MergeRequests}},
-\code{\link{PasteRequests}},
-\code{\link{SheetRequests}},
 \code{\link{UpdateBordersRequest}()}
 }
 \concept{deepgsheets4Req constructors}
