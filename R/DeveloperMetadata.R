@@ -96,7 +96,7 @@ is.DeveloperMetadataLocation <- function(x) {
 #' by the developer project that created the metadata.
 #' @export
 DeveloperMetadata <- function(
-    location,
+    location = NULL,
     metadataKey = NULL,
     metadataId = NULL,
     metadataValue = NULL,

@@ -10,15 +10,8 @@ Sheet(
   data = NULL,
   merges = NULL,
   conditionalFormats = NULL,
-  filterViews = NULL,
-  protectedRanges = NULL,
-  basicFilter = NULL,
   charts = NULL,
-  bandedRanges = NULL,
-  developerMetadata = NULL,
-  rowGroups = NULL,
-  columnGroups = NULL,
-  slicers = NULL
+  developerMetadata = NULL
 )
 
 is.Sheet(x)
@@ -35,13 +28,13 @@ cells.}
 \item{charts}{object of class \link{EmbeddedChart} or list of such. Charts embedded
 on a sheet}
 
-\item{rowGroups, columnGroups}{objects of class \link{DimensionGroup} or list
-of such, describing grouped rows and columns}
-
 \item{x}{any R object}
 
 \item{conditionalFormat}{object of class \link{ConditionalFormatRule} or list of such.
 Describe conditional format rules applied to the cells in the sheet}
+
+\item{rowGroups, columnGroups}{objects of class \link{DimensionGroup} or list
+of such, describing grouped rows and columns}
 }
 \description{
 Specification of singular Sheet of the google spreadsheet

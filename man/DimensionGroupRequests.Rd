@@ -73,7 +73,6 @@ to dimension group identified on basis of other fields in \code{dimensionGroup}
 
 \seealso{
 Other deepgsheets4Req constructors: 
-\code{\link{CellRequests}},
 \code{\link{MergeRequests}},
 \code{\link{UpdateBordersRequest}()}
 }

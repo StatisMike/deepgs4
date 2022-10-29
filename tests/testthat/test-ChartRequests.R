@@ -27,12 +27,13 @@ cars_spreadsheet <- Spreadsheet(
 created <- request_ss_create(cars_spreadsheet)
 ss_id <- googledrive::as_id(created$spreadsheetId)
 on.exit(googledrive::drive_trash(ss_id))
-googledrive::drive_share(ss_id,
-                         role = "writer",
-                         type = "user",
-                         "emailAddress" = "statismike@gmail.com")
+# googledrive::drive_share(ss_id,
+#                          role = "writer",
+#                          type = "user",
+#                          "emailAddress" = "statismike@gmail.com")
 
-chartReqs <- list()
+els <- new.env()
+els$els$chartReqs <- list()
 
 chartSpec <- ChartSpec(
   chart = BasicChartSpec(
@@ -63,7 +64,7 @@ test_that("Add chart request can be constructed", {
 
   expect_failure(
     expect_error(
-      chartReqs$embedded <<- AddChartRequest(
+      els$chartReqs$embedded <- AddChartRequest(
         chart = EmbeddedChart(
           spec = chartSpec,
           borderColor = ColorStyle(
@@ -86,7 +87,7 @@ test_that("Add chart request can be constructed", {
 
   expect_failure(
     expect_error(
-      chartReqs$specified_sheet <<- AddChartRequest(
+      els$chartReqs$specified_sheet <- AddChartRequest(
         chart = EmbeddedChart(
           spec = chartSpec,
           borderColor = ColorStyle(
@@ -105,7 +106,7 @@ test_that("Add chart request can be constructed", {
 
   expect_failure(
     expect_error(
-      chartReqs$new_sheet <<- AddChartRequest(
+      els$chartReqs$new_sheet <- AddChartRequest(
         chart = EmbeddedChart(
           spec = chartSpec,
           borderColor = ColorStyle(
@@ -129,14 +130,14 @@ test_that("AddChart Request can be send, and its response data received", {
     expect_error(
       resp <- request_ss_batchUpdate(
         ss_id,
-        .dots = chartReqs
+        .dots = els$chartReqs
       )
     )
   )
 
   embedded <- compare_objects(
-    obj1 = chartReqs$embedded$addChart,
-    obj2 = resp$replies[[1]]$addChart,
+    obj1 = els$chartReqs$embedded,
+    obj2 = resp$replies[[1]],
     skip_compare = c("red", "green", "blue", "endRowIndex"),
     na.rm = TRUE
   )
@@ -144,8 +145,8 @@ test_that("AddChart Request can be send, and its response data received", {
   expect_true(sum(embedded) == length(embedded))
 
   specified_sheet <- compare_objects(
-    obj1 = chartReqs$specified_sheet$addChart,
-    obj2 = resp$replies[[2]]$addChart,
+    obj1 = els$chartReqs$specified_sheet,
+    obj2 = resp$replies[[2]],
     skip_compare = c("red", "green", "blue", "endRowIndex"),
     na.rm = TRUE
   )
@@ -153,8 +154,8 @@ test_that("AddChart Request can be send, and its response data received", {
   expect_true(sum(specified_sheet) == length(specified_sheet))
 
   new_sheet <- compare_objects(
-    obj1 = chartReqs$new_sheet$addChart,
-    obj2 = resp$replies[[3]]$addChart,
+    obj1 = els$chartReqs$new_sheet,
+    obj2 = resp$replies[[3]],
     skip_compare = c("red", "green", "blue", "newSheet", "endRowIndex"),
     na.rm = TRUE
   )
@@ -165,7 +166,7 @@ test_that("AddChart Request can be send, and its response data received", {
 
 test_that("UpdateChartSpecRequest can be constructed, send and reply received", {
 
-  modified_chart_req <- chartReqs$new_sheet$chart$spec
+  modified_chart_req <- els$chartReqs$new_sheet$chart$spec
   modified_chart_req$basicChart$chartType <- "LINE"
   # can't still add title to right axis :<
   # modified_chart_req$basicChart$axis[[2]]$position <- "RIGHT_AXIS"
@@ -173,7 +174,7 @@ test_that("UpdateChartSpecRequest can be constructed, send and reply received", 
   expect_failure(
     expect_error(
       req <- UpdateChartSpecRequest(
-        chartId = chartReqs$new_sheet$chart$chartId,
+        chartId = els$chartReqs$new_sheet$chart$chartId,
         spec = modified_chart_req
       )
     )

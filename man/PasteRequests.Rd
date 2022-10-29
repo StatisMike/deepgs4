@@ -105,7 +105,9 @@ or an html source (in which case \code{html} needs to be specified and \code{TRU
 
 \seealso{
 Other dgs4Req constructors: 
+\code{\link{CellRequests}},
 \code{\link{ChartRequests}},
+\code{\link{DeveloperMetadataRequests}},
 \code{\link{DimensionRequests}},
 \code{\link{SheetRequests}}
 }

@@ -53,6 +53,12 @@ pkg_env$valid_update_fields <- list(
             "columnGroupControlAfter")),
     "hidden",
     "tabColorStyle"
+  ),
+  "UpdateDeveloperMetadata" = c(
+    "metadataKey",
+    "metadataValue",
+    "location",
+    "visibility"
   )
 )
 

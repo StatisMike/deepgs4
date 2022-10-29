@@ -238,21 +238,23 @@ dgs4Resp_batchUpdate <- function(reply, sheetId = NULL) {
 
   req_type <- names(reply)
 
-  created <- switch(
-    req_type,
-    addChart = list(
-      addChart = list(
-        chart = gen_EmbeddedChart(
-          reply$addChart$chart,
-          sheetId = sheetId))),
-    addSheet = list(
-      addSheet = list(
-        properties = gen_SheetProperties(
-          reply$addSheet$properties
-        ))),
-    reply
-  ) |>
-    dgs4_class(object_type = "Resp")
+  created <- gen_dgs4Resp(reply, req_type, sheetId = sheetId)
+
+  # created <- switch(
+  #   req_type,
+  #   addChart = list(
+  #     addChart = list(
+  #       chart = gen_EmbeddedChart(
+  #         reply$addChart$chart,
+  #         sheetId = sheetId))),
+  #   addSheet = list(
+  #     addSheet = list(
+  #       properties = gen_SheetProperties(
+  #         reply$addSheet$properties
+  #       ))),
+  #   reply
+  # ) |>
+  #   dgs4_class(object_type = "Resp")
 
   return(created)
 

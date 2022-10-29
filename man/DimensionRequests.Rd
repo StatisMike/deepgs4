@@ -110,7 +110,9 @@ will be shifted in their place.
 
 \seealso{
 Other dgs4Req constructors: 
+\code{\link{CellRequests}},
 \code{\link{ChartRequests}},
+\code{\link{DeveloperMetadataRequests}},
 \code{\link{PasteRequests}},
 \code{\link{SheetRequests}}
 }

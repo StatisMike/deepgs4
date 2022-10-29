@@ -4,6 +4,7 @@
 \alias{dgs4_listinize}
 \alias{dgs4_listinize.default}
 \alias{dgs4_listinize.dgs4Req}
+\alias{dgs4_listinize.dgs4Resp}
 \alias{dgs4_listinize.dgs4Obj}
 \alias{dgs4_listinize.SpreadsheetTheme}
 \alias{dgs4_listinize.TextFormat}
@@ -24,6 +25,8 @@ dgs4_listinize(x, ...)
 \method{dgs4_listinize}{default}(x, ...)
 
 \method{dgs4_listinize}{dgs4Req}(x, ...)
+
+\method{dgs4_listinize}{dgs4Resp}(x, ...)
 
 \method{dgs4_listinize}{dgs4Obj}(x, ...)
 

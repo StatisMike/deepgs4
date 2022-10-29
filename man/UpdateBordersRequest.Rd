@@ -34,7 +34,6 @@ to clear a border, explicitly set the style to \code{"NONE"}.
 }
 \seealso{
 Other deepgsheets4Req constructors: 
-\code{\link{CellRequests}},
 \code{\link{DimensionGroupRequests}},
 \code{\link{MergeRequests}}
 }

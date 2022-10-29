@@ -36,6 +36,8 @@ Constructs request for updating chart specification of existing chart
 
 \seealso{
 Other dgs4Req constructors: 
+\code{\link{CellRequests}},
+\code{\link{DeveloperMetadataRequests}},
 \code{\link{DimensionRequests}},
 \code{\link{PasteRequests}},
 \code{\link{SheetRequests}}

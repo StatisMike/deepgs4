@@ -6,6 +6,7 @@
 \alias{UpdateSheetPropertiesRequest}
 \alias{DeleteSheet}
 \alias{DeleteSheetRequest}
+\alias{DuplicateSheetRequest}
 \title{Requests to add, modify and delete Sheet}
 \usage{
 AddSheetRequest(properties)
@@ -13,6 +14,13 @@ AddSheetRequest(properties)
 UpdateSheetPropertiesRequest(properties, fields = NULL)
 
 DeleteSheetRequest(sheetId)
+
+DuplicateSheetRequest(
+  sourceSheetId,
+  insertSheetIndex,
+  newSheetId = NULL,
+  newSheetName = NULL
+)
 }
 \arguments{
 \item{properties}{object of class \link{SheetProperties}}
@@ -21,6 +29,17 @@ DeleteSheetRequest(sheetId)
 be updated}
 
 \item{sheetId}{integer representing the sheet to delete}
+
+\item{sourceSheetId}{ID of the sheet to duplicate}
+
+\item{insertSheetIndex}{The zero-based index where the new sheet should be
+inserted. The index of all sheets after this are incremented.}
+
+\item{newSheetId}{If set, the ID of the new sheet. If not set, an ID is chosen.
+ID must not conflict with any existing sheet ID and it must be non-negative.}
+
+\item{newSheetName}{The name of the new sheet. It should be unique amongst
+spreadsheet. If empty, a new name is chosen automatically.}
 }
 \value{
 dgs4Req object
@@ -49,9 +68,20 @@ Sheet of the given \code{sheetId} will be deleted. If the sheet is of \code{DATA
 type, the associated DataSource is also deleted.
 }
 
+\section{Duplicate}{
+
+Duplicates the contents of a sheet.
+If the source sheet is of DATA_SOURCE type, its backing \emph{DataSource} is also
+duplicated and associated with the new copy of the sheet. No data execution
+is triggered, the grid data of this sheet is also copied over but only
+available after the batch request completes.
+}
+
 \seealso{
 Other dgs4Req constructors: 
+\code{\link{CellRequests}},
 \code{\link{ChartRequests}},
+\code{\link{DeveloperMetadataRequests}},
 \code{\link{DimensionRequests}},
 \code{\link{PasteRequests}}
 }

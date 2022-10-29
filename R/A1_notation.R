@@ -81,10 +81,10 @@ get_A1_not.GridCoordinate <- function(x, strict = TRUE, sheetName = NULL,
   sheetName <- get_sheetName(sheetVec = sheetVec, sheetName = sheetName,
                              sheetId = x$sheetId)
 
-  ra_ref(row_ref = x$rowIndex + 1,
+  out <- ra_ref(row_ref = x$rowIndex + 1,
          col_ref = x$columnIndex,
          sheet = if (is.null(sheetName)) NA_character_ else enc_sing_q(sheetName)) |>
-    to_string(fo = "A1", sheet = !is.null(sheetName))
+    to_string(fo = "A1", sheet = !is.null(sheetName), strict = strict)
 
   return(out)
 

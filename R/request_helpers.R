@@ -48,14 +48,14 @@ dgs4_user_agent <- function() {
 
 }
 
-#' @rdname send_batchUpdate_req
+#' @title deepgs4 Requests
 #' @param x any R object
 #' @export
 is.dgs4Req <- function(x) {
   is.dgs4_class(x, object_type = "Req")
 }
 
-#' @rdname send_batchUpdate_req
+#' @title deepgs4 Response
 #' @param x any R object
 #' @export
 is.dgs4Resp <- function(x) {

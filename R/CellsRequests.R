@@ -1,7 +1,7 @@
 #' @title Requests to update or append cells in the grid
 #' @description
-#' Create `deepgsheets4Req` objects that allow for update or append
-#' rows of cell data into sheet. Send created requests with [send_batchUpdate_req()]
+#' Create `dgs4Req` objects that allow for update or append
+#' rows of cell data into sheet. Send created requests with [request_ss_batchUpdate()]
 #' @param rows object of class [RowData] or list of multiple such objects
 #' @param fields name of [CellData] fields to update. To get a list of valid fields,
 #' check [valid_update_fields()]
@@ -16,8 +16,8 @@
 #' @name CellRequests
 #' @rdname CellRequests
 #' @aliases UpdateCellsRequest AppendCellsRequest
-#' @family deepgsheets4Req constructors
-#' @return deepgsheets4Req object
+#' @family dgs4Req constructors
+#' @return dgs4Req object
 NULL
 
 #' @rdname CellRequests

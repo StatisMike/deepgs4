@@ -7,16 +7,17 @@
 #' row/column toggle is shown after the group
 #' @export
 GridProperties <- function(
-    rowCount,
-    columnCount,
+    rowCount = NULL,
+    columnCount = NULL,
     frozenRowCount = NULL,
     frozenColumnCount = NULL,
     hideGridlines = NULL,
     rowGroupControlAfter = NULL,
     columnGroupControlAfter = NULL) {
 
-  out <- list(rowCount = rowCount,
-              columnCount = columnCount) |>
+  out <- list() |>
+    append_cond(rowCount, type = "integer") |>
+    append_cond(columnCount, type = "integer") |>
     append_cond(frozenRowCount, type = "integer") |>
     append_cond(frozenColumnCount, type = "integer") |>
     append_cond(hideGridlines, type = "logical") |>
@@ -65,6 +66,27 @@ GridCoordinate <- function(
 #' @export
 is.GridCoordinate <- function(x) {
   inherits(x, "GridCoordinate")
+}
+
+#' @rdname GridCoordinate
+#' @param gc GridCoordinate object
+#' @param A1 if `TRUE` then include *A1* notation. Can be set globally with
+#' `options("deepgs4.A1" = TRUE)`
+#' @param ... optional arguments to `print` methods.
+#' @importFrom cli cli_text
+#' @export
+print.GridCoordinate <- function(gc, A1 = getOption("deepgs4.A1", FALSE), ...) {
+
+  cli_text("{.cls {class(gc)}}")
+
+  props <- c("*" = "{.field sheetId}: {gc$sheetId}",
+             "*" = "{.field rowIndex}: {gc$rowIndex}",
+             "*" = "{.field columnIndex}: {gc$columnIndex}",
+             if (isTRUE(A1)) c("i" = "{.field A1}: {.emph {get_A1_not(gc, strict = F)}}"))
+
+  cli_bullets(props)
+  return(invisible(gc))
+
 }
 
 #' @title GridRange

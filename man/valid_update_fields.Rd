@@ -4,7 +4,9 @@
 \alias{valid_update_fields}
 \title{Check validity of specified fields}
 \usage{
-valid_update_fields(updateRequest = c("UpdateCells", "UpdateSheetProperties"))
+valid_update_fields(
+  updateRequest = c("UpdateCells", "UpdateSheetProperties", "UpdateDeveloperMetadata")
+)
 }
 \arguments{
 \item{updateRequest}{which update request to check}

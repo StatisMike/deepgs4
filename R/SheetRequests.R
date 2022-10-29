@@ -68,4 +68,35 @@ DeleteSheetRequest <- function(sheetId) {
 
 }
 
+#' @rdname SheetRequests
+#' @section Duplicate:
+#' Duplicates the contents of a sheet.
+#' If the source sheet is of DATA_SOURCE type, its backing *DataSource* is also
+#' duplicated and associated with the new copy of the sheet. No data execution
+#' is triggered, the grid data of this sheet is also copied over but only
+#' available after the batch request completes.
+#' @param sourceSheetId ID of the sheet to duplicate
+#' @param insertSheetIndex The zero-based index where the new sheet should be
+#' inserted. The index of all sheets after this are incremented.
+#' @param newSheetId If set, the ID of the new sheet. If not set, an ID is chosen.
+#' ID must not conflict with any existing sheet ID and it must be non-negative.
+#' @param newSheetName The name of the new sheet. It should be unique amongst
+#' spreadsheet. If empty, a new name is chosen automatically.
+#' @export
+DuplicateSheetRequest <- function(
+    sourceSheetId,
+    insertSheetIndex,
+    newSheetId = NULL,
+    newSheetName = NULL) {
+
+  obj <- list() |>
+    append_cond(sourceSheetId, type = "integer", skip_null = FALSE) |>
+    append_cond(insertSheetIndex, type = "integer", skip_null = FALSE) |>
+    append_cond(newSheetId, type = "integer") |>
+    append_cond(newSheetName, type = "character") |>
+    dgs4_class("DuplicateSheet", "Req")
+
+  return(obj)
+
+}
 

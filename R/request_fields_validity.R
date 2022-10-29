@@ -13,7 +13,7 @@
 #' @return character vector
 #' @export
 valid_update_fields <- function(
-    updateRequest = c("UpdateCells", "UpdateSheetProperties")) {
+    updateRequest = c("UpdateCells", "UpdateSheetProperties", "UpdateDeveloperMetadata")) {
 
   updateRequest <- rlang::arg_match(updateRequest)
 
@@ -23,7 +23,7 @@ valid_update_fields <- function(
 
 check_valid_update_fields <- function(
     fields,
-    updateRequest = c("UpdateCells", "UpdateSheetProperties"),
+    updateRequest = c("UpdateCells", "UpdateSheetProperties", "UpdateDeveloperMetadata"),
     call = rlang::caller_call()) {
 
   updateRequest <- rlang::arg_match(updateRequest)

@@ -6,7 +6,7 @@
 \title{Developer Metadata}
 \usage{
 DeveloperMetadata(
-  location,
+  location = NULL,
   metadataKey = NULL,
   metadataId = NULL,
   metadataValue = NULL,

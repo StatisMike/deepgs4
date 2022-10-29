@@ -18,18 +18,16 @@ Sheet <- function(
     data = NULL,
     merges = NULL,
     conditionalFormats = NULL,
-    filterViews = NULL,
-    protectedRanges = NULL,
-    basicFilter = NULL,
+    # filterViews = NULL,
+    # protectedRanges = NULL,
+    # basicFilter = NULL,
     charts = NULL,
-    bandedRanges = NULL,
-    developerMetadata = NULL,
-    rowGroups = NULL,
-    columnGroups = NULL,
-    slicers = NULL) {
-
-  charts <- nest_if_class(charts, "EmbeddedChart") |>
-    check_if_all_class("EmbeddedChart")
+    # bandedRanges = NULL,
+    developerMetadata = NULL
+    # rowGroups = NULL,
+    # columnGroups = NULL,
+    # slicers = NULL
+    ) {
 
   data <- nest_if_class(data, "GridData") |>
     check_if_all_class("GridData")
@@ -40,16 +38,19 @@ Sheet <- function(
   conditionalFormats <- nest_if_class(conditionalFormats, "ConditionalFormatRule") |>
     check_if_all_class("ConditionalFormatRule")
 
-  conditionalFormats <- nest_if_class(conditionalFormats,
-                                      "ConditionalFormatRule") |>
-    check_if_all_class("ConditionalFormatRule")
+  charts <- nest_if_class(charts, "EmbeddedChart") |>
+    check_if_all_class("EmbeddedChart")
+
+  developerMetadata <-nest_if_class(developerMetadata, "DeveloperMetadata") |>
+    check_if_all_class("DeveloperMetadata")
 
   out <- list() |>
-    append_cond(data) |>
     append_cond(properties, class = "SheetProperties") |>
+    append_cond(data) |>
     append_cond(merges) |>
-    append_cond(charts) |>
     append_cond(conditionalFormats) |>
+    append_cond(charts) |>
+    append_cond(developerMetadata) |>
     dgs4_class("Sheet")
 
   return(out)
