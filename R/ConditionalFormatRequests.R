@@ -21,13 +21,13 @@ NULL
 #' New rule is added at a given index. All subsequent rules indices are incremented.
 #' @export
 
-AddConditionalFormatRule <- function(index,
+AddConditionalFormatRuleRequest <- function(index,
                                      rule) {
 
   obj <- list() |>
     append_cond(index, type = "integer") |>
     append_cond(rule, class = "ConditionalFormatRule", skip_null = FALSE) |>
-    dgs4_class("AddContitionalFormatRule", "Req")
+    dgs4_class("AddConditionalFormatRule", "Req")
 
   return(obj)
 
@@ -39,7 +39,7 @@ AddConditionalFormatRule <- function(index,
 #' or moved, providing the `newIndex` and `sheetId` arguments.
 #' @export
 
-UpdateConditionalFormatRule <- function(
+UpdateConditionalFormatRuleRequest <- function(
     index,
     rule = NULL,
     newIndex = NULL,
@@ -62,7 +62,7 @@ UpdateConditionalFormatRule <- function(
   } else
     dgs4_error("Either specify {.arg rule} for rule replacement or {.arg newIndex} and {.arg sheetId} to move given rule.")
 
-  obj <- dgs4_class("UpdateConditionalFormat", "Req")
+  obj <- dgs4_class(obj, "UpdateConditionalFormatRule", "Req")
 
   return(obj)
 
@@ -74,12 +74,12 @@ UpdateConditionalFormatRule <- function(
 #' deleted, and all subsequent rules' indices are decremented.
 #' @export
 
-DeleteConditionalFormatRule <- function(index,
+DeleteConditionalFormatRuleRequest <- function(index,
                                         sheetId) {
 
   obj <- list() |>
     append_cond(sheetId, type = "integer", skip_null = FALSE) |>
-    dgs4_class("DeleteConditionalFormat", "Req")
+    dgs4_class("DeleteConditionalFormatRule", "Req")
 
   return(obj)
 

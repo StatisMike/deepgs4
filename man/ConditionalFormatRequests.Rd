@@ -5,18 +5,21 @@
 \alias{AddConditionalFormatRule}
 \alias{UpdateConditionalFormatRule}
 \alias{DeleteConditionalFormatRule}
+\alias{AddConditionalFormatRuleRequest}
+\alias{UpdateConditionalFormatRuleRequest}
+\alias{DeleteConditionalFormatRuleRequest}
 \title{Requests to add, modify and delete conditional formatting}
 \usage{
-AddConditionalFormatRule(index, rule)
+AddConditionalFormatRuleRequest(index, rule)
 
-UpdateConditionalFormatRule(
+UpdateConditionalFormatRuleRequest(
   index,
   rule = NULL,
   newIndex = NULL,
   sheetId = NULL
 )
 
-DeleteConditionalFormatRule(index, sheetId)
+DeleteConditionalFormatRuleRequest(index, sheetId)
 }
 \arguments{
 \item{index}{zero-based index identifying the rule}

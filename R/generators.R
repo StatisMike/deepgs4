@@ -839,11 +839,11 @@ pkg_env$resp_generators <- c(
   # "gen_AddNamedRange",
   # "gen_AddFilterView",
   # "gen_DuplicateFilterView",
-  "gen_DuplicateSheet"
+  "gen_DuplicateSheet",
   # "gen_FindReplace",
   # "gen_UpdateEmbeddedObjectPosition",
-  # "gen_UpdateConditionalFormatRule",
-  # "gen_DeleteConditionalFormatRule",
+  "gen_UpdateConditionalFormatRule",
+  "gen_DeleteConditionalFormatRule"
   # "gen_AddProtectedRange",
   # "gen_AddBanding",
   # "gen_CreateDeveloperMetadata",
@@ -894,6 +894,35 @@ gen_AddChart <- function(obj, sheetId = NULL) {
   obj <- obj |>
     try_to_gen_inplace("chart", "EmbeddedChart", skip_null = FALSE, sheetId = sheetId) |>
     dgs4_class("AddChart", "Resp")
+
+  return(obj)
+
+}
+
+#### ConditionalFormatRequests.R Generators ####
+
+#' @rdname gen_dgs4Resp
+#' @export
+gen_UpdateConditionalFormatRule <- function(obj, sheetId = NULL) {
+
+  obj <- obj |>
+    try_to_gen_inplace("newRule", "ConditionalFormatRule", skip_null = FALSE,
+                       sheetId = sheetId) |>
+    try_to_gen_inplace("oldRule", "ConditionalFormatRule", sheetId = sheetId) |>
+    dgs4_class("UpdateConditionalFormatRule", "Resp")
+
+  return(obj)
+
+}
+
+#' @rdname gen_dgs4Resp
+#' @export
+gen_DeleteConditionalFormatRule <- function(obj, sheetId = NULL) {
+
+  obj <- obj |>
+    try_to_gen_inplace("rule", "ConditionalFormatRule", skip_null = FALSE,
+                       sheetId = sheetId) |>
+    dgs4_class("DeleteConditionalFormatRule", "Resp")
 
   return(obj)
 
