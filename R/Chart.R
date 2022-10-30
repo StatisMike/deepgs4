@@ -1,3 +1,10 @@
+#### Valid Chart Specs ####
+# During addition of new type of chart spec, name of its constructor (and class)
+# needs to be added below
+pkg_env$valid_chart_specs <- c(
+  "BasicChartSpec"
+)
+
 #' @title Extract and convert TypeChartSpec classname to field name
 #' @param object TypeChartSpec object
 #' @noRd

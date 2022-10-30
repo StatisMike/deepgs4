@@ -35,6 +35,7 @@
 \alias{gen_BooleanRule}
 \alias{gen_GradientRule}
 \alias{gen_ConditionalFormatRule}
+\alias{gen_ProtectedRange}
 \alias{gen_DeveloperMetadata}
 \alias{gen_DeveloperMetadataLocation}
 \alias{gen_DeveloperMetadataLookup}
@@ -109,6 +110,8 @@ gen_BooleanRule(obj)
 gen_GradientRule(obj)
 
 gen_ConditionalFormatRule(obj, sheetId = NULL)
+
+gen_ProtectedRange(obj, sheetId = NULL)
 
 gen_DeveloperMetadata(obj, sheetId = NULL)
 

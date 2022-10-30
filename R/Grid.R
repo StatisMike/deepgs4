@@ -36,6 +36,17 @@ is.GridProperties <- function(x) {
   inherits(x, "GridProperties")
 }
 
+#' @rdname GridProperties
+#' @param gp GridProperties object
+#' @export
+print.GridProperties <- function(gp) {
+
+  cli_text("{.cls {class(gp)}}")
+  cli_bullets(bulletize_fields(gp))
+  return(invisible(gp))
+
+}
+
 #' @title GridCoordinate
 #' @description Specification of cell in a grid
 #' @param sheetId Integer - sheet ID
@@ -73,7 +84,7 @@ is.GridCoordinate <- function(x) {
 #' @param A1 if `TRUE` then include *A1* notation. Can be set globally with
 #' `options("deepgs4.A1" = TRUE)`
 #' @param ... optional arguments to `print` methods.
-#' @importFrom cli cli_text
+#' @importFrom cli cli_text cli_bullets
 #' @export
 print.GridCoordinate <- function(gc, A1 = getOption("deepgs4.A1", FALSE), ...) {
 
@@ -124,6 +135,12 @@ GridRange <- function(
     append_cond(endColumnIndex, type = "integer") |>
     dgs4_class("GridRange")
 
+  null_indices <- vapply(list(startRowIndex, startColumnIndex, endRowIndex, endColumnIndex),
+                         is.null, logical(1))
+
+  attr(out, "unbounded") <-
+    c("startRow", "startColumn", "endRow", "endColumn")[null_indices]
+
   return(out)
 
 }
@@ -133,6 +150,29 @@ GridRange <- function(
 #' @export
 is.GridRange <- function(x) {
   inherits(x, "GridRange")
+}
+
+#' @rdname GridRange
+#' @param gr GridRange object
+#' @param A1 if `TRUE` then include *A1* notation. Can be set globally with
+#' `options("deepgs4.A1" = TRUE)`
+#' @param ... optional arguments to `print` methods.
+#' @importFrom cli cli_text cli_bullets
+#' @export
+print.GridRange <- function(gr, A1 = getOption("deepgs4.A1", FALSE), ...) {
+
+  cli_text("{.cls {class(gr)}}")
+
+  props <- bulletize_fields(gr)
+  if (isTRUE(A1))
+    props <- c(props, c("i" = "{.field A1}: {.emph {get_A1_not(gr, strict = F)}}"))
+
+  if (length(attr(gr, "unbounded")) > 0)
+    props <- c(props, c(">" = "{.field unbounded}: {.val {attr(gr, 'unbounded')}}"))
+
+  cli_bullets(props)
+  return(invisible(gr))
+
 }
 
 #' @title Check if the vector is coercible to date or datetime

@@ -42,3 +42,63 @@ check_valid_update_fields <- function(
              "Fields: {.val {non_valid}} aren't valid fieds for this request. Check valid fields with `valid_update_fields('{updateRequest}')`.")
 
 }
+
+#### Valid Update Fields ####
+# valid `FieldMask` values for specific `Update*Request` need to be generated
+# there
+pkg_env$valid_update_fields <- list(
+  ##### UpdatCells ####
+  "UpdateCells" = c(
+    "userEnteredValue",
+    "userEnteredFormat",
+    paste(sep = ".", "userEnteredFormat",
+          c("numberFormat",
+            "backgroundColorStyle",
+            "borders",
+            "padding",
+            "horizontalAlignment",
+            "verticalAlignment",
+            "wrapStrategy",
+            "textDirection",
+            "textFormat",
+            paste(sep = ".", "textFormat",
+                  c("foregroundColorStyle",
+                    "fontFamily",
+                    "fontSize",
+                    "bold",
+                    "italic",
+                    "strikethroug",
+                    "underline",
+                    "link")),
+            "hyperlinkDisplayType",
+            "textRotation")),
+    "note",
+    "textFormatRuns",
+    "dataValidation",
+    paste(sep = ".", "dataValidation",
+          c("condition",
+            "inputMessage",
+            "strict",
+            "showCustomUi"))),
+  ##### UpdateSheetProperties ####
+  "UpdateSheetProperties" = c(
+    "title",
+    "index",
+    "gridProperties",
+    paste(sep = ".", "gridProperties",
+          c("rowCount",
+            "columnCount",
+            "frozenColumnCount",
+            "hideGridlines",
+            "rowGroupControlAfter",
+            "columnGroupControlAfter")),
+    "hidden",
+    "tabColorStyle"
+  ),
+  "UpdateDeveloperMetadata" = c(
+    "metadataKey",
+    "metadataValue",
+    "location",
+    "visibility"
+  )
+)
