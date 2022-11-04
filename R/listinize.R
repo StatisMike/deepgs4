@@ -43,9 +43,11 @@ dgs4_listinize <- function(x, ...)
 #' @export
 dgs4_listinize.default <- function(x, ...) {
 
+  if (is.atomic(x))
+    return(x)
   if (!is.list(x))
     return(x)
-  else
+
     lapply(x, dgs4_listinize, ... = ...) |>
     lapply(unclass_obj)
 
@@ -299,5 +301,79 @@ dgs4_listinize.ConditionValue <- function(x, ...) {
     out <- list(userEnteredValue = unclass_obj(x))
 
   return(out)
+
+}
+
+#### DataSource.R listinizers ####
+
+#' @rdname dgs4_listinize
+#' @export
+dgs4_listinize.DataSourceRefreshSchedule <- function(x, ...) {
+
+  x <- lapply(x, dgs4_listinize, ... = ...)
+
+  if (!is.null(x$daysOfWeek)) {
+
+    x$weeklySchedule <- list(startTime = x$startTime,
+                             daysOfWeek = x$daysOfWeek)
+
+    x$daysOfWeek <- NULL
+
+  } else if (!is.null(x$daysOfMonth)) {
+
+    x$monthlySchedule <- list(startTime = x$startTime,
+                              daysOfMonth = x$daysOfMonth)
+    x$daysOfMonth <- NULL
+
+  } else {
+
+    x$dailySchedule <- list(startTime = x$startTime)
+
+  }
+
+  x$startTime <- NULL
+  x$refreshScope <- "ALL_DATA_SOURCES"
+
+  x <- unclass_obj(x)
+
+  return(x)
+
+}
+
+#' @rdname dgs4_listinize
+#' @export
+dgs4_listinize.DataSourceColumn <- function(x, ...) {
+
+  x <- lapply(x, dgs4_listinize, ... = ...) |>
+    nest_cond("reference", nests = "name") |>
+    unclass_obj()
+
+  return(x)
+
+}
+
+#### Filters.R listinizers ####
+
+#' @rdname dgs4_listinize
+#' @export
+dgs4_listinize.SortSpec <- function(x, ...) {
+
+  x <- lapply(x, dgs4_listinize, ... = ...) |>
+    nest_cond("dataSourceColumnReference", nests = "name") |>
+    unclass_obj()
+
+  return(x)
+
+}
+
+#' @rdname dgs4_listinize
+#' @export
+dgs4_listinize.FilterSpec <- function(x, ...) {
+
+  x <- lapply(x, dgs4_listinize, ... = ...) |>
+    nest_cond("dataSourceColumnReference", nests = "name") |>
+    unclass_obj()
+
+  return(x)
 
 }

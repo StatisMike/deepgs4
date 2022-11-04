@@ -78,6 +78,7 @@ pkg_env$obj_generators <- c(
   "gen_GridData",
   "gen_Sheet",
   "gen_SheetProperties",
+  "gen_DataSourceSheetProperties",
   "gen_Spreadsheet",
   "gen_SpreadsheetProperties",
   "gen_SpreadsheetTheme",
@@ -88,6 +89,7 @@ pkg_env$obj_generators <- c(
   "gen_ChartSpec",
   "gen_DataLabel",
   "gen_EmbeddedChart",
+  "gen_DataSourceChartProperties",
   "gen_BasicChartAxis",
   "gen_BasicChartDomain",
   "gen_BasicSeriesDataPointStyleOverride",
@@ -101,6 +103,11 @@ pkg_env$obj_generators <- c(
   "gen_GradientRule",
   "gen_ConditionalFormatRule",
   "gen_ProtectedRange",
+  "gen_SortSpec",
+  "gen_FilterCriteria",
+  "gen_FilterSpec",
+  "gen_BasicFilter",
+  "gen_FilterView",
   "gen_DeveloperMetadata",
   "gen_DeveloperMetadataLocation",
   "gen_DeveloperMetadataLookup",
@@ -109,7 +116,13 @@ pkg_env$obj_generators <- c(
   "gen_TextFormat",
   "gen_ColorStyle",
   "gen_TextFormatRun",
-  "gen_UpdateValuesResponse"
+  "gen_UpdateValuesResponse",
+  "gen_DataSource",
+  "gen_DataSourceSpec",
+  "gen_BigQueryDataSourceSpec",
+  "gen_DataSourceParameter",
+  "gen_DataSourceRefreshSchedule",
+  "gen_DataSourceColumn"
 )
 
 ##### Cells.R Generators ####
@@ -236,6 +249,10 @@ gen_Sheet <- function(obj) {
     try_to_gen_inplace("charts", "EmbeddedChart", TRUE, sheetId = sheetId) |>
     try_to_gen_inplace("conditionalFormats", "ConditionalFormatRule", TRUE,
                        sheetId = sheetId) |>
+    try_to_gen_inplace("protectedRanges", "ProtectedRange", TRUE,
+                       sheetId = sheetId) |>
+    try_to_gen_inplace("developerMetadata", "DeveloperMetadata", TRUE,
+                       sheetId = sheetId) |>
     try_to_gen_inplace("merges", "GridRange", TRUE, sheetId = sheetId) |>
     try_to_gen_inplace("rowGroups", "DimensionGroup", TRUE, sheetId = sheetId) |>
     try_to_gen_inplace("columnGroups", "DimensionGroup", TRUE, sheetId = sheetId)
@@ -259,6 +276,18 @@ gen_SheetProperties <- function(obj) {
                                               "DataSourceSheetProperties")
 
   do.call(SheetProperties, args = obj)
+
+}
+
+#' @rdname gen_dgs4Obj
+#' @export
+gen_DataSourceSheetProperties <- function(obj) {
+
+  obj <- obj |>
+    try_to_gen_inplace("columns", "DataSourceColumn", TRUE) |>
+    try_to_gen_inplace("dataExecutionStatus", "DataExecutionStatus")
+
+  do.call(DataSourceSheetProperties, args = obj)
 
 }
 
@@ -446,6 +475,18 @@ gen_EmbeddedChart <- function(obj, sheetId = NULL) {
 
   do.call(EmbeddedChart,
           args = args)
+
+}
+
+#' @rdname gen_dgs4Obj
+#' @export
+gen_DataSourceChartProperties <- function(obj) {
+
+  obj <- try_to_gen_inplace(obj,
+                            "dataSourceExecutionStatus",
+                            "DataSourceExecutionStatus")
+
+  do.call(DataSourceChartProperties, args = obj)
 
 }
 
@@ -658,6 +699,76 @@ gen_ProtectedRange <- function(obj, sheetId = NULL) {
 
 }
 
+#### Filters.R Generators ####
+
+#' @rdname gen_dgs4Obj
+#' @export
+gen_SortSpec <- function(obj) {
+
+  obj <- obj |>
+    try_to_gen_inplace("foregroundColorStyle", "ColorStyle") |>
+    try_to_gen_inplace("backgroundColorStyle", "ColorStyle")
+
+  if (!is.null(obj$dataSourceColumnReference))
+    obj$dataSourceColumnReference <- obj$dataSourceColumnReference$name
+
+  do.call(SortSpec, args = obj)
+
+}
+
+#' @rdname gen_dgs4Obj
+#' @export
+gen_FilterCriteria <- function(obj) {
+
+  obj <- obj |>
+    try_to_gen_inplace("condition", "BooleanCondition") |>
+    try_to_gen_inplace("visibleBackgroundColorStyle", "ColorStyle") |>
+    try_to_gen_inplace("visibleForegroundColorStyle", "ColorStyle")
+
+  do.call(FilterCriteria, args = obj)
+
+}
+
+#' @rdname gen_dgs4Obj
+#' @export
+gen_FilterSpec <- function(obj) {
+
+  obj <- obj |>
+    try_to_gen_inplace("filterCriteria", "FilterCriteria")
+
+  if (!is.null(obj$dataSourceColumnReference))
+    obj$dataSourceColumnReference <- obj$dataSourceColumnReference$name
+
+  do.call(FilterSpec, args = obj)
+
+}
+
+#' @rdname gen_dgs4Obj
+#' @export
+gen_BasicFilter <- function(obj) {
+
+  obj <- obj |>
+    try_to_gen_inplace("range", "GridRange") |>
+    try_to_gen_inplace("sortSpecs", "SortSpec", TRUE) |>
+    try_to_gen_inplace("filterSpecs", "FilterSpec", TRUE)
+
+  do.call(BasicFilter, args = obj)
+
+}
+
+#' @rdname gen_dgs4Obj
+#' @export
+gen_FilterView <- function(obj, sheetId = NULL) {
+
+  obj <- obj |>
+    try_to_gen_inplace("range", "GridRange") |>
+    try_to_gen_inplace("sortSpecs", "SortSpec", TRUE) |>
+    try_to_gen_inplace("filterSpecs", "FilterSpec", TRUE)
+
+  do.call(BasicFilter, args = obj)
+
+}
+
 #### DeveloperMetadata.R Generators ####
 #' @rdname gen_dgs4Obj
 #' @export
@@ -727,6 +838,94 @@ gen_MatchedDeveloperMetadata <- function(obj, sheetId = NULL) {
 
 }
 
+#### DataSource.R Generators ####
+
+#' @rdname gen_dgs4Obj
+#' @export
+gen_DataSource <- function(obj) {
+
+  obj <- obj |>
+    try_to_gen_inplace("spec", class = "DataSourceSpec") |>
+    try_to_gen_inplace("calculatedColumns", class = "DataSourceColumn",
+                       use_lapply = TRUE)
+
+  do.call(DataSource, args = obj)
+
+}
+
+#' @rdname gen_dgs4Obj
+#' @export
+gen_DataSourceSpec <- function(obj) {
+
+  obj <- obj |>
+    try_to_gen_inplace("parameters", class = "DataSourceParameter",
+                       use_lapply = TRUE) |>
+    try_to_gen_inplace("bigQuery", class = "BigQueryDataSourceSpec")
+
+  do.call(DataSourceSpec, args = obj)
+
+}
+
+#' @rdname gen_dgs4Obj
+#' @export
+gen_BigQueryDataSourceSpec <- function(obj) {
+
+  obj <- obj |>
+    try_to_gen_inplace("querySpec", "BigQueryQuerySpec") |>
+    try_to_gen_inplace("tableSpec", "BigQueryTableSpec")
+
+  do.call(BigQueryDataSourceSpec, args = obj)
+
+}
+
+#' @rdname gen_dgs4Obj
+#' @export
+gen_DataSourceParameter <- function(obj) {
+
+  obj <- obj |>
+    try_to_gen_inplace("range", "GridRange")
+
+  do.call(DataSourceParameter, args = obj)
+
+}
+
+#' @rdname gen_dgs4Obj
+#' @export
+gen_DataSourceRefreshSchedule <- function(obj) {
+
+  if (!is.null(obj$weeklySchedule)) {
+    obj$daysOfWeek <- as.character(obj$weeklySchedule$daysOfWeek)
+    obj$startTime <- obj$weeklySchedule$startTime
+    obj$weeklySchedule <- NULL
+  } else if (!is.null(obj$monthlySchedule)) {
+    obj$daysOfMonth <- as.numeric(obj$monthlySchedule$daysOfMonth)
+    obj$startTime <- obj$monthlySchedule$startTime
+    obj$monthlySchedule <- NULL
+  } else {
+    obj$startTime <- obj$dailySchedule$startTime
+    obj$dailySchedule <- NULL
+  }
+
+  obj$refreshScope <- NULL
+
+  obj <- obj |>
+    try_to_gen_inplace("startTime", "TimeOfDay") |>
+    try_to_gen_inplace("nextRun", "Interval")
+
+  do.call(DataSourceRefreshSchedule, args = obj)
+
+}
+
+#' @rdname gen_dgs4Obj
+#' @export
+gen_DataSourceColumn <- function(obj) {
+
+  obj$reference <- obj$reference$name
+
+  do.call(DataSourceColumn, args = obj)
+
+}
+
 #### Varia.R Generators ####
 
 #' @rdname gen_dgs4Obj
@@ -790,7 +989,7 @@ gen_UpdateValuesResponse <- function(obj) {
 
 }
 
-### dgs4Req Generators ####
+### dgs4Resp Generators ####
 
 #' @title Generate dgs4Resp
 #' @description

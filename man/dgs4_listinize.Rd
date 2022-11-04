@@ -18,6 +18,10 @@
 \alias{dgs4_listinize.EmbeddedChart}
 \alias{dgs4_listinize.DimensionProperties}
 \alias{dgs4_listinize.ConditionValue}
+\alias{dgs4_listinize.DataSourceRefreshSchedule}
+\alias{dgs4_listinize.DataSourceColumn}
+\alias{dgs4_listinize.SortSpec}
+\alias{dgs4_listinize.FilterSpec}
 \title{Transform \code{deepgs4} object to list}
 \usage{
 dgs4_listinize(x, ...)
@@ -53,6 +57,14 @@ dgs4_listinize(x, ...)
 \method{dgs4_listinize}{DimensionProperties}(x, ...)
 
 \method{dgs4_listinize}{ConditionValue}(x, ...)
+
+\method{dgs4_listinize}{DataSourceRefreshSchedule}(x, ...)
+
+\method{dgs4_listinize}{DataSourceColumn}(x, ...)
+
+\method{dgs4_listinize}{SortSpec}(x, ...)
+
+\method{dgs4_listinize}{FilterSpec}(x, ...)
 }
 \arguments{
 \item{x}{object to coerce}

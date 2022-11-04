@@ -23,6 +23,18 @@ write, the one is chosen for you.}
 
 \item{x}{any R object}
 }
+\value{
+dgs4Obj of class \code{EmbeddedChart}
+}
 \description{
 Specification of a chart embedded in a sheet
 }
+\seealso{
+Other Chart objects constructors: 
+\code{\link{ChartAxisViewWindowOptions}()},
+\code{\link{ChartData}()},
+\code{\link{ChartSpec}()},
+\code{\link{DataLabel}()},
+\code{\link{DataSourceChartProperties}()}
+}
+\concept{Chart objects constructors}

@@ -22,7 +22,19 @@ Used only when \code{viewWindowMode = "EXPLICIT"}}
 
 \item{x}{any R object}
 }
+\value{
+dgs4Obj of class \code{ChartAxisViewWindowOptions}
+}
 \description{
 Object with specification on how the view on the chart should
 be placed
 }
+\seealso{
+Other Chart objects constructors: 
+\code{\link{ChartData}()},
+\code{\link{ChartSpec}()},
+\code{\link{DataLabel}()},
+\code{\link{DataSourceChartProperties}()},
+\code{\link{EmbeddedChart}()}
+}
+\concept{Chart objects constructors}

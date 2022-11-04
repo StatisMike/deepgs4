@@ -46,6 +46,8 @@ TypeChartSpecs <- function() {
 #' automatically
 #' @param viewWindowMin,viewWindowMax minimum and maximum values shown on axis.
 #' Used only when `viewWindowMode = "EXPLICIT"`
+#' @family Chart objects constructors
+#' @return dgs4Obj of class `ChartAxisViewWindowOptions`
 #' @export
 
 ChartAxisViewWindowOptions <- function(
@@ -82,6 +84,8 @@ is.ChartAxisViewWindowOptions <- function(x)
 #' @param aggregateType aggregation type for the *series* of a data source chart.
 #' Only for data-source charts
 #' @param groupRule object of class `ChartGroupRule`. Only for data source charts.
+#' @family Chart objects constructors
+#' @return dgs4Obj of class `ChartData`
 #' @export
 ChartData <- function(
     sourceRange = NULL,
@@ -133,13 +137,13 @@ ChartData <- function(
 #' @param title,subtitle Title and subtitle of the chart.
 #' @param titleTextPosition,subtitleTextPosition Horizntal aligmnent of the title and
 #' subtitle.
-#' @param titleTextFormat,subtitleTextFormat Objects of [TextFormat()] class.
+#' @param titleTextFormat,subtitleTextFormat Objects of [TextFormat] class.
 #' Strikethrough, underline and link aren't supported.
 #' @param fontName name of the font to use.
 #' @param altText alternative text to describe a chart.
 #' @param maximized boolean. If `TRUE`, the chart will take maximum amount of
 #' available space with minimal padding.
-#' @param backgroundColorStyle object of [ColorStyle()] class, describing the
+#' @param backgroundColorStyle object of [ColorStyle] class, describing the
 #' background color for entire chart.
 #' @param dataSourceChartProperties object of [DataSourceChartPoperties],
 #' contained only in *data source* charts #NOT DONE YET#
@@ -150,6 +154,8 @@ ChartData <- function(
 #' @param hiddenDimensionStrategy describing how the charts will use hidden
 #' rows or columns.
 #' @param ... for support of deprecated GoogleSheets API fields during read
+#' @family Chart objects constructors
+#' @return dgs4Obj of class `ChartSpec`
 #' @export
 ChartSpec <- function(
     chart,
@@ -210,7 +216,7 @@ is.ChartSpec <- function(x) {
   inherits(x, "ChartSpec")
 }
 
-#' @title Chart Data Labels
+#' @title DataLabel
 #' @description Settings for chart data labels - annotations that appear on
 #' the chart next to a series
 #' @param textFormat object of class [TextFormat] specifying formats of data
@@ -238,7 +244,8 @@ is.ChartSpec <- function(x) {
 #'    - INSIDE_END: Inside a bar or column at the end (top if positive, bottom if negative).
 #'    - INSIDE_BASE: Inside a bar or column at the base.
 #'    - OUTSIDE_END: Outside a bar or column at the end.
-#'
+#' @family Chart objects constructors
+#' @return dgs4Obj of class `DataLabel`
 #' @export
 DataLabel <- function(
     textFormat = NULL,
@@ -280,6 +287,8 @@ is.DataLabel <- function(x) {
 #' borders of the chart
 #' @param chartId ID of the chart unique in a spreadsheet. If not set during
 #' write, the one is chosen for you.
+#' @family Chart objects constructors
+#' @return dgs4Obj of class `EmbeddedChart`
 #' @export
 EmbeddedChart <- function(
     spec,
@@ -304,3 +313,32 @@ EmbeddedChart <- function(
 is.EmbeddedChart <- function(x) {
   inherits(x, "EmbeddedChart")
 }
+
+#' @title DataSourceChartProperties
+#' @description Properties of a chart based on data located in [DataSource].
+#' @param dataSourceId ID of the data source that the chart is associated with.
+#' @param dataExecutionStatus **READ ONLY ** object of class [DataExecutionStatus].
+#' @family Chart objects constructors
+#' @return dgs4Obj of class `DataSourceChartProperties`
+#' @export
+DataSourceChartProperties <- function(dataSourceId,
+                                      dataExecutionStatus = NULL) {
+
+  obj <- list() |>
+    append_cond(dataSourceId, type = "character", skip_null = FALSE) |>
+    append_cond(dataExecutionStatus, class = "DataExecutionStatus") |>
+    dgs4_class("DataSourceChartProperties")
+
+  return(obj)
+
+}
+
+#' @rdname DataSourceChartProperties
+#' @param x any R object
+#' @export
+is.DataSourceChartProperties <- function(x) {
+  is.dgs4_class(x, "DataSourceChartProperties")
+}
+
+
+

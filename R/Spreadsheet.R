@@ -24,16 +24,23 @@ Spreadsheet <- function(
     spreadsheetUrl = NULL
 ) {
 
-  if (is.Sheet(sheets))
-    sheets <- list(sheets)
-
-  sheets <- check_if_all_class(sheets, "Sheet")
+  sheets <- nest_if_class(sheets, "Sheet") |>
+    check_if_all_class("Sheet")
+  developerMetadata <- nest_if_class(developerMetadata, "DeveloperMetadata") |>
+    check_if_all_class("DeveloperMetadata")
+  dataSources <- nest_if_class(dataSources, "DataSource") |>
+    check_if_all_class("DataSource")
+  dataSourceSchedules <- nest_if_class(dataSourceSchedules, "DataSourceRefreshSchedule") |>
+    check_if_all_class("DataSourceRefreshSchedule")
 
   out <- list() |>
+    append_cond(sheets) |>
+    append_cond(properties, class = "SpreadsheetProperties") |>
+    append_cond(developerMetadata) |>
+    append_cond(dataSources) |>
+    append_cond(dataSourceSchedules) |>
     append_cond(spreadsheetId, type = "character") |>
     append_cond(spreadsheetUrl, type = "character") |>
-    append_cond(properties, class = "SpreadsheetProperties") |>
-    append_cond(sheets) |>
     dgs4_class("Spreadsheet")
 
   return(out)
