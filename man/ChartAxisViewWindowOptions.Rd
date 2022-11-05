@@ -32,6 +32,8 @@ be placed
 \seealso{
 Other Chart objects constructors: 
 \code{\link{ChartData}()},
+\code{\link{ChartGroupRule}()},
+\code{\link{ChartHistogramRule}()},
 \code{\link{ChartSpec}()},
 \code{\link{DataLabel}()},
 \code{\link{DataSourceChartProperties}()},

@@ -84,6 +84,14 @@ is.ChartAxisViewWindowOptions <- function(x)
 #' @param aggregateType aggregation type for the *series* of a data source chart.
 #' Only for data-source charts
 #' @param groupRule object of class `ChartGroupRule`. Only for data source charts.
+#' @section aggregateType options:
+#' One of:
+#' - **AVERAGE**
+#' - **COUNT**
+#' - **MAX**
+#' - **MEDIAN**
+#' - **MIN**
+#' - **SUM**
 #' @family Chart objects constructors
 #' @return dgs4Obj of class `ChartData`
 #' @export
@@ -340,5 +348,111 @@ is.DataSourceChartProperties <- function(x) {
   is.dgs4_class(x, "DataSourceChartProperties")
 }
 
+#' @title ChartGroupRule
+#' @description An optional setting on the [ChartData] of the **domain** of a
+#' [DataSource]-based chart that defines buckets for the values in the domain
+#' rather than breaking out each individual value.
+#'
+#' Either `dateTimeRule` or `histogramRule` needs to be specified
+#'
+#' For example, when plotting a data source chart, you can specify a histogram
+#' rule on the domain (it should only contain numeric values), grouping its
+#' values into buckets. Any values of a chart series that fall into the same
+#' bucket are aggregated based on the `aggregateType`
+#' @param dateTimeRule Allows you to organize the date-time values in a source
+#' data column into buckets based on selected parts of their date or time values.
+#' @param histogramRule object of class [ChartHistogramRule]. Allows
+#' organizing numeric values in a source data column into buckets of constant size.
+#'
+#' @section dateTimeRule options:
+#' **SECOND** Group dates by second, from `0` to `59`.
+#' **MINUTE** Group dates by minute, from `0` to `59`.
+#' **HOUR** Group dates by hour using a 24-hour system, from `0` to `23`.
+#' **HOUR_MINUTE** Group dates by hour and minute using a 24-hour system,
+#' for example `19:45`.
+#' **HOUR_MINUTE_AMPM** Group dates by hour and minute using a 12-hour system,
+#' for example `7:45 PM`. The AM/PM designation is translated based on the
+#' spreadsheet locale.
+#' **DAY_OF_WEEK** Group dates by day of week, for example `Sunday`. The days
+#' of the week will be translated based on the spreadsheet locale.
+#' **DAY_OF_YEAR** Group dates by day of year, from `1` to `366`. Note that dates
+#' after `Feb. 29` fall in different buckets in leap years than in non-leap years.
+#' **DAY_OF_MONTH** Group dates by day of month, from `1` to `31`.
+#' **DAY_MONTH** Group dates by day and month, for example `22-Nov`. The month
+#' is translated based on the spreadsheet locale.
+#' **MONTH** Group dates by month, for example `Nov`. The month is translated
+#' based on the spreadsheet locale.
+#' **QUARTER** Group dates by quarter, for example `Q1` (which represents *Jan-Mar*).
+#' **YEAR** Group dates by year, for example `2008`.
+#' **YEAR_MONTH** Group dates by year and month, for example `2008-Nov`. The
+#' month is translated based on the spreadsheet locale.
+#' **YEAR_QUARTER** Group dates by year and quarter, for example `2008 Q4`.
+#' **YEAR_MONTH_DAY** Group dates by year, month, and day, for example `2008-11-22`.
+#' @family Chart objects constructors
+#' @return dgs4Obj of class `ChartGroupRule`
+#' @export
+ChartGroupRule <- function(
+    dateTimeRule = NULL,
+    histogramRule = NULL) {
 
+  args_specified <- vapply(list(dateTimeRule, histogramRule), is.null, logical(1))
 
+  if (sum(args_specified) != 1)
+    dgs4_error("Exactly one of {.arg dateTimeRule} or {.arg histogramRule} needs to be specified.")
+
+  dateTimeRule <- check_if_options(
+    dateTimeRule,
+    "SECOND", "MINUTE", "HOUR", "HOUR_MINUTE", "HOUR_MINUTE_AMPM",
+    "DAY_OF_WEEK", "DAY_OF_YEAR", "DAY_OF_MONTH", "DAY_MONTH",
+    "MONTH", "QUARTER", "YEAR", "YEAR_MONTH", "YEAR_QUARTER",
+    "YEAR_MONTH_DAY"
+  )
+
+  obj <- list() |>
+    append_cond(dateTimeRule) |>
+    append_cond(histogramRule, class = "ChartHistogramRule") |>
+    dgs4_class("ChartGroupRule")
+
+  return(obj)
+
+}
+
+#' @rdname ChartGroupRule
+#' @param x any R object
+#' @export
+is.ChartGroupRule <- function(x) {
+  is.dgs4_class(x, "ChartGroupRule")
+}
+
+#' @title ChartHistogramRule
+#' @description
+#' Allows you to organize numeric values when creating a [ChartGroupRule]
+#' for a [DataSource] chart
+#' @param intervalSize The size of the buckets that are created. Must be positive.
+#' @param minValue,maxValue The minimum and maximum values at which items are
+#' placed into buckets. Values outside of this range will be gathered in a
+#' single, additional bucket on that side. If omitted, it is determined by the
+#' minimum or maximum item value.
+#' @family Chart objects constructors
+#' @return dgs4Obj of class `ChartHistogramRule`
+#' @export
+
+ChartHistogramRule <- function(
+    intervalSize,
+    minValue = NULL,
+    maxValue = NULL) {
+
+  obj <- list() |>
+    append_cond(intervalSize, type = "integer") |>
+    append_cond(minValue, type = "numeric") |>
+    append_cond(maxValue, type = "numeric") |>
+    dgs4_class("ChartHistogramRule")
+
+}
+
+#' @rdname ChartHistogramRule
+#' @param x any R object
+#' @export
+is.ChartHistogramRule <- function(x) {
+  is.dgs4_class(x, "ChartHistogramRule")
+}

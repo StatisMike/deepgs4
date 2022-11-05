@@ -255,6 +255,18 @@ dgs4_listinize.ChartData <- function(x, ...) {
 
 }
 
+#' @rdname dgs4_listinize
+#' @export
+dgs4_listinize.ChartGroupRule <- function(x, ...) {
+
+  x <- lapply(x, dgs4_listinize, ... = ...) |>
+    nest_cond("dateTimeRule", nests = "type") |>
+    unclass_obj()
+
+  return(x)
+
+}
+
 #### EmbeddedObject.R listinizers ####
 
 #' @rdname dgs4_listinize

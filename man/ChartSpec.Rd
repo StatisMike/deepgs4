@@ -73,6 +73,8 @@ Specification for googlesheets chart
 Other Chart objects constructors: 
 \code{\link{ChartAxisViewWindowOptions}()},
 \code{\link{ChartData}()},
+\code{\link{ChartGroupRule}()},
+\code{\link{ChartHistogramRule}()},
 \code{\link{DataLabel}()},
 \code{\link{DataSourceChartProperties}()},
 \code{\link{EmbeddedChart}()}

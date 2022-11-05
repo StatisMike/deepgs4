@@ -25,6 +25,7 @@
 \alias{gen_DataLabel}
 \alias{gen_EmbeddedChart}
 \alias{gen_DataSourceChartProperties}
+\alias{gen_ChartGroupRule}
 \alias{gen_BasicChartAxis}
 \alias{gen_BasicChartDomain}
 \alias{gen_BasicSeriesDataPointStyleOverride}
@@ -103,6 +104,8 @@ gen_DataLabel(obj, sheetId = NULL)
 gen_EmbeddedChart(obj, sheetId = NULL)
 
 gen_DataSourceChartProperties(obj)
+
+gen_ChartGroupRule(obj)
 
 gen_BasicChartAxis(obj)
 

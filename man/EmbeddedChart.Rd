@@ -33,6 +33,8 @@ Specification of a chart embedded in a sheet
 Other Chart objects constructors: 
 \code{\link{ChartAxisViewWindowOptions}()},
 \code{\link{ChartData}()},
+\code{\link{ChartGroupRule}()},
+\code{\link{ChartHistogramRule}()},
 \code{\link{ChartSpec}()},
 \code{\link{DataLabel}()},
 \code{\link{DataSourceChartProperties}()}

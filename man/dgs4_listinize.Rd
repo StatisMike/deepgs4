@@ -15,6 +15,7 @@
 \alias{dgs4_listinize.BasicChartAxis}
 \alias{dgs4_listinize.ChartSpec}
 \alias{dgs4_listinize.ChartData}
+\alias{dgs4_listinize.ChartGroupRule}
 \alias{dgs4_listinize.EmbeddedChart}
 \alias{dgs4_listinize.DimensionProperties}
 \alias{dgs4_listinize.ConditionValue}
@@ -51,6 +52,8 @@ dgs4_listinize(x, ...)
 \method{dgs4_listinize}{ChartSpec}(x, ...)
 
 \method{dgs4_listinize}{ChartData}(x, ...)
+
+\method{dgs4_listinize}{ChartGroupRule}(x, ...)
 
 \method{dgs4_listinize}{EmbeddedChart}(x, ...)
 

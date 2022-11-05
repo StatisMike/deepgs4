@@ -90,6 +90,7 @@ pkg_env$obj_generators <- c(
   "gen_DataLabel",
   "gen_EmbeddedChart",
   "gen_DataSourceChartProperties",
+  "gen_ChartGroupRule",
   "gen_BasicChartAxis",
   "gen_BasicChartDomain",
   "gen_BasicSeriesDataPointStyleOverride",
@@ -487,6 +488,21 @@ gen_DataSourceChartProperties <- function(obj) {
                             "DataSourceExecutionStatus")
 
   do.call(DataSourceChartProperties, args = obj)
+
+}
+
+#' @rdname gen_dgs4Obj
+#' @export
+gen_ChartGroupRule <- function(obj) {
+
+  if (!is.null(obj$dateTimeRule))
+    obj$dateTimeRule$type <- obj$dateTimeRule
+
+  obj <- try_to_gen_inplace(
+    "histogramRule", "ChartHistogramRule"
+  )
+
+  do.call(ChartGroupRule, args = obj)
 
 }
 

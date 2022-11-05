@@ -26,6 +26,8 @@ Properties of a chart based on data located in \link{DataSource}.
 Other Chart objects constructors: 
 \code{\link{ChartAxisViewWindowOptions}()},
 \code{\link{ChartData}()},
+\code{\link{ChartGroupRule}()},
+\code{\link{ChartHistogramRule}()},
 \code{\link{ChartSpec}()},
 \code{\link{DataLabel}()},
 \code{\link{EmbeddedChart}()}
