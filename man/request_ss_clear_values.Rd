@@ -22,6 +22,7 @@ method.
 }
 \seealso{
 Other Sheets Values requests: 
+\code{\link{request_ss_append_values}()},
 \code{\link{request_ss_get_values}()},
 \code{\link{request_ss_update_values}()}
 }

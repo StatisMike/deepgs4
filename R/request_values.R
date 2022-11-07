@@ -59,14 +59,16 @@ request_ss_get_values <- function(
   valueRenderOption <- rlang::arg_match(valueRenderOption)
   dateTimeRenderOption <- rlang::arg_match(dateTimeRenderOption)
 
-  params <- list() |>
+  params <- list(
+    spreadsheetId = spreadsheetId,
+    range = URLencode(range)
+  ) |>
     append_cond(majorDimension) |>
     append_cond(valueRenderOption) |>
     append_cond(dateTimeRenderOption)
 
-
   req <- gargle::request_build(
-    path = paste0("v4/spreadsheets/", spreadsheetId, "/values/", range),
+    path = paste0("v4/spreadsheets/{spreadsheetId}/values/{range}"),
     params = params,
     token = dgs4_token(),
     key = dgs4_api_key(),
@@ -97,7 +99,7 @@ request_ss_clear_values <- function(
 
   req <- gargle::request_build(
     method = "POST",
-    path = paste0("v4/spreadsheets/", spreadsheetId, "/values/", range, ":clear"),
+    path = paste0("v4/spreadsheets/", spreadsheetId, "/values/", URLencode(range), ":clear"),
     params = params,
     token = dgs4_token(),
     key = dgs4_api_key(),
@@ -161,28 +163,31 @@ request_ss_clear_values <- function(
 request_ss_update_values <- function(
     spreadsheetId,
     range,
+    values,
     valueInputOption = c("RAW", "USER_ENTERED"),
-    includeValueInResponse = FALSE,
+    includeValuesInResponse = FALSE,
     responseValueRenderOption = c("FORMATTED_VALUE", "UNFORMATTED_VALUE", "FORMULA"),
     dateTimeRenderOption = c("SERIAL_NUMBER", "FORMATTED_STRING")) {
 
+  values <- check_if_class(values, class = "ValueRange")
+
   valueInputOption <- rlang::arg_match(valueInputOption)
-  includeValueInResponse <- check_if_type(includeValueInResponse, type = "logical")
+  includeValuesInResponse <- check_if_type(includeValuesInResponse, type = "logical")
   responseValueRenderOption <- rlang::arg_match(responseValueRenderOption)
   dateTimeRenderOption <- rlang::arg_match(dateTimeRenderOption)
 
   params <- list(valueInputOption = valueInputOption)
 
-  if (includeValueInResponse) {
+  if (isTRUE(includeValuesInResponse)) {
     params <- params |>
-      append_cond(includeValueInResponse) |>
+      append_cond(includeValuesInResponse) |>
       append_cond(responseValueRenderOption) |>
       append_cond(dateTimeRenderOption)
   }
 
   req <- gargle::request_build(
     method = "PUT",
-    path = paste0("v4/spreadsheets/", spreadsheetId, "/values/", range),
+    path = paste0("v4/spreadsheets/", spreadsheetId, "/values/", URLencode(range)),
     params = params,
     body = dgs4_listinize(values),
     token = dgs4_token(),
@@ -194,5 +199,106 @@ request_ss_update_values <- function(
 
   gargle::response_process(resp) |>
     gen_UpdateValuesResponse()
+
+}
+
+#' @title Append values in a given range in a sheet
+#' @description Send a request to append values to a sheet. The input range is
+#' used to search for existing data and find a "table" within that range. Values
+#' will be appended to the next row of the table, starting with the first column
+#' of the table.
+#'
+#' Communicates with [spreadsheets.values.append](https://developers.google.com/sheets/api/reference/rest/v4/spreadsheets.values/append)
+#' method.
+#' @param spreadsheetId ID of the spreadsheet
+#' @param range specified range in *A1* or *R1C1* notation.
+#' See [get_A1_not()] for more info.
+#' @param values object of class [ValueRange] containing values to update
+#' @param valueInputOption how the input data should be interpreted
+#' @param insertDataOption How the input data should be inserted.
+#' @param includeValuesInResponse if `TRUE`, the updated values will be received
+#' in response.
+#' @param responseValueRenderOption How the values in the response should be
+#' rendered
+#' @param responseDateTimeRenderOption How dates, times and durations in the
+#' response should be rendered
+#' @section valueInputOption options:
+#' - **RAW**: The values the user has entered will not be parsed and will be
+#' stored as-is.
+#' - **USER_ENTERED**: The values will be parsed as if the user typed them into
+#' the UI. Numbers will stay as numbers, but strings may be converted to
+#' numbers, dates, etc. following the same rules that are applied when entering
+#' text into a cell via the Google Sheets UI.
+#'
+#' @section insertDataOption options:
+#' - **OVERWRITE**: The new data overwrites existing data in the areas it is written.
+#' (Note: adding data to the end of the sheet will still insert new rows or
+#' columns so the data can be written.)
+#' - **INSERT_ROWS**: Rows are inserted for the new data.
+#'
+#' @section responseValueRenderOption options:
+#' - **FORMATTED_VALUE**: Values will be calculated & formatted in the reply
+#' according to the cell's formatting. Formatting is based on the
+#' spreadsheet's locale, not the requesting user's locale. For example,
+#' if A1 is 1.23 and A2 is =A1 and formatted as currency,
+#' then A2 would return "$1.23".
+#' - **UNFORMATTED_VALUE**: Values will be calculated, but not formatted in the
+#' reply. For example, if A1 is 1.23 and A2 is =A1 and formatted as currency,
+#' then A2 would return the number 1.23.
+#' - **FORMULA**: Values will not be calculated. The reply will include the
+#' formulas. For example, if A1 is 1.23 and A2 is =A1 and formatted as
+#' currency, then A2 would return "=A1".
+#'
+#' @section responseDateTimeRenderOption options:
+#' - **SERIAL_NUMBER**: Instructs date, time, datetime, and duration fields to
+#' be output as doubles in "serial number" format. For more info, see [dgs4_serial_number()]
+#' - **FORMATTED_STRING**: Instructs date, time, datetime, and duration fields
+#' to be output as strings in their given number format (which depends
+#' on the spreadsheet locale).
+#' @family Sheets Values requests
+#' @returns [UpdateValuesResponse] object
+#' @export
+request_ss_append_values <- function(
+    spreadsheetId,
+    range,
+    values,
+    valueInputOption = c("RAW", "USER_ENTERED"),
+    insertDataOption = c("INSERT_ROWS", "OVERWRITE"),
+    includeValuesInResponse = FALSE,
+    responseValueRenderOption = c("FORMATTED_VALUE", "UNFORMATTED_VALUE", "FORMULA"),
+    responseDateTimeRenderOption = c("SERIAL_NUMBER", "FORMATTED_STRING")) {
+
+  values <- check_if_class(values, class = "ValueRange")
+
+  valueInputOption <- rlang::arg_match(valueInputOption)
+  insertDataOption <- rlang::arg_match(insertDataOption)
+  includeValuesInResponse <- check_if_type(includeValuesInResponse, type = "logical")
+  responseValueRenderOption <- rlang::arg_match(responseValueRenderOption)
+  responseDateTimeRenderOption <- rlang::arg_match(responseDateTimeRenderOption)
+
+  params <- list(valueInputOption = valueInputOption,
+                 insertDataOption = insertDataOption)
+
+  if (isTRUE(includeValuesInResponse)) {
+    params <- params |>
+      append_cond(includeValuesInResponse) |>
+      append_cond(responseValueRenderOption) |>
+      append_cond(responseDateTimeRenderOption)
+  }
+
+  req <- gargle::request_build(
+    method = "POST",
+    path = paste0("v4/spreadsheets/", spreadsheetId, "/values/", URLencode(range), ":append"),
+    params = params,
+    body = dgs4_listinize(values),
+    token = dgs4_token(),
+    key = dgs4_api_key(),
+    base_url = "https://sheets.googleapis.com"
+  )
+
+  resp <- request_make(req)
+
+  gargle::response_process(resp) |>
+    try_to_gen_inplace("updates", "UpdateValuesResponse")
 
 }

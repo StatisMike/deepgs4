@@ -77,6 +77,7 @@ on the spreadsheet locale).
 }
 \seealso{
 Other Sheets Values requests: 
+\code{\link{request_ss_append_values}()},
 \code{\link{request_ss_clear_values}()},
 \code{\link{request_ss_update_values}()}
 }
