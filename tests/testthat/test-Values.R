@@ -9,7 +9,7 @@ test_that("ValueRange can be created, listinized and generated from list", {
 
   expect_failure(
     expect_error(
-      valueRange <- ValueRange("Test!A1:D4",
+      valueRange <- ValueRange("'Test A1 notation'!A1:D4",
                                values = values,
                                majorDimension = "ROWS")
     )
@@ -26,7 +26,7 @@ test_that("UpdateValuesResponse can be created, listinized and generated from li
   expect_failure(
     expect_error(
       response_min <- UpdateValuesResponse(
-        1, "Test!A1:D4", 4, 4, 9)
+        1, "'Test A1 notation'!A1:D4", 4, 4, 9)
     )
   )
 
@@ -37,8 +37,8 @@ test_that("UpdateValuesResponse can be created, listinized and generated from li
   expect_failure(
     expect_error(
       response_max <- UpdateValuesResponse(
-        1, "Test!A1:D4", 4, 4, 9,
-        updatedData = ValueRange("Test!A1:D4",
+        1, "'Test A1 notation'!A1:D4", 4, 4, 9,
+        updatedData = ValueRange("'Test A1 notation'!A1:D4",
                                  values = values,
                                  majorDimension = "ROWS"))
     )

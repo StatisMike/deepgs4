@@ -2,7 +2,6 @@
 % Please edit documentation in R/request_spreadsheets.R
 \name{request_ss_get}
 \alias{request_ss_get}
-\alias{request_ss_get_byDataFilter}
 \alias{request_ss_getByDataFilter}
 \title{Get spreadsheet object from Sheets API}
 \usage{

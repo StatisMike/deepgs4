@@ -10,8 +10,7 @@
 #' Sends request to the [spreadsheets.values.get](https://developers.google.com/sheets/api/reference/rest/v4/spreadsheets.values/get)
 #' method.
 #'
-#' @details
-#' ## majorDimension
+#' @section majorDimension:
 #' If the spreadsheet data on Sheet1 are:
 #'
 #' |    | A  | B  |
@@ -23,7 +22,7 @@
 #' `list(list(1, 2), list(3, 4))` and `majorDimension = "COLUMNS"`:
 #' `list(list(1, 3), list(2, 4))`.
 #'
-#' ## valueRenderOption
+#' @section valueRenderOption:
 #' - **FORMATTED_VALUE**: Values will be calculated & formatted in the reply
 #' according to the cell's formatting. Formatting is based on the
 #' spreadsheet's locale, not the requesting user's locale. For example,
@@ -36,7 +35,7 @@
 #' formulas. For example, if A1 is 1.23 and A2 is =A1 and formatted as
 #' currency, then A2 would return "=A1".
 #'
-#' ## dateTimeRenderOption
+#' @section dateTimeRenderOption:
 #' - **SERIAL_NUMBER**: Instructs date, time, datetime, and duration fields to
 #' be output as doubles in "serial number" format. For more info, see [dgs4_serial_number()]
 #' - **FORMATTED_STRING**: Instructs date, time, datetime, and duration fields
@@ -59,16 +58,17 @@ request_ss_get_values <- function(
   valueRenderOption <- rlang::arg_match(valueRenderOption)
   dateTimeRenderOption <- rlang::arg_match(dateTimeRenderOption)
 
-  params <- list(
-    spreadsheetId = spreadsheetId,
-    range = URLencode(range)
-  ) |>
+  params <- list() |>
+    append_cond(spreadsheetId, type = "character", skip_null = FALSE) |>
+    append_cond(range, type = "character", skip_null = FALSE) |>
     append_cond(majorDimension) |>
     append_cond(valueRenderOption) |>
     append_cond(dateTimeRenderOption)
 
+  params$range <- URLencode(params$range)
+
   req <- gargle::request_build(
-    path = paste0("v4/spreadsheets/{spreadsheetId}/values/{range}"),
+    path = "v4/spreadsheets/{spreadsheetId}/values/{range}",
     params = params,
     token = dgs4_token(),
     key = dgs4_api_key(),
@@ -97,14 +97,25 @@ request_ss_clear_values <- function(
     spreadsheetId,
     range) {
 
+  params <- list() |>
+    append_cond(spreadsheetId, type = "character", skip_null = FALSE) |>
+    append_cond(range, type = "character", skip_null = FALSE)
+
+  params$range <- URLencode(params$range)
+
   req <- gargle::request_build(
     method = "POST",
-    path = paste0("v4/spreadsheets/", spreadsheetId, "/values/", URLencode(range), ":clear"),
+    path = "v4/spreadsheets/{spreadsheetId}/values/{range}:clear",
     params = params,
     token = dgs4_token(),
     key = dgs4_api_key(),
     base_url = "https://sheets.googleapis.com"
   )
+
+  # without NULLing body, it is appended as a clean list. Returns error:
+  # Field violations
+  # Description: Invalid JSON payload received. Unknown name "": Root element must be a message.
+  req$body <- NULL
 
   resp <- request_make(req)
 
@@ -129,8 +140,7 @@ request_ss_clear_values <- function(
 #' rendered
 #' @param responseDateTimeRenderOption How dates, times and durations in the
 #' response should be rendered
-#' @details
-#' ## valueInputOption
+#' @section valueInputOption:
 #' - **RAW**: The values the user has entered will not be parsed and will be
 #' stored as-is.
 #' - **USER_ENTERED**: The values will be parsed as if the user typed them into
@@ -138,7 +148,7 @@ request_ss_clear_values <- function(
 #' numbers, dates, etc. following the same rules that are applied when entering
 #' text into a cell via the Google Sheets UI.
 #'
-#' ## responseValueRenderOption
+#' @section responseValueRenderOption:
 #' - **FORMATTED_VALUE**: Values will be calculated & formatted in the reply
 #' according to the cell's formatting. Formatting is based on the
 #' spreadsheet's locale, not the requesting user's locale. For example,
@@ -151,7 +161,7 @@ request_ss_clear_values <- function(
 #' formulas. For example, if A1 is 1.23 and A2 is =A1 and formatted as
 #' currency, then A2 would return "=A1".
 #'
-#' ## responseDateTimeRenderOption
+#' @section responseDateTimeRenderOption:
 #' - **SERIAL_NUMBER**: Instructs date, time, datetime, and duration fields to
 #' be output as doubles in "serial number" format. For more info, see [dgs4_serial_number()]
 #' - **FORMATTED_STRING**: Instructs date, time, datetime, and duration fields
@@ -167,27 +177,34 @@ request_ss_update_values <- function(
     valueInputOption = c("RAW", "USER_ENTERED"),
     includeValuesInResponse = FALSE,
     responseValueRenderOption = c("FORMATTED_VALUE", "UNFORMATTED_VALUE", "FORMULA"),
-    dateTimeRenderOption = c("SERIAL_NUMBER", "FORMATTED_STRING")) {
+    responseDateTimeRenderOption = c("SERIAL_NUMBER", "FORMATTED_STRING")) {
 
   values <- check_if_class(values, class = "ValueRange")
 
   valueInputOption <- rlang::arg_match(valueInputOption)
   includeValuesInResponse <- check_if_type(includeValuesInResponse, type = "logical")
   responseValueRenderOption <- rlang::arg_match(responseValueRenderOption)
-  dateTimeRenderOption <- rlang::arg_match(dateTimeRenderOption)
+  responseDateTimeRenderOption <- rlang::arg_match(responseDateTimeRenderOption)
 
-  params <- list(valueInputOption = valueInputOption)
+  params <- list(valueInputOption = valueInputOption) |>
+    append_cond(spreadsheetId, type = "character", skip_null = FALSE) |>
+    append_cond(range, type = "character", skip_null = FALSE)
+
+  params$range <- URLencode(params$range)
+
 
   if (isTRUE(includeValuesInResponse)) {
     params <- params |>
       append_cond(includeValuesInResponse) |>
       append_cond(responseValueRenderOption) |>
-      append_cond(dateTimeRenderOption)
+      append_cond(responseDateTimeRenderOption)
   }
+
+  # URLencode(range)
 
   req <- gargle::request_build(
     method = "PUT",
-    path = paste0("v4/spreadsheets/", spreadsheetId, "/values/", URLencode(range)),
+    path = "v4/spreadsheets/{spreadsheetId}/values/{range}",
     params = params,
     body = dgs4_listinize(values),
     token = dgs4_token(),
@@ -277,7 +294,12 @@ request_ss_append_values <- function(
   responseDateTimeRenderOption <- rlang::arg_match(responseDateTimeRenderOption)
 
   params <- list(valueInputOption = valueInputOption,
-                 insertDataOption = insertDataOption)
+                 insertDataOption = insertDataOption) |>
+    append_cond(spreadsheetId, type = "character", skip_null = FALSE) |>
+    append_cond(range, type = "character", skip_null = FALSE)
+
+  params$range <- URLencode(params$range)
+
 
   if (isTRUE(includeValuesInResponse)) {
     params <- params |>
@@ -288,7 +310,7 @@ request_ss_append_values <- function(
 
   req <- gargle::request_build(
     method = "POST",
-    path = paste0("v4/spreadsheets/", spreadsheetId, "/values/", URLencode(range), ":append"),
+    path = "v4/spreadsheets/{spreadsheetId}/values/{range}:append",
     params = params,
     body = dgs4_listinize(values),
     token = dgs4_token(),

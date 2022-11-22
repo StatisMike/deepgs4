@@ -34,8 +34,7 @@ See \link{get_A1_not} for more info.}
 Sends request to the \href{https://developers.google.com/sheets/api/reference/rest/v4/spreadsheets.values/get}{spreadsheets.values.get}
 method.
 }
-\details{
-\subsection{majorDimension}{
+\section{majorDimension}{
 
 If the spreadsheet data on Sheet1 are:\tabular{lll}{
     \tab A \tab B \cr
@@ -49,7 +48,8 @@ Then \code{majorDimension = "ROWS"} returns values in form of:
 \code{list(list(1, 3), list(2, 4))}.
 }
 
-\subsection{valueRenderOption}{
+\section{valueRenderOption}{
+
 \itemize{
 \item \strong{FORMATTED_VALUE}: Values will be calculated & formatted in the reply
 according to the cell's formatting. Formatting is based on the
@@ -65,7 +65,8 @@ currency, then A2 would return "=A1".
 }
 }
 
-\subsection{dateTimeRenderOption}{
+\section{dateTimeRenderOption}{
+
 \itemize{
 \item \strong{SERIAL_NUMBER}: Instructs date, time, datetime, and duration fields to
 be output as doubles in "serial number" format. For more info, see \code{\link[=dgs4_serial_number]{dgs4_serial_number()}}
@@ -74,7 +75,7 @@ to be output as strings in their given number format (which depends
 on the spreadsheet locale).
 }
 }
-}
+
 \seealso{
 Other Sheets Values requests: 
 \code{\link{request_ss_append_values}()},

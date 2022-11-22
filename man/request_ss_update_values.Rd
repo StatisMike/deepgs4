@@ -11,7 +11,7 @@ request_ss_update_values(
   valueInputOption = c("RAW", "USER_ENTERED"),
   includeValuesInResponse = FALSE,
   responseValueRenderOption = c("FORMATTED_VALUE", "UNFORMATTED_VALUE", "FORMULA"),
-  dateTimeRenderOption = c("SERIAL_NUMBER", "FORMATTED_STRING")
+  responseDateTimeRenderOption = c("SERIAL_NUMBER", "FORMATTED_STRING")
 )
 }
 \arguments{
@@ -43,8 +43,8 @@ Send a request to update given \code{range} of cells with values
 provided within provided \code{values}. Communicates with
 \href{https://developers.google.com/sheets/api/reference/rest/v4/spreadsheets.values/update}{spreadsheets.values.update} method.
 }
-\details{
-\subsection{valueInputOption}{
+\section{valueInputOption}{
+
 \itemize{
 \item \strong{RAW}: The values the user has entered will not be parsed and will be
 stored as-is.
@@ -55,7 +55,8 @@ text into a cell via the Google Sheets UI.
 }
 }
 
-\subsection{responseValueRenderOption}{
+\section{responseValueRenderOption}{
+
 \itemize{
 \item \strong{FORMATTED_VALUE}: Values will be calculated & formatted in the reply
 according to the cell's formatting. Formatting is based on the
@@ -71,7 +72,8 @@ currency, then A2 would return "=A1".
 }
 }
 
-\subsection{responseDateTimeRenderOption}{
+\section{responseDateTimeRenderOption}{
+
 \itemize{
 \item \strong{SERIAL_NUMBER}: Instructs date, time, datetime, and duration fields to
 be output as doubles in "serial number" format. For more info, see \code{\link[=dgs4_serial_number]{dgs4_serial_number()}}
@@ -80,7 +82,7 @@ to be output as strings in their given number format (which depends
 on the spreadsheet locale).
 }
 }
-}
+
 \seealso{
 Other Sheets Values requests: 
 \code{\link{request_ss_append_values}()},

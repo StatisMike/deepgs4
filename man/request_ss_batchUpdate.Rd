@@ -60,7 +60,9 @@ list containing:
 \item 1 more empty \code{list()} object
 replies, the actual reply, and another empty reply, in that order.
 }
-\subsection{Warning}{
+}
+\section{Warning}{
+
 
 Due to the collaborative nature of spreadsheets, it is not
 guaranteed that the spreadsheet will reflect exactly your changes after
@@ -69,7 +71,7 @@ will be applied together atomically. Your changes may be altered with
 respect to collaborator changes. If there are no collaborators, the
 spreadsheet should reflect your changes.
 }
-}
+
 \seealso{
 Other Sheets Spreadsheets requests: 
 \code{\link{request_ss_create}()},

@@ -15,7 +15,6 @@
 #' @param add_params Named list of additional parameters to include in the request
 #' @return [Spreadsheet]
 #' @family Sheets Spreadsheets requests
-#' @aliases request_ss_get_byDataFilter
 #' @export
 request_ss_get <- function(spreadsheetId, fields = NULL, ranges = NULL,
                            includeGridData = NULL, add_params = list()) {
@@ -132,7 +131,7 @@ request_ss_create <- function(spreadsheet, add_params = list()) {
 #' - 1 more empty `list()` object
 #' replies, the actual reply, and another empty reply, in that order.
 #'
-#' ### Warning
+#' @section Warning:
 #'
 #' Due to the collaborative nature of spreadsheets, it is not
 #' guaranteed that the spreadsheet will reflect exactly your changes after
@@ -230,7 +229,7 @@ dgs4_batchUpdate_process <- function(
 
 #' @title Reply from googlesheets API
 #' @description Mostly internal post-processing function, applied after
-#' [deepgsheets4 Request sending] to construct complete [deepgsheets4Obj] objects
+#' [request_ss_batchUpdate()] to construct complete [deepgs4Obj] objects
 #' @param reply list containing response from googlesheets4 API
 #' @param sheetId optional sheetId to input
 #' @noRd
@@ -240,24 +239,6 @@ dgs4Resp_batchUpdate <- function(reply, sheetId = NULL) {
 
   created <- gen_dgs4Resp(reply, req_type, sheetId = sheetId)
 
-  # created <- switch(
-  #   req_type,
-  #   addChart = list(
-  #     addChart = list(
-  #       chart = gen_EmbeddedChart(
-  #         reply$addChart$chart,
-  #         sheetId = sheetId))),
-  #   addSheet = list(
-  #     addSheet = list(
-  #       properties = gen_SheetProperties(
-  #         reply$addSheet$properties
-  #       ))),
-  #   reply
-  # ) |>
-  #   dgs4_class(object_type = "Resp")
-
   return(created)
 
 }
-
-
