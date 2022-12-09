@@ -96,7 +96,7 @@ dgs4_listinize.SpreadsheetTheme <- function(x, ...) {
 
   x <- lapply(x, dgs4_listinize, ... = ...)
 
-  themes <- c("TEXT", "BACKGROND", paste0("ACCENT", 1:6), "LINK")
+  themes <- c("TEXT", "BACKGROUND", paste0("ACCENT", 1:6), "LINK")
 
   themes_included <- themes[themes %in% names(x)]
 
