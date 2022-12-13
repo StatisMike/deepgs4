@@ -3,11 +3,14 @@
 \name{GridCoordinate}
 \alias{GridCoordinate}
 \alias{is.GridCoordinate}
+\alias{print.GridCoordinate}
 \title{GridCoordinate}
 \usage{
 GridCoordinate(sheetId, rowIndex, columnIndex)
 
 is.GridCoordinate(x)
+
+\method{print}{GridCoordinate}(gc, A1 = getOption("deepgs4.A1", FALSE), ...)
 }
 \arguments{
 \item{sheetId}{Integer - sheet ID}
@@ -15,6 +18,13 @@ is.GridCoordinate(x)
 \item{rowIndex, columnIndex}{position of the cell in a grid}
 
 \item{x}{any R object}
+
+\item{gc}{GridCoordinate object}
+
+\item{A1}{if \code{TRUE} then include \emph{A1} notation. Can be set globally with
+\code{options("deepgs4.A1" = TRUE)}}
+
+\item{...}{optional arguments to \code{print} methods.}
 }
 \description{
 Specification of cell in a grid

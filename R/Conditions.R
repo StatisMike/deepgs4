@@ -161,6 +161,7 @@ ConditionValue <- function(
   if (!is.null(userEnteredValue)) {
 
     obj <- check_if_type(userEnteredValue, "character")
+    obj <- as.character(obj)
 
   } else {
 

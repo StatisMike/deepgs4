@@ -4,18 +4,25 @@
 \alias{dgs4_listinize}
 \alias{dgs4_listinize.default}
 \alias{dgs4_listinize.dgs4Req}
+\alias{dgs4_listinize.dgs4Resp}
 \alias{dgs4_listinize.dgs4Obj}
+\alias{dgs4_listinize.SpreadsheetTheme}
 \alias{dgs4_listinize.TextFormat}
 \alias{dgs4_listinize.ColorStyle}
-\alias{dgs4_listinize.ChartData}
-\alias{dgs4_listinize.BasicChartAxis}
-\alias{dgs4_listinize.ChartSpec}
 \alias{dgs4_listinize.CellFormat}
 \alias{dgs4_listinize.ExtendedValue}
+\alias{dgs4_listinize.RowData}
+\alias{dgs4_listinize.BasicChartAxis}
+\alias{dgs4_listinize.ChartSpec}
+\alias{dgs4_listinize.ChartData}
+\alias{dgs4_listinize.ChartGroupRule}
 \alias{dgs4_listinize.EmbeddedChart}
 \alias{dgs4_listinize.DimensionProperties}
-\alias{dgs4_listinize.RowData}
 \alias{dgs4_listinize.ConditionValue}
+\alias{dgs4_listinize.DataSourceRefreshSchedule}
+\alias{dgs4_listinize.DataSourceColumn}
+\alias{dgs4_listinize.SortSpec}
+\alias{dgs4_listinize.FilterSpec}
 \title{Transform \code{deepgs4} object to list}
 \usage{
 dgs4_listinize(x, ...)
@@ -24,29 +31,43 @@ dgs4_listinize(x, ...)
 
 \method{dgs4_listinize}{dgs4Req}(x, ...)
 
+\method{dgs4_listinize}{dgs4Resp}(x, ...)
+
 \method{dgs4_listinize}{dgs4Obj}(x, ...)
+
+\method{dgs4_listinize}{SpreadsheetTheme}(x, ...)
 
 \method{dgs4_listinize}{TextFormat}(x, ...)
 
 \method{dgs4_listinize}{ColorStyle}(x, ...)
 
-\method{dgs4_listinize}{ChartData}(x, ...)
+\method{dgs4_listinize}{CellFormat}(x, ...)
+
+\method{dgs4_listinize}{ExtendedValue}(x, ...)
+
+\method{dgs4_listinize}{RowData}(x, ...)
 
 \method{dgs4_listinize}{BasicChartAxis}(x, ...)
 
 \method{dgs4_listinize}{ChartSpec}(x, ...)
 
-\method{dgs4_listinize}{CellFormat}(x, ...)
+\method{dgs4_listinize}{ChartData}(x, ...)
 
-\method{dgs4_listinize}{ExtendedValue}(x, ...)
+\method{dgs4_listinize}{ChartGroupRule}(x, ...)
 
 \method{dgs4_listinize}{EmbeddedChart}(x, ...)
 
 \method{dgs4_listinize}{DimensionProperties}(x, ...)
 
-\method{dgs4_listinize}{RowData}(x, ...)
-
 \method{dgs4_listinize}{ConditionValue}(x, ...)
+
+\method{dgs4_listinize}{DataSourceRefreshSchedule}(x, ...)
+
+\method{dgs4_listinize}{DataSourceColumn}(x, ...)
+
+\method{dgs4_listinize}{SortSpec}(x, ...)
+
+\method{dgs4_listinize}{FilterSpec}(x, ...)
 }
 \arguments{
 \item{x}{object to coerce}

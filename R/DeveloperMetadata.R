@@ -96,7 +96,7 @@ is.DeveloperMetadataLocation <- function(x) {
 #' by the developer project that created the metadata.
 #' @export
 DeveloperMetadata <- function(
-    location,
+    location = NULL,
     metadataKey = NULL,
     metadataId = NULL,
     metadataValue = NULL,
@@ -225,16 +225,58 @@ is.DataFilter <- function(x) {
   is.dgs4_class(x, "DataFilter")
 }
 
-#' @title Search for metadata in spreadsheet
-#' @description Sends a request to search for [DeveloperMetadata] objects
-#' matching the specified `dataFilters` in given spreadsheet
-#' @param spreadsheetId ID of the spreadsheet
-#' @param dataFilters object of class [DataFilter] or list of such objects
-#' @export
-#' @return list of `dgs4Response` objects of class `MatchedDeveloperMetadata`
-#' or `NULL` if nothing is found
+#' @title Send Google Sheets *spreadsheets.metadata* requests
+#' @name request_ss_metadata
+#' @rdname request_ss_metadata
+#' @description These functions access the *spreadsheets.metadata* Sheets API
+#' endpoint. They allow getting [DeveloperMetadata] objects embedded into
+#' GoogleSheet spreadsheet.
+#' @aliases request_ss_metadata_get request_ss_metadata_search
+#' @family Sheet API requests
+NULL
 
-request_metadata_search <- function(
+#' @rdname request_ss_metadata
+#' @section Get:
+#' Sends a request to receive [DeveloperMetadata] object of specific `metadataId`
+#' from spreadsheet of specific `spreadsheetId`.
+#' ### Returns:
+#' [DeveloperMetadata] object
+#' @param spreadsheetId ID of the spreadsheet
+#' @param metadataId unique developer metadata ID
+#' @export
+request_ss_metadata_get <- function(
+    spreadsheetId,
+    metadataId) {
+
+  spreadsheetId <- check_if_type(spreadsheetId, type = "character")
+  metadataId <- check_if_type(metadataId, type = "character")
+
+  req <- gargle::request_build(
+    path = paste0("v4/spreadsheets/", spreadsheetId, "/developerMetadata/", metadataId),
+    token = dgs4_token(),
+    key = dgs4_api_key(),
+    base_url = "https://sheets.googleapis.com"
+  )
+
+  resp <- request_make(req)
+
+  gargle::response_process(resp) |>
+    gen_DeveloperMetadata(sheetId = 0)
+
+}
+
+#' @rdname request_ss_metadata
+#' @param dataFilters object of class [DataFilter] or list of such objects
+#' @section Search:
+#' Sends a request to search for [DeveloperMetadata] objects
+#' matching the specified `dataFilters` in given spreadsheet
+#'
+#' ### Returns:
+#' list of `dgs4Resp` objects of class `MatchedDeveloperMetadata`
+#' or `NULL` if nothing is found
+#' @export
+#'
+request_ss_metadata_search <- function(
     spreadsheetId,
     dataFilters) {
 
@@ -263,33 +305,3 @@ request_metadata_search <- function(
   return(resp$matchedDeveloperMetadata)
 
 }
-
-#' @title Get specific metadata from spreadsheet
-#' @description Sends a request to receive [DeveloperMetadata] object
-#' of specific `metadataId`
-#' @param spreadsheetId ID of the spreadsheet
-#' @param metadataId unique developer metadata ID
-#' @export
-#' @return `DeveloperMetadata` object
-
-request_metadata_get <- function(
-    spreadsheetId,
-    metadataId) {
-
-  spreadsheetId <- check_if_type(spreadsheetId, type = "character")
-  metadataId <- check_if_type(metadataId, type = "character")
-
-  req <- gargle::request_build(
-    path = paste0("v4/spreadsheets/", spreadsheetId, "/developerMetadata/", metadataId),
-    token = dgs4_token(),
-    key = dgs4_api_key(),
-    base_url = "https://sheets.googleapis.com"
-  )
-
-  resp <- request_make(req)
-
-  gargle::response_process(resp) |>
-    gen_DeveloperMetadata(sheetId = 0)
-
-}
-

@@ -3,7 +3,7 @@
 \name{gen_dgs4Obj}
 \alias{gen_dgs4Obj}
 \alias{@eval}
-\alias{pkg_env$generators}
+\alias{pkg_env$obj_generators}
 \alias{gen_CellFormat}
 \alias{gen_Border}
 \alias{gen_Borders}
@@ -13,6 +13,7 @@
 \alias{gen_GridData}
 \alias{gen_Sheet}
 \alias{gen_SheetProperties}
+\alias{gen_DataSourceSheetProperties}
 \alias{gen_Spreadsheet}
 \alias{gen_SpreadsheetProperties}
 \alias{gen_SpreadsheetTheme}
@@ -23,6 +24,8 @@
 \alias{gen_ChartSpec}
 \alias{gen_DataLabel}
 \alias{gen_EmbeddedChart}
+\alias{gen_DataSourceChartProperties}
+\alias{gen_ChartGroupRule}
 \alias{gen_BasicChartAxis}
 \alias{gen_BasicChartDomain}
 \alias{gen_BasicSeriesDataPointStyleOverride}
@@ -35,16 +38,28 @@
 \alias{gen_BooleanRule}
 \alias{gen_GradientRule}
 \alias{gen_ConditionalFormatRule}
+\alias{gen_ProtectedRange}
+\alias{gen_SortSpec}
+\alias{gen_FilterCriteria}
+\alias{gen_FilterSpec}
+\alias{gen_BasicFilter}
+\alias{gen_FilterView}
 \alias{gen_DeveloperMetadata}
 \alias{gen_DeveloperMetadataLocation}
 \alias{gen_DeveloperMetadataLookup}
 \alias{gen_DataFilter}
 \alias{gen_MatchedDeveloperMetadata}
+\alias{gen_DataSource}
+\alias{gen_DataSourceSpec}
+\alias{gen_BigQueryDataSourceSpec}
+\alias{gen_DataSourceParameter}
+\alias{gen_DataSourceRefreshSchedule}
+\alias{gen_DataSourceColumn}
 \alias{gen_TextFormat}
 \alias{gen_ColorStyle}
 \alias{gen_TextFormatRun}
 \alias{gen_UpdateValuesResponse}
-\title{Generate deepgs4 object}
+\title{Generate dgs4sObj}
 \usage{
 gen_dgs4Obj(obj, class, sheetId = NULL)
 
@@ -66,6 +81,8 @@ gen_Sheet(obj)
 
 gen_SheetProperties(obj)
 
+gen_DataSourceSheetProperties(obj)
+
 gen_Spreadsheet(obj)
 
 gen_SpreadsheetProperties(obj)
@@ -85,6 +102,10 @@ gen_ChartSpec(obj, sheetId = NULL)
 gen_DataLabel(obj, sheetId = NULL)
 
 gen_EmbeddedChart(obj, sheetId = NULL)
+
+gen_DataSourceChartProperties(obj)
+
+gen_ChartGroupRule(obj)
 
 gen_BasicChartAxis(obj)
 
@@ -110,6 +131,18 @@ gen_GradientRule(obj)
 
 gen_ConditionalFormatRule(obj, sheetId = NULL)
 
+gen_ProtectedRange(obj, sheetId = NULL)
+
+gen_SortSpec(obj)
+
+gen_FilterCriteria(obj)
+
+gen_FilterSpec(obj)
+
+gen_BasicFilter(obj)
+
+gen_FilterView(obj, sheetId = NULL)
+
 gen_DeveloperMetadata(obj, sheetId = NULL)
 
 gen_DeveloperMetadataLocation(obj, sheetId = NULL)
@@ -119,6 +152,18 @@ gen_DeveloperMetadataLookup(obj, sheetId = NULL)
 gen_DataFilter(obj, sheetId = NULL)
 
 gen_MatchedDeveloperMetadata(obj, sheetId = NULL)
+
+gen_DataSource(obj)
+
+gen_DataSourceSpec(obj)
+
+gen_BigQueryDataSourceSpec(obj)
+
+gen_DataSourceParameter(obj)
+
+gen_DataSourceRefreshSchedule(obj)
+
+gen_DataSourceColumn(obj)
 
 gen_TextFormat(obj)
 

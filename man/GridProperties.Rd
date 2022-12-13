@@ -3,11 +3,12 @@
 \name{GridProperties}
 \alias{GridProperties}
 \alias{is.GridProperties}
+\alias{print.GridProperties}
 \title{GridProperties}
 \usage{
 GridProperties(
-  rowCount,
-  columnCount,
+  rowCount = NULL,
+  columnCount = NULL,
   frozenRowCount = NULL,
   frozenColumnCount = NULL,
   hideGridlines = NULL,
@@ -16,6 +17,8 @@ GridProperties(
 )
 
 is.GridProperties(x)
+
+\method{print}{GridProperties}(gp)
 }
 \arguments{
 \item{rowCount, columnCount}{number of rows and columns in the grid}
@@ -26,6 +29,8 @@ is.GridProperties(x)
 row/column toggle is shown after the group}
 
 \item{x}{any R object}
+
+\item{gp}{GridProperties object}
 
 \item{hideGridLines}{boolean indicating if gridlines should be shown}
 }

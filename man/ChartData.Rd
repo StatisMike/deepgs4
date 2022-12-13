@@ -24,7 +24,34 @@ Only for data-source charts}
 
 \item{groupRule}{object of class \code{ChartGroupRule}. Only for data source charts.}
 }
+\value{
+dgs4Obj of class \code{ChartData}
+}
 \description{
 Specification for data to be used for creation of \emph{domain},
 \emph{series} or other specific types
 }
+\section{aggregateType options}{
+
+One of:
+\itemize{
+\item \strong{AVERAGE}
+\item \strong{COUNT}
+\item \strong{MAX}
+\item \strong{MEDIAN}
+\item \strong{MIN}
+\item \strong{SUM}
+}
+}
+
+\seealso{
+Other Chart objects constructors: 
+\code{\link{ChartAxisViewWindowOptions}()},
+\code{\link{ChartGroupRule}()},
+\code{\link{ChartHistogramRule}()},
+\code{\link{ChartSpec}()},
+\code{\link{DataLabel}()},
+\code{\link{DataSourceChartProperties}()},
+\code{\link{EmbeddedChart}()}
+}
+\concept{Chart objects constructors}

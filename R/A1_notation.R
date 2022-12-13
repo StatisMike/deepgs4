@@ -1,5 +1,9 @@
-enc_sing_q <- function(x) {
-  if (grepl(x, pattern = "\\s"))
+enc_sing_q <- function(x, skip_space = TRUE) {
+
+  if (isTRUE(skip_space) && grepl(x, pattern = "\\s"))
+    return(x)
+
+  if (grepl(x, pattern = "^'.*'$"))
     return(x)
 
   return(paste0("'", x, "'"))
@@ -7,11 +11,6 @@ enc_sing_q <- function(x) {
 
 check_unbounded_grid <- function(x, call = rlang::caller_call(),
                                  split_rows = FALSE, split_cols = FALSE) {
-
-  # for now, until figured out
-  if (is.null(x$endRowIndex) || is.null(x$endColumnIndex))
-    dgs4_error("Currently cannot split on unbounded GridRange",
-                 call = call)
 
   if ((is.null(x$endRowIndex) && isTRUE(split_rows)) ||
       (is.null(x$endColumnIndex) && isTRUE(split_cols)))
@@ -81,10 +80,10 @@ get_A1_not.GridCoordinate <- function(x, strict = TRUE, sheetName = NULL,
   sheetName <- get_sheetName(sheetVec = sheetVec, sheetName = sheetName,
                              sheetId = x$sheetId)
 
-  ra_ref(row_ref = x$rowIndex + 1,
+  out <- ra_ref(row_ref = x$rowIndex + 1,
          col_ref = x$columnIndex,
          sheet = if (is.null(sheetName)) NA_character_ else enc_sing_q(sheetName)) |>
-    to_string(fo = "A1", sheet = !is.null(sheetName))
+    to_string(fo = "A1", sheet = !is.null(sheetName), strict = strict)
 
   return(out)
 
@@ -143,20 +142,58 @@ get_A1_not.GridRange <- function(x, strict = TRUE, sheetName = NULL,
 
   }
 
-  ul <- c(x$startRowIndex + 1,
-          x$startColumnIndex + 1)
+  row_bounds <- c(
+    if (is.null(x$startRowIndex)) NA_integer_ else x$startRowIndex + 1,
+    if (is.null(x$endRowIndex)) NA_integer_ else x$endRowIndex)
 
-  lr <- c(if (is.null(x$endRowIndex)) NA_integer_ else x$endRowIndex,
-          if (is.null(x$endColumnIndex)) NA_integer_ else x$endColumnIndex)
+  col_bounds <- c(
+    if (is.null(x$startColumnIndex)) NA_integer_ else x$startColumnIndex + 1,
+    if (is.null(x$endColumnIndex)) NA_integer_ else x$endColumnIndex)
 
-  limits <- cell_limits(
-    ul = ul,
-    lr = lr,
-    sheet = if (is.null(sheetName)) NA_character_ else enc_sing_q(sheetName)
-  )
+  col_nas <- vapply(col_bounds, is.na, logical(1))
+  row_nas <- vapply(row_bounds, is.na, logical(1))
 
-  out <- as.range(limits, fo = "A1", strict = strict, sheet = !is.null(sheetName))
+  if (!any(col_nas) &&
+      !any(row_nas)) {
 
-  return(out)
+    limits <- cell_limits(
+      ul = c(row_bounds[1], col_bounds[1]),
+      lr = c(row_bounds[2], col_bounds[2]),
+      sheet = if (is.null(sheetName)) NA_character_ else enc_sing_q(sheetName)
+    )
+
+    out <- as.range(limits, fo = "A1", strict = strict, sheet = !is.null(sheetName))
+
+    return(out)
+
+  }
+
+  ## cellranger limitations are there resolved: getting unbounded ranges
+  if (all(col_nas) && all(row_nas) && (is.null(sheetName) || is.na(sheetName)))
+    return(NA_character_)
+  else if (all(col_nas) && all(row_nas))
+    return(enc_sing_q(sheetName, skip_space = F))
+
+  first_verb <- c(
+    if (!is.na(col_bounds[1])) cellranger::num_to_letter(col_bounds[1]),
+    if (!is.na(row_bounds[1])) row_bounds[1]
+  ) |> paste(collapse = "")
+
+  second_verb <- c(
+    if (!is.na(col_bounds[2])) cellranger::num_to_letter(col_bounds[2]),
+    if (!is.na(row_bounds[2])) row_bounds[2]
+  ) |> paste(collapse = "")
+
+  if (nchar(first_verb) == 0 || nchar(second_verb) == 0) {
+    cli::cli_warn("Can't get {.emph A1} notation for {.cls GridRange} without both of: {.arg {c('startRowIndex', 'startColumnIndex')}} or {.arg {c('endRowIndex', 'endColumnIndex')}}")
+    return(NA_character_)
+  }
+
+  both_verbs <- paste(first_verb, second_verb, sep = ":")
+
+  if(is.null(sheetName) || is.na(sheetName))
+    return(both_verbs)
+
+  return(paste(enc_sing_q(sheetName, skip_space = F), both_verbs, sep = "!"))
 
 }

@@ -7,16 +7,17 @@
 #' row/column toggle is shown after the group
 #' @export
 GridProperties <- function(
-    rowCount,
-    columnCount,
+    rowCount = NULL,
+    columnCount = NULL,
     frozenRowCount = NULL,
     frozenColumnCount = NULL,
     hideGridlines = NULL,
     rowGroupControlAfter = NULL,
     columnGroupControlAfter = NULL) {
 
-  out <- list(rowCount = rowCount,
-              columnCount = columnCount) |>
+  out <- list() |>
+    append_cond(rowCount, type = "integer") |>
+    append_cond(columnCount, type = "integer") |>
     append_cond(frozenRowCount, type = "integer") |>
     append_cond(frozenColumnCount, type = "integer") |>
     append_cond(hideGridlines, type = "logical") |>
@@ -33,6 +34,17 @@ GridProperties <- function(
 #' @export
 is.GridProperties <- function(x) {
   inherits(x, "GridProperties")
+}
+
+#' @rdname GridProperties
+#' @param gp GridProperties object
+#' @export
+print.GridProperties <- function(gp) {
+
+  cli_text("{.cls {class(gp)}}")
+  cli_bullets(bulletize_fields(gp))
+  return(invisible(gp))
+
 }
 
 #' @title GridCoordinate
@@ -65,6 +77,27 @@ GridCoordinate <- function(
 #' @export
 is.GridCoordinate <- function(x) {
   inherits(x, "GridCoordinate")
+}
+
+#' @rdname GridCoordinate
+#' @param gc GridCoordinate object
+#' @param A1 if `TRUE` then include *A1* notation. Can be set globally with
+#' `options("deepgs4.A1" = TRUE)`
+#' @param ... optional arguments to `print` methods.
+#' @importFrom cli cli_text cli_bullets
+#' @export
+print.GridCoordinate <- function(gc, A1 = getOption("deepgs4.A1", FALSE), ...) {
+
+  cli_text("{.cls {class(gc)}}")
+
+  props <- c("*" = "{.field sheetId}: {gc$sheetId}",
+             "*" = "{.field rowIndex}: {gc$rowIndex}",
+             "*" = "{.field columnIndex}: {gc$columnIndex}",
+             if (isTRUE(A1)) c("i" = "{.field A1}: {.emph {get_A1_not(gc, strict = F)}}"))
+
+  cli_bullets(props)
+  return(invisible(gc))
+
 }
 
 #' @title GridRange
@@ -102,6 +135,12 @@ GridRange <- function(
     append_cond(endColumnIndex, type = "integer") |>
     dgs4_class("GridRange")
 
+  null_indices <- vapply(list(startRowIndex, startColumnIndex, endRowIndex, endColumnIndex),
+                         is.null, logical(1))
+
+  attr(out, "unbounded") <-
+    c("startRow", "startColumn", "endRow", "endColumn")[null_indices]
+
   return(out)
 
 }
@@ -111,6 +150,29 @@ GridRange <- function(
 #' @export
 is.GridRange <- function(x) {
   inherits(x, "GridRange")
+}
+
+#' @rdname GridRange
+#' @param gr GridRange object
+#' @param A1 if `TRUE` then include *A1* notation. Can be set globally with
+#' `options("deepgs4.A1" = TRUE)`
+#' @param ... optional arguments to `print` methods.
+#' @importFrom cli cli_text cli_bullets
+#' @export
+print.GridRange <- function(gr, A1 = getOption("deepgs4.A1", FALSE), ...) {
+
+  cli_text("{.cls {class(gr)}}")
+
+  props <- bulletize_fields(gr)
+  if (isTRUE(A1))
+    props <- c(props, c("i" = "{.field A1}: {.emph {get_A1_not(gr, strict = F)}}"))
+
+  if (length(attr(gr, "unbounded")) > 0)
+    props <- c(props, c(">" = "{.field unbounded}: {.val {attr(gr, 'unbounded')}}"))
+
+  cli_bullets(props)
+  return(invisible(gr))
+
 }
 
 #' @title Check if the vector is coercible to date or datetime

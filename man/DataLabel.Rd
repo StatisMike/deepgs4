@@ -3,7 +3,7 @@
 \name{DataLabel}
 \alias{DataLabel}
 \alias{is.DataLabel}
-\title{Chart Data Labels}
+\title{DataLabel}
 \usage{
 DataLabel(
   textFormat = NULL,
@@ -27,6 +27,9 @@ labels}
 for data labels with \code{type = "CUSTOM"}}
 
 \item{x}{any R object}
+}
+\value{
+dgs4Obj of class \code{DataLabel}
 }
 \description{
 Settings for chart data labels - annotations that appear on
@@ -58,3 +61,14 @@ automatically by the renderer.
 }
 }
 }
+\seealso{
+Other Chart objects constructors: 
+\code{\link{ChartAxisViewWindowOptions}()},
+\code{\link{ChartData}()},
+\code{\link{ChartGroupRule}()},
+\code{\link{ChartHistogramRule}()},
+\code{\link{ChartSpec}()},
+\code{\link{DataSourceChartProperties}()},
+\code{\link{EmbeddedChart}()}
+}
+\concept{Chart objects constructors}

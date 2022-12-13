@@ -12,7 +12,8 @@
 InterpolationPoint <- function(
     colorStyle,
     type = c("NUMBER", "PERCENT", "PERCENTILE", "MIN", "MAX"),
-    value = NULL) {
+    value = NULL,
+    ...) {
 
   type <- rlang::arg_match(type)
   skip_value <- type %in% c("MIN", "MAX")

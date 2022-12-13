@@ -26,6 +26,19 @@ first_to_upper <- function(x) {
 
 }
 
+#' @title First character to lower case
+#' @param x string
+#' @noRd
+first_to_lower <- function(x) {
+
+  x <- unlist(strsplit(x, split = ""))
+  x[1] <- tolower(x[1])
+  x <- paste(x, collapse = "")
+
+  return(x)
+
+}
+
 #' @title Add deepgsheets4 class
 #' @param x object to add the class
 #' @param class name of the child class
@@ -423,9 +436,9 @@ dgs4_error <- function(message,
 #' @title Check for class
 #' @param x R object
 #' @param class dgs4 class
-#' @param object_type object type
+#' @param object_type object type. One of @eval pkg_env$object_types
 #' @noRd
-is.dgs4_class <- function(x, class = NULL, object_type = c("Obj", "Req", "Data", "Response")) {
+is.dgs4_class <- function(x, class = NULL, object_type = pkg_env$object_types) {
 
   object_type <- rlang::arg_match(object_type)
 

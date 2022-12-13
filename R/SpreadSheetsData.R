@@ -1,28 +1,9 @@
-#' @title Get data about the spreadsheet
-#' @param spreadsheetId ID of the spreadsheet
-#' @param fields fields to get
-#' @noRd
-
-getSpreadsheetData <- function(spreadsheetId, fields = NULL) {
-
-  req <- request_generate(
-    endpoint = "sheets.spreadsheets.get",
-    params = list(
-      spreadsheetId = spreadsheetId,
-      fields = fields
-    )
-  )
-
-  resp <- request_make(req)
-
-  gargle::response_process(resp)
-
-}
-
 #' @title SpreadSheetData
 #' @docType class
 #' @description Object holding and querying for data regarding specific
 #' spreadsheet
+#' @section Warning:
+#' WIP: do not use!
 #' @export
 
 SpreadSheetData <- R6::R6Class(

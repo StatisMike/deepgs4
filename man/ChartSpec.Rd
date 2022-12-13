@@ -34,7 +34,7 @@ is.ChartSpec(x)
 \item{titleTextPosition, subtitleTextPosition}{Horizntal aligmnent of the title and
 subtitle.}
 
-\item{titleTextFormat, subtitleTextFormat}{Objects of \code{\link[=TextFormat]{TextFormat()}} class.
+\item{titleTextFormat, subtitleTextFormat}{Objects of \link{TextFormat} class.
 Strikethrough, underline and link aren't supported.}
 
 \item{fontName}{name of the font to use.}
@@ -44,7 +44,7 @@ Strikethrough, underline and link aren't supported.}
 \item{maximized}{boolean. If \code{TRUE}, the chart will take maximum amount of
 available space with minimal padding.}
 
-\item{backgroundColorStyle}{object of \code{\link[=ColorStyle]{ColorStyle()}} class, describing the
+\item{backgroundColorStyle}{object of \link{ColorStyle} class, describing the
 background color for entire chart.}
 
 \item{dataSourceChartProperties}{object of \link{DataSourceChartPoperties},
@@ -63,6 +63,20 @@ rows or columns.}
 
 \item{x}{any R object}
 }
+\value{
+dgs4Obj of class \code{ChartSpec}
+}
 \description{
 Specification for googlesheets chart
 }
+\seealso{
+Other Chart objects constructors: 
+\code{\link{ChartAxisViewWindowOptions}()},
+\code{\link{ChartData}()},
+\code{\link{ChartGroupRule}()},
+\code{\link{ChartHistogramRule}()},
+\code{\link{DataLabel}()},
+\code{\link{DataSourceChartProperties}()},
+\code{\link{EmbeddedChart}()}
+}
+\concept{Chart objects constructors}

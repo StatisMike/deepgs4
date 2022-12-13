@@ -8,6 +8,11 @@
 Object holding and querying for data regarding specific
 spreadsheet
 }
+\section{Warning}{
+
+WIP: do not use!
+}
+
 \section{Public fields}{
 \if{html}{\out{<div class="r6-fields">}}
 \describe{

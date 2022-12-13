@@ -43,9 +43,11 @@ dgs4_listinize <- function(x, ...)
 #' @export
 dgs4_listinize.default <- function(x, ...) {
 
+  if (is.atomic(x))
+    return(x)
   if (!is.list(x))
     return(x)
-  else
+
     lapply(x, dgs4_listinize, ... = ...) |>
     lapply(unclass_obj)
 
@@ -55,8 +57,25 @@ dgs4_listinize.default <- function(x, ...) {
 #' @export
 dgs4_listinize.dgs4Req <- function(x, ...) {
 
+  req_type <- first_to_lower(class(x)[1])
+
   x <- lapply(x, dgs4_listinize, ... = ...)
-  return(x)
+  req <- list()
+  req[[req_type]] <- unclass_obj(x)
+  return(req)
+
+}
+
+#' @rdname dgs4_listinize
+#' @export
+dgs4_listinize.dgs4Resp <- function(x, ...) {
+
+  req_type <- first_to_lower(class(x)[1])
+
+  x <- lapply(x, dgs4_listinize, ... = ...)
+  req <- list()
+  req[[req_type]] <- unclass_obj(x)
+  return(req)
 
 }
 
@@ -69,7 +88,41 @@ dgs4_listinize.dgs4Obj <- function(x, ...) {
 
 }
 
-#### specific listinizers ####
+#### Spreadsheet.R listinizers ####
+
+#' @rdname dgs4_listinize
+#' @export
+dgs4_listinize.SpreadsheetTheme <- function(x, ...) {
+
+  x <- lapply(x, dgs4_listinize, ... = ...)
+
+  themes <- c("TEXT", "BACKGROUND", paste0("ACCENT", 1:6), "LINK")
+
+  themes_included <- themes[themes %in% names(x)]
+
+  if (length(themes_included) > 0) {
+
+    x$themeColors <- list()
+
+    for (theme in themes_included) {
+
+      x$themeColors <- x$themeColors |>
+        append(list(list(colorType = theme,
+                         color = x[[theme]])))
+
+      x[[theme]] <- NULL
+
+    }
+
+  }
+
+  x <- unclass_obj(x)
+
+  return(x)
+
+}
+
+#### Varia.R listinizers ####
 
 #' @rdname dgs4_listinize
 #' @export
@@ -104,50 +157,7 @@ dgs4_listinize.ColorStyle <- function(x, ...) {
 
 }
 
-#' @rdname dgs4_listinize
-#' @aliases dgs4_listinize
-#' @export
-dgs4_listinize.ChartData <- function(x, ...) {
-
-  x <- lapply(x, dgs4_listinize, ... = ...)
-
-  x <- x |>
-    nest_cond(name = "sourceRange", nests = "sources") |>
-    unclass_obj()
-
-  return(x)
-
-}
-
-#' @rdname dgs4_listinize
-#' @export
-dgs4_listinize.BasicChartAxis <- function(x, ...) {
-
-  x <- lapply(x, dgs4_listinize, ... = ...)
-
-  if (!is.null(x$titleTextPosition))
-    x$titleTextPosition <- list(horizontalAlignment = x$titleTextPosition)
-
-  x <- unclass_obj(x)
-
-  return(x)
-
-}
-
-#' @rdname dgs4_listinize
-#' @export
-dgs4_listinize.ChartSpec <- function(x, ...) {
-
-  x <- lapply(x, dgs4_listinize, ... = ...)
-
-  x <- x |>
-    nest_cond("titleTextPosition", "horizontalAlignment") |>
-    nest_cond("subtitleTextPosition", "horizontalAlignment") |>
-    unclass_obj()
-
-  return(x)
-
-}
+#### Cells.R listinizers ####
 
 #' @rdname dgs4_listinize
 #' @export
@@ -188,6 +198,79 @@ dgs4_listinize.ExtendedValue <- function(x, ...) {
 
 #' @rdname dgs4_listinize
 #' @export
+dgs4_listinize.RowData <- function(x, ...) {
+
+  x <- lapply(x, dgs4_listinize, ... = ...)
+  out <- list(values = x)
+  return(out)
+
+}
+
+#### BasicCharts.R listinizers ####
+
+#' @rdname dgs4_listinize
+#' @export
+dgs4_listinize.BasicChartAxis <- function(x, ...) {
+
+  x <- lapply(x, dgs4_listinize, ... = ...)
+
+  if (!is.null(x$titleTextPosition))
+    x$titleTextPosition <- list(horizontalAlignment = x$titleTextPosition)
+
+  x <- unclass_obj(x)
+
+  return(x)
+
+}
+
+#### Charts.R listinizers ####
+
+#' @rdname dgs4_listinize
+#' @export
+dgs4_listinize.ChartSpec <- function(x, ...) {
+
+  x <- lapply(x, dgs4_listinize, ... = ...)
+
+  x <- x |>
+    nest_cond("titleTextPosition", "horizontalAlignment") |>
+    nest_cond("subtitleTextPosition", "horizontalAlignment") |>
+    unclass_obj()
+
+  return(x)
+
+}
+
+#' @rdname dgs4_listinize
+#' @aliases dgs4_listinize
+#' @export
+dgs4_listinize.ChartData <- function(x, ...) {
+
+  x <- lapply(x, dgs4_listinize, ... = ...)
+
+  x <- x |>
+    nest_cond(name = "sourceRange", nests = "sources") |>
+    unclass_obj()
+
+  return(x)
+
+}
+
+#' @rdname dgs4_listinize
+#' @export
+dgs4_listinize.ChartGroupRule <- function(x, ...) {
+
+  x <- lapply(x, dgs4_listinize, ... = ...) |>
+    nest_cond("dateTimeRule", nests = "type") |>
+    unclass_obj()
+
+  return(x)
+
+}
+
+#### EmbeddedObject.R listinizers ####
+
+#' @rdname dgs4_listinize
+#' @export
 dgs4_listinize.EmbeddedChart <- function(x, ...) {
 
   x <- lapply(x, dgs4_listinize, ... = ...)
@@ -205,6 +288,8 @@ dgs4_listinize.EmbeddedChart <- function(x, ...) {
 
 }
 
+#### Dimension.R listinizers ####
+
 #' @rdname dgs4_listinize
 #' @export
 dgs4_listinize.DimensionProperties <- function(x, ...) {
@@ -213,16 +298,6 @@ dgs4_listinize.DimensionProperties <- function(x, ...) {
     nest_cond("dataSourceColumnReference", nests = "name")
 
   return(x)
-
-}
-
-#' @rdname dgs4_listinize
-#' @export
-dgs4_listinize.RowData <- function(x, ...) {
-
-  x <- lapply(x, dgs4_listinize, ... = ...)
-  out <- list(values = x)
-  return(out)
 
 }
 
@@ -238,5 +313,79 @@ dgs4_listinize.ConditionValue <- function(x, ...) {
     out <- list(userEnteredValue = unclass_obj(x))
 
   return(out)
+
+}
+
+#### DataSource.R listinizers ####
+
+#' @rdname dgs4_listinize
+#' @export
+dgs4_listinize.DataSourceRefreshSchedule <- function(x, ...) {
+
+  x <- lapply(x, dgs4_listinize, ... = ...)
+
+  if (!is.null(x$daysOfWeek)) {
+
+    x$weeklySchedule <- list(startTime = x$startTime,
+                             daysOfWeek = x$daysOfWeek)
+
+    x$daysOfWeek <- NULL
+
+  } else if (!is.null(x$daysOfMonth)) {
+
+    x$monthlySchedule <- list(startTime = x$startTime,
+                              daysOfMonth = x$daysOfMonth)
+    x$daysOfMonth <- NULL
+
+  } else {
+
+    x$dailySchedule <- list(startTime = x$startTime)
+
+  }
+
+  x$startTime <- NULL
+  x$refreshScope <- "ALL_DATA_SOURCES"
+
+  x <- unclass_obj(x)
+
+  return(x)
+
+}
+
+#' @rdname dgs4_listinize
+#' @export
+dgs4_listinize.DataSourceColumn <- function(x, ...) {
+
+  x <- lapply(x, dgs4_listinize, ... = ...) |>
+    nest_cond("reference", nests = "name") |>
+    unclass_obj()
+
+  return(x)
+
+}
+
+#### Filters.R listinizers ####
+
+#' @rdname dgs4_listinize
+#' @export
+dgs4_listinize.SortSpec <- function(x, ...) {
+
+  x <- lapply(x, dgs4_listinize, ... = ...) |>
+    nest_cond("dataSourceColumnReference", nests = "name") |>
+    unclass_obj()
+
+  return(x)
+
+}
+
+#' @rdname dgs4_listinize
+#' @export
+dgs4_listinize.FilterSpec <- function(x, ...) {
+
+  x <- lapply(x, dgs4_listinize, ... = ...) |>
+    nest_cond("dataSourceColumnReference", nests = "name") |>
+    unclass_obj()
+
+  return(x)
 
 }

@@ -8,7 +8,8 @@
 InterpolationPoint(
   colorStyle,
   type = c("NUMBER", "PERCENT", "PERCENTILE", "MIN", "MAX"),
-  value = NULL
+  value = NULL,
+  ...
 )
 
 is.InterpolationPoint(x)
@@ -21,10 +22,10 @@ is.InterpolationPoint(x)
 \item{value}{A value that this interpolation point uses, which may also be
 a formula. Unused for \code{"MIN"} and \code{"MAX"} \code{type}}
 
-\item{x}{any R object}
-
 \item{...}{provided for compatibility with deprecated Google Sheets API
 objects}
+
+\item{x}{any R object}
 }
 \description{
 A single interpolation point on a gradient conditional format.

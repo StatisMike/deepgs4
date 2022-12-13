@@ -3,6 +3,7 @@
 \name{GridRange}
 \alias{GridRange}
 \alias{is.GridRange}
+\alias{print.GridRange}
 \title{GridRange}
 \usage{
 GridRange(
@@ -14,6 +15,8 @@ GridRange(
 )
 
 is.GridRange(x)
+
+\method{print}{GridRange}(gr, A1 = getOption("deepgs4.A1", FALSE), ...)
 }
 \arguments{
 \item{sheetId}{Integer - sheet ID}
@@ -24,6 +27,13 @@ indices are exclusive. Missing index means that the range is unbounded on that
 side.}
 
 \item{x}{any R object}
+
+\item{gr}{GridRange object}
+
+\item{A1}{if \code{TRUE} then include \emph{A1} notation. Can be set globally with
+\code{options("deepgs4.A1" = TRUE)}}
+
+\item{...}{optional arguments to \code{print} methods.}
 }
 \description{
 Specification of grid range in spreadsheet
