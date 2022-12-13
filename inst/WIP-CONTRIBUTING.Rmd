@@ -1,0 +1,156 @@
+---
+title: "Contribution guidelines to deepgs4 package"
+author: "Michał Kosiński"
+date: '2022-10-22'
+output: github_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+library(deepgs4)
+```
+
+<!-- This CONTRIBUTING.md is adapted from https://gist.github.com/peterdesmet/e90a1b0dc17af6c12daf6e8b2f044e7c -->
+
+First of all, thanks for considering contributing to `deepgs4`! 👍 It's people like you that make it rewarding for us - the project maintainers - to work on `deepgs4` 😊
+
+`deepgs4` is an open source project, maintained by people who care. We are not directly funded to do so.
+
+[repo]: https://github.com/StatisMike/deepgs4
+[issues]: https://github.com/StatisMike/deepgs4/issues
+[new_issue]: https://github.com/StatisMike/deepgs4/issues/new
+<!-- [website]: https://our_org.github.io/our_package -->
+<!-- [citation]: https://our_org.github.io/our_package/authors.html -->
+[email]: mailto:kosinski.mich@gmail.com
+
+<!-- ## Code of conduct -->
+
+<!-- Please note that this project is released with a [Contributor Code of Conduct](CODE_OF_CONDUCT.md). By participating in this project you agree to abide by its terms. -->
+
+## How you can contribute
+
+There are several ways you can contribute to this project. If you want to know more about why and how to contribute to open source projects like this one, see this [Open Source Guide](https://opensource.guide/how-to-contribute/).
+
+### Share the love ❤️
+
+Think `deepgs4` is useful? Let others discover it, by telling them in person, via Twitter or a blog post.
+
+### Ask a question ⁉️
+
+<!-- [documentation][website] -->
+Using `deepgs4` and got stuck? Browse the package documentation to see if you can find a solution. Still stuck? Post your question as an [issue on GitHub][new_issue]. While we cannot offer user support, we'll try to do our best to address it, as questions often lead to better documentation or the discovery of bugs.
+
+Want to ask a question in private? Contact the package maintainer by [email][mailto:email].
+
+### Report a bug 🐛
+
+Using `deepgs4` and discovered a bug? That's annoying! Don't let others have the same experience and report it as an [issue on GitHub][new_issue] so we can fix it. A good bug report makes it easier for us to do so, so please include:
+
+* Your operating system name and version (e.g. Mac OS 10.13.6).
+* Any details about your local setup that might be helpful in troubleshooting.
+* Detailed steps to reproduce the bug.
+
+### Improve the documentation 📖
+
+Noticed a typo on the website? Think a function could use a better example? Good documentation makes all the difference, so your help to improve it is very welcome!
+
+<!-- #### The website -->
+
+<!-- [This website][website] is generated with [`pkgdown`](http://pkgdown.r-lib.org/). That means we don't have to write any html: content is pulled together from documentation in the code, vignettes, [Markdown](https://guides.github.com/features/mastering-markdown/) files, the package `DESCRIPTION` and `_pkgdown.yml` settings. If you know your way around `pkgdown`, you can [propose a file change](https://help.github.com/articles/editing-files-in-another-user-s-repository/) to improve documentation. If not, [report an issue][new_issue] and we can point you in the right direction. -->
+
+#### Function documentation
+
+Functions are described as comments near their code and translated to documentation using [`roxygen2`](https://klutometis.github.io/roxygen/). If you want to improve a function description:
+
+1. Go to `R/` directory in the [code repository][repo].
+2. Look for the file with the name of the function.
+3. [Propose a file change](https://help.github.com/articles/editing-files-in-another-user-s-repository/) to update the function documentation in the roxygen comments (starting with `#'`).
+
+Most of `deepgs4` functions are constructors for R objects mirroring their 
+*Sheets API* counterparts. Most of documentation in that matter is sourced from
+their [documentation](https://developers.google.com/sheets/api/reference/rest).
+Often it differs slightly to better suit `R` developers or to be even more
+informative.
+
+### Contribute code 📝
+
+Care to fix bugs or implement new functionality for `deepgs4`? Awesome! 👏 Have a look at the [issue list][issues] and leave a comment on the things you want to work on. See also the development guidelines below.
+
+Currently most of the work is focused on binding all *batchUpdate* requests, and
+there are many of them [as shown at this issue](https://github.com/StatisMike/deepgs4/issues/1).
+Find the one that you would like to add - and work on it! :D
+
+## Development guidelines
+
+We try to follow the [GitHub flow](https://guides.github.com/introduction/flow/) for development.
+
+1. Fork [this repo][repo] and clone it to your computer. To learn more about this process, see [this guide](https://guides.github.com/activities/forking/).
+2. If you have forked and cloned the project before and it has been a while since you worked on it, [pull changes from the original repo](https://help.github.com/articles/merging-an-upstream-repository-into-your-fork/) to your clone by using `git pull upstream master`.
+3. Open the RStudio project file (`.Rproj`).
+4. Make your changes:
+    * Write your code.
+    * Test your code (bonus points for adding unit tests).
+    * Document your code (see function documentation above).
+    * Check your code with `devtools::check()` and aim for 0 errors and warnings.
+5. Commit and push your changes.
+6. Submit a [pull request](https://guides.github.com/activities/forking/#making-a-pull-request).
+
+### Covering new Sheets object
+
+You've need an object that isn't currently binded with `deepgs4` - maybe it is missing from some of currently binded objects, or you need it for covering some request? Feel free to add it! There are just some
+points you need to take during it's development.
+
+1. Create a constructor function
+  - every constructor function is named in the same way as the object it creates.
+  eg. *GridRange* object needs to be constructed with `GridRange()`
+  - there are some helper functions already available, to make the syntax as clean
+  as possible with `|>` pipeline syntax.
+    - checkers: `check_if_class()`, `check_if_type()`, check_if_all_class()`,
+    `is.dgs4_class()`
+    - appender: `append_cond()`
+    - nesters: `nest_cond()`, `nest_if_class()`
+    - class definer: `dgs4_class()`
+2. If needed: create a generator function
+  - objects received from Sheets API are unclassed, nested lists. There is a system
+  making their interception and transforming into `R` object more straigtforward.
+  - if received object have some other Sheets object, there is a need to create
+  a specific generator. These function are all named in the same way: `gen_{classname}`.
+  Eg. generator for `GridRange` object is named `gen_GridRange()`
+    - generator function intake two arguments: `obj`, which will be intercepted 
+    nested list and `sheetId`, taking as default `NULL`.
+    - for fields that contain sheets objects, there is a need to make it first
+    into an `dgs4Object`! You can use `try_to_gen()` or `try_to_gen_inplace()`
+    functions.
+    - finally, use `do.call()` to call the constructor function, passing transformed
+    `obj` into its `args` arguments
+  - specific generator name needs to be added into `pkg_env$generators` character
+  vector. Its then recognized by `gen_dgs4Obj()` function
+3. If needed: create a `dgs4_listinize()` method for new class.
+  - sometimes, objects recognized by Sheets API are unnecessary nested. Good example
+  of this is **link** object used in `TextFormat()`. For Sheets API it is actually
+  nestes as `link$uri`. We don't want such unnecessary complex objects in `deepgs4`,
+  that's why `uri` nest is omitted. 
+  - it creates a need to listinize the object correctly. We need to create `dgs4_listine.TextFormat()`
+  method and create the nested `link$uri` structure for the object to be recognized
+  on Sheets side. 
+  
+At last, the workflow such as below need to be valid for the new structure:
+
+```{r constructor_example}
+# create object
+x <- GridRange(sheetId = 0, startRowIndex = 0, endRowIndex = 3,
+               startColumnIndex = 0, endColumnIndex = 10)
+# verify it has correct class
+class(x)
+is.GridRange(x)
+# successfully listinize object - correctly nested list without classes
+obj <- dgs4_listinize(x)
+str(obj)
+# sucessfully recreate object
+y <- gen_dgs4Obj(obj, "GridRange")
+identical(x, y)
+```
+
+4. Verify this workflow by creating tests for introduced objects. You can use
+helper function `expect_genned_identical()`, which covers the *listinize -> generate*
+comparison, similarly as shown above.
